@@ -1,0 +1,374 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf8">
+  </head>
+<body>
+<div id="head">
+  <div id="nextbutton">
+    <button onclick="nextWord()">Next</button>
+    <button onclick="initializeClock('clockdiv',100); nextWord()">Restart</button>
+  </div>
+  <div id="word"> ... </div>
+  <div id="clockdiv"> Start </div>
+</div>
+
+<script src="clock.js"> </script>
+
+<ul style="width:10%">
+<li>Quoi?<b>wat</b></li>
+<li>rien<b>niets</b></li>
+<li>quelques chose<b>iets</b></li>
+<li>tout<b>hele</b></li>
+<li>chaque<b>elke</b></li>
+<li>fruit<b>vrucht</b></li>
+<li>légumes<b>groente </b></li>
+<li>fromage<b>kaas</b></li>
+<li>pain<b>brood</b></li>
+<li>poisson<b>vis</b></li>
+<li>animal<b>dier</b></li>
+<li>viande<b>vlees</b></li>
+<li>sucre<b>suiker</b></li>
+<li>sel<b>zout</b></li>
+<li>poivre<b>peper</b></li>
+<li>verre<b>glas</b></li>
+<li>café<b>koffie</b></li>
+<li>thé<b>thee</b></li>
+<li>eau<b>water</b></li>
+<li>lait<b>melk</b></li>
+<li>huile<b>olie</b></li>
+<li>bière<b>bier</b></li>
+<li>vin<b>wijn</b></li>
+<li>travail<b>werk</b></li>
+<li>argent<b>geld</b></li>
+<li>livre<b>het boek</b></li>
+<li>vetement<b>kleding</b></li>
+<li> <br> </li>
+<li>autre<b>ander</b></li>
+<li>difference<b>verschil</b></li>
+<li>ainsi<b>zo</b></li>
+<li>comme<b>zoals</b></li>
+<li>aussi<b>ook</b></li>
+<li>pour (moi)<b>voor (mij)</b></li>
+<li>avec (moi)<b>met (mij)</b></li>
+<li>sans (moi)<b>zonder (mij)</b></li>
+<li>ensemble<b>samen</b></li>
+<li>seul<b>alleen</b></li>
+</ul>
+
+<ul style="width:12%">
+<li>il y a<b>er is</b></li>
+<li>y a t'il?<b>is er?</b></li>
+<li>c'est<b>het is</b></li>
+<li>ne pas<b>niet</b></li>
+<li>pas de<b>geen</b></li>
+<li>j'aime<b>ik houd van</b></li>
+<li>je veux<b>ik wil</b></li>
+<li>je voudrai<b>ik wou graag</b></li>
+<li>j'ai envie<b>ik heb zin</b></li>
+<li>voulez vous<b>wilt u</b></li>
+<li>il faut<b>het is nodig</b></li>
+<li>c'est pas la peine<b>het is niet nodig</b></li>
+<li>je dois<b>ik moet</b></li>
+<li>vous devez<b>jullie moeten</b></li>
+<li>j'ai besoin<b>ik heb .. nodig</b></li>
+<li>je sais<b>ik weet</b></li>
+<li>savez vous<b>weet u</b></li>
+<li>je connais<b>ik ken</b></li>
+<li>connaissez vous<b>kent u</b></li>
+<li>je peux<b>ik kan</b></li>
+<li>pouvez vous<b>kan u</b></li>
+<li>je pense que<b>ik denk dat</b></li>
+<li>je crois<b>ik geloof</b></li>
+<li>peut-être<b>misschien</b></li>
+<li>probablement<b>waarschijnlijk</b></li>
+<li>possible<b>mogelijk</b></li>
+<li>pas possible<b>onmogelijk</b></li>
+<li> <br> </li>
+<li>couleur<b>kleur</b></li>
+<li>rouge<b>rod</b></li>
+<li>bleu<b>blauw</b></li>
+<li>blanc<b>witt</b></li>
+<li>jaune<b>geel</b></li>
+<li>vert<b>groen</b></li>
+<li>noir<b>zwart</b></li>
+</ul>
+
+<ul>
+<li>faire<b>doen/maken</b></li>
+<li>penser<b>denken</b></li>
+<li>travailler<b>werken</b></li>
+<li>chercher<b>opzoeken</b></li>
+<li>trouver<b>vinden</b></li>
+<li>marcher<b>lopen</b></li>
+<li>se promener<b>wandelen</b></li>
+<li>aller<b>gaan</b></li>
+<li>venir<b>komen</b></li>
+<li>partir<b>weggaan</b></li>
+<li>attendre<b>wachten</b></li>
+<li>écrire<b>schrijven</b></li>
+<li>lire<b>lezen</b></li>
+<li>commencer<b>beginnen</b></li>
+<li>finir<b>afmaken</b></li>
+<li>rester<b>blijven</b></li>
+<li>entrer<b>binnengaan</b></li>
+<li>tourner<b>afslaan</b></li>
+<li>s'asseoir<b>zitten</b></li>
+<li>sortir<b>buitengaan</b></li>
+<li>courir<b>rennen</b></li>
+<li>regarder<b>kijken</b></li>
+<li>voir<b>zien</b></li>
+<li>entendre<b>horen</b></li>
+<li>boire<b>drinken</b></li>
+<li>prendre<b>nemen</b></li>
+<li>acheter<b>kopen</b></li>
+<li>manger<b>eten</b></li>
+<li>tenir<b>houden</b></li>
+<li>dormir<b>slapen</b></li>
+<li>donner<b>geven</b></li>
+<li>payer<b>betalen</b></li>
+<li>parler<b>spreken</b></li>
+<li>dire<b>zeggen</b></li>
+<li>demander<b>vragen</b></li>
+<li>apprendre<b>leren</b></li>
+<li>comprendre<b>begrijpen</b></li>
+<li>habiter<b>wonen</b></li>
+</ul>
+
+<ul>
+<li>Qui?<b>wie</b></li>
+<li>personne<b>niemand</b></li>
+<li>quelqu'un<b>iemand</b></li>
+<li>tout le monde<b>iedereen</b></li>
+<li>enfant<b>kinder</b></li>
+<li>fils<b>zoon</b></li>
+<li>fille<b>dochter</b></li>
+<li>mère<b>moeder</b></li>
+<li>père<b>vader</b></li>
+<li>frère<b>broer</b></li>
+<li>soeur<b>zuster</b></li>
+<li>ami(e)<b>vriend</b></li>
+<li>ma femme<b>mijn vrouw</b></li>
+<li>mon<b>mijn</b></li>
+<li>ton<b>je</b></li>
+<li>son<b>zijn,haar</b></li>
+<li>notre<b>onze</b></li>
+<li>votre<b>uw</b></li>
+<li>leurs<b>hun</b></li>
+<li>je suis<b>ik ben</b></li>
+<li>tu es<b>je bent</b></li>
+<li>il,elle est<b>hij,ze is</b></li>
+<li>nous sommes<b>we zijn</b></li>
+<li>vous êtes<b>u bent</b></li>
+<li>ils sont<b>zij zijn</b></li>
+<li>j'ai<b>ik heb</b></li>
+<li>tu as<b>je hebt</b></li>
+<li>il, elle a<b>hij,ze heeft</b></li>
+<li>nous avons<b>we hebben</b></li>
+<li>vous avez<b>u heeft</b></li>
+<li>ils ont<b>zij hebben</b></li>
+<li>de<b>van</b></li>
+<li>ceci<b>deze/dit</b></li>
+<li>cela<b>die/dat</b></li>
+<li> <br> </li>
+<li>oui (volontier)<b>ja (graag)</b></li>
+<li>non<b>nee</b></li>
+<li>d'accord<b>akkoord</b></li>
+</ul>
+
+<ul>
+<li>Où?<b>waar</b></li>
+<li>nulle-part<b>norgens</b></li>
+<li>quelques part<b>ergens</b></li>
+<li>partout<b>overal</b></li>
+<li>ici<b>hier</b></li>
+<li>là-bas<b>daar</b></li>
+<li>dessous<b>onder</b></li>
+<li>devant<b>vôôr</b></li>
+<li>à gauche<b>links</b></li>
+<li>vers<b>naar</b></li>
+<li>derrière<b>achter</b></li>
+<li>à côté<b>naast</b></li>
+<li>à droite<b>rechts</b></li>
+<li>tout droit<b>rechtdoor</b></li>
+<li>dans<b>in</b></li>
+<li>dessus<b>boven</b></li>
+<li>à l'intérieur<b>binnen</b></li>
+<li>à l'exterieur<b>buiten</b></li>
+<li>maison<b>huis</b></li>
+<li>cuisine<b>koeken</b></li>
+<li>table<b>tafel</b></li>
+<li>chaise<b>stoel</b></li>
+<li>soleil<b>zon</b></li>
+<li>montagnes<b>bergen</b></li>
+<li>mer<b>zee</b></li>
+<li>ville<b>stad</b></li>
+<li>rue<b>straat/weg</b></li>
+<li>magasin<b>winkel</b></li>
+<li>chambre<b>kamer</b></li>
+<li>lit<b>bed</b></li>
+<li>salle de bain<b>badkamer</b></li>
+<li>avion<b>vligetuig</b></li>
+<li>voiture<b>wagen</b></li>
+<li>bus<b>bus</b></li>
+<li>train<b>trein</b></li>
+<li>voyage<b>reis</b></li>
+</ul>
+
+
+<ul>
+<li>Quand?<b>wanneer</b></li>
+<li>temps<b>tijd</b></li>
+<li>jamais<b>nooit</b></li>
+<li>parfois<b>af en toe / soms</b></li>
+<li>souvent<b>dikwijls</b></li>
+<li>toujours<b>altijd/steeds</b></li>
+<li>année<b>jaar</b></li>
+<li>mois<b>maand</b></li>
+<li>semaine<b>week</b></li>
+<li>jour<b>dag</b></li>
+<li>(à) .. heure<b>(om) .. uur</b></li>
+<li>minutes<b>minuten</b></li>
+<li>seconde<b>seconde</b></li>
+<li>avant<b>voor</b></li>
+<li>maintenant<b>nu</b></li>
+<li>après<b>na</b></li>
+<li>tout de suite<b>onmiddelijk / dadelik</b></li>
+<li>matin<b>morgen</b></li>
+<li>après-midi<b>middag</b></li>
+<li>soir<b>avond</b></li>
+<li>nuit<b>nacht</b></li>
+<li>hier<b>gisteren</b></li>
+<li>aujourd'hui<b>vandaag</b></li>
+<li>demain<b>morgen</b></li>
+<li>tôt<b>vroeg</b></li>
+<li>bientôt<b>binnenkort</b></li>
+<li>prochain<b>volgende</b></li>
+<li>tard<b>laat</b></li>
+<li>dernier<b>vorige</b></li>
+<li>déjà<b>al</b></li>
+<li>depuis<b>sinds</b></li>
+<li>encore<b>nog</b></li>
+<li>jusqu'à<b>tot</b></li>
+<li>de nouveau<b>weer</b></li>
+<li>toujours pas<b>steeds niet</b></li>
+</ul>
+
+<ul style="width:10%">
+<li>Comment?<b>hoe</b></li>
+<li>grand<b>grot</b></li>
+<li>petit<b>klein</b></li>
+<li>haut<b>hoog</b></li>
+<li>bas<b>lag</b></li>
+<li>beau<b>mooi</b></li>
+<li>vide<b>leeg</b></li>
+<li>plein<b>vol</b></li>
+<li>ouvert<b>open</b></li>
+<li>fermé<b>gesloten</b></li>
+<li>près<b>dichtbij</b></li>
+<li>loin<b>ver</b></li>
+<li>chaud<b>warm </b></li>
+<li>froid<b>koud </b></li>
+<li>nouveau<b>nieuw</b></li>
+<li>ancien<b>oud</b></li>
+<li>jeune<b>jong</b></li>
+<li>fatigué<b>moe</b></li>
+<li>malade<b>ziek</b></li>
+<li>prêt<b>klaar</b></li>
+<li>propre<b>schoon</b></li>
+<li>sale<b>vuil</b></li>
+<li>lourd<b>zwaar</b></li>
+<li>bon<b>lekkere</b></li>
+<li>bien<b>goed</b></li>
+<li>mauvais<b>slecht</b></li>
+<li>gentil<b>aardig</b></li>
+<li>content<b>blij</b></li>
+<li>difficile<b>moeilijk</b></li>
+<li>facile<b>gemakkelijk</b></li>
+<li>intéressant<b>interessant</b></li>
+<li>(j'ai) faim<b>(ik heb) honger</b></li>
+<li>rapide<b>vlug</b></li>
+<li>lent<b>langzaam</b></li>
+<li>cher<b>duur</b></li>
+<li>important<b>belangrijk</b></li>
+<li>célèbre<b>beroemd/bekende</b></li>
+<li>interdit<b>verboden</b></li>
+</ul>
+
+<ul>
+<li>Combien?<b>hoeveel</b></li>
+<li>un peu<b>een beetje / wat</b></li>
+<li>peu<b>weinig</b></li>
+<li>beaucoup<b>veel / talrijke</b></li>
+<li>très<b>heel</b></li>
+<li>moins<b>minder</b></li>
+<li>plus<b>meer</b></li>
+<li>presque<b>bijna</b></li>
+<li>environ<b>ongeveer</b></li>
+<li>trop<b>te veel</b></li>
+<li>assez<b>genoeg/nogal</b></li>
+<li>1<b>een</b></li>
+<li>2<b>twee</b></li>
+<li>3<b>drie</b></li>
+<li>4<b>vier</b></li>
+<li>5<b>vijf</b></li>
+<li>6<b>zes</b></li>
+<li>7<b>zeven</b></li>
+<li>8<b>acht</b></li>
+<li>9<b>negen</b></li>
+<li>10<b>tien</b></li>
+<li>11<b>elf</b></li>
+<li>12<b>twaalf</b></li>
+<li>13<b>dertien</b></li>
+<li>20<b>twintig</b></li>
+<li>30<b>dertig</b></li>
+<li>100<b>honderd</b></li>
+<li>1000<b>duizend</b></li>
+<li> <br> </li>
+<li>mais<b>maar</b></li>
+<li>ou<b>of</b></li>
+<li>et<b>en</b></li>
+<li>donc<b>dus</b></li>
+<li>alors<b>dan</b></li>
+<li>Pourquoi?<b>waarom</b></li>
+<li>parce que<b>want/omdat</b></li>
+<li>par example<b>zoals</b></li>
+<li>Quel(le,s)?<b>welke</b></li>
+</ul>
+
+
+<ul style="width:12%">
+<li>bonjour<b>goedendag</b></li>
+<li>salut<b>hallo</b></li>
+<li>comment vas tu<b>hoe gaat het (met u)?</b></li>
+<li>je vais bien<b>het gaat goed met me</b></li>
+<li>quoi de neuf<b>wat is nieuw?</b></li>
+<li>bonne journée<b>goede dag</b></li>
+<li>bonsoir<b>goedenavond</b></li>
+<li>bonne nuit<b>goedenacht</b></li>
+<li>aurevoir<b>tot ziens</b></li>
+<li>bienvenu<b>welkom</b></li>
+<li>s'il vous plaît<b>alstublieft</b></li>
+<li>merci (beaucoup)<b>dank u (wel)/ bedankt</b></li>
+<li>de rien<b>graag gedaan</b></li>
+<li>excusez moi<b>excuseert u me</b></li>
+<li>désolé<b>het spijt me</b></li>
+<li>c'est pas grave<b>het is niet erg</b></li>
+<li>félicitations<b>gefeliciteerd</b></li>
+<li>comment vous appelez vous?<b>hoe het u</b></li>
+<li>je m'appele<b>ik heet</b></li>
+<li>enchanté<b>ik ben blij u te leren kennen</b></li>
+<li>voici<b>hier is</b></li>
+<li>bon appétit<b>eet smakelijk</b></li>
+<li>c'était très bon<b>het was heel smakelijk</b></li>
+<li>l'addition<b>de rekening</b></li>
+<li>santé!<b>proost</b></li>
+<li>je n'ai pas compris<b>ik begreep niet</b></li>
+<li>je ne sais pas<b>ik weet niet</b></li>
+<li>attention<b>kijk uit</b></li>
+<!-- <li>j'ai peur<b>ik ben bang</b></li>
+<li>ne vous inquiètez pas<b>maak u niet ongerust</b></li>
+-->
+</ul>
+
+</body>
