@@ -104,9 +104,10 @@ function nextWord() {
 function initializeClock(id, endtime){
     var clock = document.getElementById(id);
     var t = endtime;
+    clock.innerHTML = t + ' sec.';
     var timeinterval = setInterval(function(){
-	clock.innerHTML = t + ' sec.';
 	t = t - 1;
+	clock.innerHTML = t + ' sec.';
 	if(t<0){
 	    clearInterval(timeinterval);
 	    alert("Time's up");
