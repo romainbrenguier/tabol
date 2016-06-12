@@ -1,0 +1,254 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf8">
+  </head>
+<body>
+
+<div id="head">
+  <div id="nextbutton">
+    <button onclick="nextWord()">Next</button>
+    <button onclick="initializeClock('clockdiv',100)">Start</button>
+  </div>
+  <div id="word"> ... </div>
+  <div id="clockdiv"> Start </div>
+</div>
+
+<script src="clock_light.js"> </script>
+
+<ul>
+<li>quoi? <b>nani</b> </li>
+<li>rien <b>nanimo</b> </li>
+<li>quelques chose <b>nanika</b> </li>
+<li>tout <b>subete</b> </li>
+<li>chaque <b>kaku</b> </li>
+<li>nourriture <b> tabemono </b></li>
+<li>fruit <b>kudamono</b>  </li>
+<li>arbre <b>ki</b></li>
+<li>légumes <b>yasai</b>  </li>
+<li>animal<b>doobutsu</b></li>
+<li>viande <b>niku</b>  </li>
+<li>poisson <b>sakana</b>  </li>
+<li>sucre <b>satoo</b> </li>
+<li>huile <b>abura</b> </li>
+<li>sel <b>shio</b> </li>
+<li>eau <b>mizu</b></li>
+<li>lait <b>gyuunyuu</b></li>
+<li><br> </li>
+<li>t^ete <b>atama</b></li>
+<li>cheveux <b>kami no ke</b></li>
+<li>oeil <b>me</b></li>
+<li>nez <b>ha</b></li>
+<li>bouche <b>kuchi</b></li>
+<li>dent <b>ha</b></li>
+<li>oreille <b>mimi</b></li>
+<li>main <b>te</b></li>
+<li>pied <b>ashi</b></li>
+</ul>
+
+
+<ul>
+<li>? <b>ka</b></li>
+<li>il y a <b>arimasu</b></li>
+<li>il n'y a pas <b>arimasen</b></li>
+<li>y a t'il? <b>arimasu ka?</b></li>
+<li>c'est <b>desu</b></li>
+<li>ce n'est pas [] <b>[] dewa arimasen , []ku arimasen</b></li>
+<li>j'aime [] <b>[] ga suki desu</b></li>
+<li><br> </li>
+<li>pourquoi <b>naze</b> </li>
+<li>et <b>to</b></li>
+<li>ou <b>soretomo</b></li>
+<li>par example <b>tatoeba</b></li>
+</ul>
+
+<!--
+<ul>
+<li>présent <b>-(i)masu</b></li>
+<li>neg. prés. <b>-(i)masen</b></li>
+<li>faire <b>suru</b></li>
+<li>marcher <b>aruku</b></li>
+<li>se promener <b>urokku</b></li>
+<li>venir <b>k(uru)</b></li>
+<li>aller <b>iku</b></li>
+<li>partir <b>nokoshimasu</b></li>
+<li>rester <b>nokoru</b></li>
+<li>passer <b>yoru</b></li>
+<li>tourner <b>magaru</b></li>
+<li>entrer <b>hairu</b></li>
+<li>sortir <b>deru</b></li>
+<li>courir <b>hashiru</b></li>
+<li>s'asseoir <b>suwaru</b> </li>
+<li>regarder <b>mimasu</b></li>
+<li>voir <b>[] ga miemasu</b></li>
+<li>écouter <b>kiku</b></li>
+<li>dormir <b>n(eru)</b></li>
+<li>avoir <b>motte imasu</b></li>
+<li>prendre <b>toru</b></li>
+<li>acheter <b>kau</b></li>
+<li>donner <b>ataeru</b></li>
+<li>tenir <b>hoji shimasu</b></li>
+<li>manger <b>tabemasu</b></li>
+<li>boire <b>nomu</b></li>
+<li>payer <b>harau</b></li>
+<li>travailler <b>hataraite imasu</b></li>
+<li>habiter à [] <b>[] ni sunde imasu</b></li>
+<li>penser <b>[] to omoimasu</b></li>
+<li>trouver [] <b>[] ga mitsukarimasu</b></li>
+<li>chercher <b>sagasu</b></li>
+<li>attendre <b>matsu</b></li>
+<li>commencer <b>hajimeru</b></li>
+<li>finir <b>owaru</b></li>
+<li>écrire <b>kaku</b></li>
+<li>lire <b>yomu</b></li>
+<li>apprendre <b>manabu</b></li>
+<li>comprendre <b>wakaru</b></li>
+<li>connaitre <b>sh(iru)</b></li>
+<li>parler <b>hanasu</b></li>
+<li>demander <b>tatomu</b></li>
+<li>dire <b>iu</b></li>
+<li>croire <b>shinj(iru)</b></li>
+</ul>
+-->
+
+<!--
+<ul>
+<li>marcher <b>aruk-u</b></li>
+<li>se promener <b>...</b></li>
+<li>venir <b>k-uru</b></li>
+<li>aller <b>ik-u</b></li>
+<li>partir <b>...</b></li>
+<li>rester <b>nokoru</b></li>
+<li>passer <b>yoru</b></li>
+<li>tourner <b>magarimasu</b></li>
+<li>s'asseoir <b>suwaru...</b> </li>
+<li>entrer <b>hairamasu</b></li>
+<li>sortir <b>deru...</b></li>
+<li>courir <b>hashiru..</b></li>
+<li>dormir <b>nemasu</b></li>
+<li>faire <b>suru</b></li>
+<li>avoir <b>motte imasu</b></li>
+<li>prendre <b>torimasu</b></li>
+<li>acheter <b>kaimasu</b></li>
+<li>donner <b>...</b></li>
+<li>tenir <b>motsu</b></li>
+<li>manger <b>tabe-ru</b></li>
+<li>boire <b>nomimasu</b></li>
+<li>payer <b>harau</b></li>
+<li>travailler <b>hataraite imasu</b></li>
+<li>habiter à [] <b>[] ni sunde imasu</b></li>
+<li>regarder <b>mi-ru</b></li>
+<li>voir <b>[] ga miemasu</b></li>
+<li>entendre <b>[] ga kikoemasu</b></li>
+<li>penser <b> omou</b></li>
+<li>trouver [] <b>[] ga mitsukarimasu</b></li>
+<li>chercher <b>shirabemasu</b></li>
+<li>attendre <b>machimasu, matte imasu</b></li>
+<li>commencer <b>hajimeru...</b></li>
+<li>finir <b>owaru...</b></li>
+<li>écrire <b>kaite imasu</b></li>
+<li>lire <b>....</b></li>
+<li>apprendre <b>manabu...</b></li>
+<li>comprendre <b>....</b></li>
+<li>connaitre <b>shitte imasu</b></li>
+<li>parler <b>hanasu...</b></li>
+<li>dire <b>iu...</b></li>
+<li>demander <b>tanomu</b></li>
+</ul>
+-->
+
+<ul>
+<li> <br> </li>
+<li>pour [] <b>[] no tame</b> </li>
+<li>avec <b>to</b> </li>
+<li>sans <b>[] nashi</b> </li>
+<li>seul <b>jibun</b> </li>
+<li>ensemble <b>issho ni</b> </li>
+</ul>
+
+<!--
+<li>qui <b>dare</b></li>
+<li>personne <b>daremo</b></li>
+<li>quelqu'un <b>dareka</b></li>
+<li>tout le monde <b>mina</b></li>
+<li>moi <b>watashi</b></li>
+<li>toi <b>kimi</b></li>
+<li>il/elle <b>kare/kanojo</b></li>
+<li>nous <b>ware ware</b></li>
+<li>vous <b>anata (kata)</b></li>
+<li>ils <b>karera</b></li>
+<li>de []<b>[] no</b></li>
+<li>ceci <b>kore</b></li>
+<li>cela <b>sore</b></li>
+<li>ce [] ci <b>kono</b></li>
+<li>ce [] là <b>sono []</b></li>
+<li>enfant <b>kodomo</b></li>
+<li>garçon <b>otoko no ko</b></li>
+<li>fille <b>annanoko</b></li>
+<li>fils <b>musuko</b></li>
+<li>mère <b>okaasan</b></li>
+<li>père <b>otoosan</b></li>
+<li>frère <b>ani</b></li>
+<li>soeur <b>ane</b></li>
+<li>ami(e) <b>yuujin</b></li>
+<li>mari <b>otto</b></li>
+<li>femme <b>tsuma</b></li>
+<li>mon épouse <b>kanai</b></li>
+<li>humain <b>jin</b></li>
+-->
+
+<ul>
+<li>l'intérieur <b>uchi</b></li>
+<li>l'exterieur <b>soto</b></li>
+<li>dessus <b>ue</b></li>
+<li>maison <b>ie</b></li>
+<li>soleil <b>taiyoo</b></li>
+<li>montagne <b>yama</b></li>
+<li>for^et <b>shinrin</b></li>
+<li>mer <b>umi</b></li>
+<li>ville <b>tokai</b></li>
+</ul>
+
+
+
+<ul>
+<li>comment <b>ikaga</b></li>
+<li>grand <b>ookii</b> </li>
+<li>petit <b>chiisai</b> </li>
+<li>vite <b>hayai</b> </li>
+<li>chaud <b>atsui</b> </li>
+<li>froid <b>samui</b> </li>
+<li>haut <b>takai</b> </li>
+<li>bas <b>hikui</b> </li>
+<li>lourd <b>omoi</b> </li>
+<li>pour [] <b>[] no tame</b> </li>
+<li>avec <b>to</b> </li>
+<li>sans <b>nashi</b> </li>
+</ul>
+
+
+
+
+
+<ul>
+<li> couleur <b>iro</b> </li>
+<li>bleu <b>ao</b> </li>
+<li>rouge <b>aka</b> </li>
+<li>vert <b>midori</b> </li>
+<li>jaune <b>ki iro</b> </li>
+<li>blanc <b>shiro</b> </li>
+<li>noir <b>kuro</b></li>
+
+</ul>
+
+
+
+
+<ul>
+<li>oui <b>hai</b></li>
+<li>non <b>iie</b></li>
+</ul>
+
+
+</body>
+</html>
