@@ -4,21 +4,21 @@ A simple Javascript game with a Django backend for chat.
 ## How to run the app
 
 1. **Install Dependencies**
-   Ensure you have Django installed:
+   Ensure you have `uv` installed, then run:
    ```bash
-   pip install django
+   uv sync
    ```
 
 2. **Setup Database**
    Run the migrations to create the database schema:
    ```bash
-   python manage.py migrate
+   uv run manage.py migrate
    ```
 
 3. **Start the Server**
    Launch the Django development server:
    ```bash
-   python manage.py runserver
+   uv run manage.py runserver
    ```
 
 4. **Access the Game**
