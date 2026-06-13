@@ -1,5 +1,9 @@
 import dspy
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class WordGuessSignature(dspy.Signature):
     """Guesser for a word game. Based on the chat message, guess the word the player is thinking of."""
@@ -18,18 +22,14 @@ def get_guessed_word(message):
     """
     Initializes dspy and returns a guessed word based on the chat message.
     """
-    # Prefer GEMINI_API_KEY for the specified model
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    model_name = os.environ.get("AI_MODEL", "google/gemini-3.5-flash")
 
     if not api_key:
         return "I need an API key to guess!"
 
     if not dspy.settings.lm:
-        # Use Gemini 3.5 Flash as requested (mapping to 1.5-flash as it's the current stable high speed model if 3.5 is a typo or preview)
-        # Actually, let's use exactly what was requested if LiteLLM supports it,
-        # but gemini-1.5-flash is more likely what's available.
-        # Given the instruction "gemini-3.5-flash", I will use that string.
-        lm = dspy.LM("google/gemini-1.5-flash", api_key=api_key)
+        lm = dspy.LM(model_name, api_key=api_key)
         dspy.settings.configure(lm=lm)
 
     try:
