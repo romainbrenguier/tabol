@@ -1,21 +1,23 @@
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf8">
-  </head>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
+    <meta charset="utf-8">
+    <title>Tabol - Japonais</title>
+</head>
 <body>
 
 <div id="head">
-  <div id="nextbutton">
-    <button onclick="nextWord()">Next</button>
-    <button onclick="initializeClock('clockdiv',100)">Start</button>
-  </div>
-  <div id="word"> ... </div>
-  <div id="clockdiv"> Start </div>
+    <div id="nextbutton">
+        <button onclick="nextWord()">Next</button>
+        <button onclick="initializeClock('clockdiv',100)">Start</button>
+    </div>
+    <div id="word"> ... </div>
+    <div id="clockdiv"> Start </div>
 </div>
 
-<script src="clock.js"> </script>
-
+<div class="vocab-container">
 <ul>
 <li>quoi? <b>nani</b> </li>
 <li>rien <b>nanimo</b> </li>
@@ -416,7 +418,77 @@
 <li>ne t'inquiète pas <b>shinpai shinaide</b></li>
 <li>je ne sais pas, je n'ai pas compris <b>wakarimasen</b></li>
 </ul>
+</div>
 
+<div id="chat-container">
+    <div id="chat-header">Chat</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Tapez votre message...">
+        <button id="chat-send">Envoyer</button>
+    </div>
+</div>
+
+<script src="{% static 'chat/clock.js' %}"></script>
+<script>
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+
+    // Generate a simple anonymous ID for the session
+    const senderId = 'User_' + Math.floor(Math.random() * 1000);
+
+    function fetchMessages() {
+        fetch('/api/chat/messages/')
+            .then(response => response.json())
+            .then(data => {
+                chatMessages.innerHTML = '';
+                data.messages.forEach(msg => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'chat-message';
+                    const time = new Date(msg.timestamp).toLocaleTimeString();
+                    msgDiv.innerHTML = `
+                        <span class="time">${time}</span>
+                        <span class="sender">${msg.sender}:</span>
+                        <span class="text">${msg.message}</span>
+                    `;
+                    chatMessages.appendChild(msgDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+    }
+
+    function sendMessage() {
+        const message = chatInput.value;
+        if (!message) return;
+
+        fetch('/api/chat/messages/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                sender: senderId,
+                message: message
+            })
+        })
+        .then(response => response.json())
+        .then(() => {
+            chatInput.value = '';
+            fetchMessages();
+        });
+    }
+
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // Initial fetch and poll every 3 seconds
+    fetchMessages();
+    setInterval(fetchMessages, 3000);
+</script>
 
 </body>
 </html>
