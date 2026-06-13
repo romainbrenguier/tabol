@@ -1,9 +1,11 @@
 import json
+from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from .models import ChatMessage
 
-@csrf_exempt
+def game_view(request):
+    return render(request, 'chat/vocabulaire-japonais.html')
+
 def messages(request):
     if request.method == 'GET':
         msgs = ChatMessage.objects.all().order_by('timestamp')
@@ -17,17 +19,27 @@ def messages(request):
             ]
         })
     elif request.method == 'POST':
-        data = json.loads(request.body)
-        msg = ChatMessage.objects.create(
-            sender=data.get('sender', 'Anonymous'),
-            message=data.get('message', '')
-        )
-        return JsonResponse({
-            'status': 'success',
-            'message': {
-                'sender': msg.sender,
-                'message': msg.message,
-                'timestamp': msg.timestamp.isoformat()
-            }
-        }, status=201)
+        try:
+            data = json.loads(request.body)
+            sender = data.get('sender', 'Anonymous')
+            if len(sender) > 100:
+                sender = sender[:97] + "..."
+
+            message_text = data.get('message', '')
+
+            msg = ChatMessage.objects.create(
+                sender=sender,
+                message=message_text
+            )
+            return JsonResponse({
+                'status': 'success',
+                'message': {
+                    'sender': msg.sender,
+                    'message': msg.message,
+                    'timestamp': msg.timestamp.isoformat()
+                }
+            }, status=201)
+        except (json.JSONDecodeError, KeyError):
+            return JsonResponse({'error': 'Invalid data'}, status=400)
+
     return JsonResponse({'error': 'Invalid method'}, status=405)
