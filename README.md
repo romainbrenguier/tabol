@@ -27,8 +27,8 @@ A simple Javascript game with a Django backend for chat.
    # Set your Gemini API key (or OPENAI_API_KEY)
    GEMINI_API_KEY=your_api_key_here
 
-   # Optional: Customize the model (defaults to google/gemini-3.5-flash)
-   AI_MODEL=google/gemini-3.5-flash
+   # Optional: Customize the model (defaults to gemini-3.5-flash)
+   AI_MODEL=gemini-3.5-flash
    ```
 
 5. **Access the Game**

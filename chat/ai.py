@@ -23,13 +23,15 @@ def get_guessed_word(message):
     Initializes dspy and returns a guessed word based on the chat message.
     """
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    model_name = os.environ.get("AI_MODEL", "google/gemini-3.5-flash")
+    # Default model name without provider prefix
+    model_name = os.environ.get("AI_MODEL", "gemini-3.5-flash")
 
     if not api_key:
         return "I need an API key to guess!"
 
     if not dspy.settings.lm:
-        lm = dspy.LM(model_name, api_key=api_key)
+        # Use gemini/ provider prefix as requested
+        lm = dspy.LM(model=f"gemini/{model_name}", api_key=api_key, max_tokens=8192)
         dspy.settings.configure(lm=lm)
 
     try:
