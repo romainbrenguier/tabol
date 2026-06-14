@@ -87,6 +87,11 @@ DATABASES = {
     )
 }
 
+# On Vercel, the filesystem is read-only. We might need to use /tmp for SQLite if not using a real DB.
+if os.environ.get("VERCEL"):
+    if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
+        DATABASES["default"]["NAME"] = "/tmp/db.sqlite3"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -135,3 +140,6 @@ STORAGES = {
 }
 
 WHITENOISE_MANIFEST_STRICT = False
+
+# DSPy cache directory
+os.environ["DSPY_CACHE_DIR"] = "/tmp/.dspy_cache"
