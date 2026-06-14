@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 django_server.log
 .python-version
+staticfiles/
