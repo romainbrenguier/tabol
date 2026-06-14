@@ -15,8 +15,10 @@ class ChatAPITest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(ChatMessage.objects.count(), 1)
-        self.assertEqual(ChatMessage.objects.first().sender, 'Alice')
+        # 1 user message + 1 AI guess message
+        self.assertEqual(ChatMessage.objects.count(), 2)
+        self.assertEqual(ChatMessage.objects.filter(sender='Alice').count(), 1)
+        self.assertEqual(ChatMessage.objects.filter(sender='AI_Bot').count(), 1)
 
     def test_get_messages(self):
         ChatMessage.objects.create(sender='Alice', message='Hello')

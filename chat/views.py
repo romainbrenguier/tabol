@@ -2,6 +2,7 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import ChatMessage
+from .ai import get_guessed_word
 
 def game_view(request):
     return render(request, 'chat/vocabulaire-japonais.html')
@@ -31,6 +32,15 @@ def messages(request):
                 sender=sender,
                 message=message_text
             )
+
+            # AI Reply Logic
+            if not sender.startswith("AI_Bot"):
+                ai_guess = get_guessed_word(message_text)
+                ChatMessage.objects.create(
+                    sender="AI_Bot",
+                    message=ai_guess
+                )
+
             return JsonResponse({
                 'status': 'success',
                 'message': {
