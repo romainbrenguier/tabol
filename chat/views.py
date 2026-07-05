@@ -37,7 +37,7 @@ def messages(request):
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
-                ai_guess = get_guessed_word(message_text)
+                ai_guess = get_guessed_word(message_text, language="japanese (romaji)")
                 print(f"AI guess: {ai_guess}")
                 if not ai_guess.is_understood:
                     ChatMessage.objects.create(
