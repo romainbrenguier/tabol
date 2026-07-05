@@ -2,9 +2,7 @@ import dspy
 import os
 from dotenv import load_dotenv
 import pydantic
-
-# Load environment variables from .env file
-load_dotenv()
+from pathlib import Path
 
 class Reply(pydantic.BaseModel):
     """A simple reply model that takes a message and returns a reply."""
@@ -28,13 +26,18 @@ class WordGuesser(dspy.Module):
     def forward(self, chat_message, language):
         return self.predictor(chat_message=chat_message, language=language)
 
-def get_guessed_word(message:str, language:str) -> Reply:
+def get_guessed_word(message:str, language:str = "english") -> Reply:
     """
     Initializes dspy and returns a guessed word based on the chat message.
     """
+    # Load .env from project root explicitly.
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    load_dotenv(dotenv_path=env_path)
+    
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    # Default model name without provider prefix
-    model_name = os.environ.get("AI_MODEL", "gemini-3.5-flash")
+    # Support both names for backward compatibility.
+    model_name = os.environ.get("AI_MODEL") or os.environ.get("GEMINI_MODEL") or "gemini-3.5-flash"
+    print(f"Using model: {model_name} with API key: {'set' if api_key else 'not set'}")
 
     if not api_key:
         return Reply(
