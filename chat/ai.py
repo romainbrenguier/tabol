@@ -37,7 +37,13 @@ def get_guessed_word(message:str) -> Reply:
     model_name = os.environ.get("AI_MODEL", "gemini-3.5-flash")
 
     if not api_key:
-        return "I need an API key to guess!"
+        return Reply(
+            is_understood=False,
+            understood_message="I need an API key to guess!",
+            understood_message_translation="I need an API key to guess!",
+            guessed_word="None",
+            translation="None"
+        )
 
     if not dspy.settings.lm:
         # Use gemini/ provider prefix as requested
@@ -49,4 +55,10 @@ def get_guessed_word(message:str) -> Reply:
         prediction = guesser(chat_message=message)
         return prediction.reply
     except Exception as e:
-        return f"Error: {str(e)}"
+        return Reply(
+            is_understood=False,
+            understood_message=f"Error: {str(e)}",
+            understood_message_translation=f"Error: {str(e)}",
+            guessed_word="None",
+            translation="None"
+        )
