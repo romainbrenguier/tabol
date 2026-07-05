@@ -36,9 +36,23 @@ def messages(request):
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
                 ai_guess = get_guessed_word(message_text)
-                ChatMessage.objects.create(
-                    sender="AI_Bot",
-                    message=ai_guess
+                if not ai_guess.is_understood:
+                    ChatMessage.objects.create(
+                        sender="AI_Bot",
+                        message=f"""
+                        I'm sorry, I couldn't understand your message.
+                        Are you trying to say: {ai_guess.understood_message}?
+                        Translation: {ai_guess.understood_message_translation}."""
+                    )
+                else: 
+                    ChatMessage.objects.create(
+                        sender="AI_Bot",
+                        message=f"""
+                        I understood your message as: {ai_guess.understood_message}.
+                        Translation: {ai_guess.understood_message_translation}.
+                    My guess for the word you are thinking of is: {ai_guess.guessed_word}.
+                    Translation: {ai_guess.translation}.
+                    """
                 )
 
             return JsonResponse({
