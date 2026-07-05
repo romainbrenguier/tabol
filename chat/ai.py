@@ -18,7 +18,7 @@ class WordGuessSignature(dspy.Signature):
     """Guesser for a word game. Based on the chat message, guess the word the player is thinking of."""
     language = dspy.InputField(desc="The only language you understand.", default="english")
     chat_message = dspy.InputField(desc="The message sent by the player describing a word. Assumed to be in the language you understand.")
-    reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
+    reply: Reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
 
 class WordGuesser(dspy.Module):
     def __init__(self):
