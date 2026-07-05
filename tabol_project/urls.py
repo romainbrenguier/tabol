@@ -17,8 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/chat/', include('chat.urls')),
+    path('favicon.ico', RedirectView.as_view(url='/static/chat/favicon.ico')),
+    path('', include('chat.urls')),
 ]
