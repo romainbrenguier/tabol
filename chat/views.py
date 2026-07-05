@@ -32,10 +32,13 @@ def messages(request):
                 sender=sender,
                 message=message_text
             )
+            # Log the message to the console for debugging
+            print(f"New message from {sender}: {message_text}")
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
                 ai_guess = get_guessed_word(message_text)
+                print(f"AI guess: {ai_guess}")
                 if not ai_guess.is_understood:
                     ChatMessage.objects.create(
                         sender="AI_Bot",
@@ -54,6 +57,8 @@ def messages(request):
                     Translation: {ai_guess.translation}.
                     """
                 )
+            else:
+                print("Message from AI_Bot, no reply generated.")
 
             return JsonResponse({
                 'status': 'success',
