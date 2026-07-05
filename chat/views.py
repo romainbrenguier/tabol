@@ -7,6 +7,9 @@ from .ai import get_guessed_word
 def game_view(request):
     return render(request, 'chat/vocabulaire-japonais.html')
 
+# TODO : this shouldn’t be static
+history: list[str] = []
+
 def messages(request):
     if request.method == 'GET':
         msgs = ChatMessage.objects.all().order_by('timestamp')
@@ -32,10 +35,13 @@ def messages(request):
                 sender=sender,
                 message=message_text
             )
+            # Log the message to the console for debugging
+            print(f"New message from {sender}: {message_text}")
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
-                ai_guess = get_guessed_word(message_text)
+                ai_guess = get_guessed_word(message_text, chat_history=history, language="japanese (romaji)")
+                print(f"AI guess: {ai_guess}")
                 if not ai_guess.is_understood:
                     ChatMessage.objects.create(
                         sender="AI_Bot",
@@ -53,7 +59,11 @@ def messages(request):
                     My guess for the word you are thinking of is: {ai_guess.guessed_word}.
                     Translation: {ai_guess.translation}.
                     """
-                )
+                    )
+                    history.append(message_text)
+                    history.append(f"My guess: {ai_guess.guessed_word}")
+            else:
+                print("Message from AI_Bot, no reply generated.")
 
             return JsonResponse({
                 'status': 'success',

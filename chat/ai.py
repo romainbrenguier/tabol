@@ -2,13 +2,11 @@ import dspy
 import os
 from dotenv import load_dotenv
 import pydantic
-
-# Load environment variables from .env file
-load_dotenv()
+from pathlib import Path
 
 class Reply(pydantic.BaseModel):
     """A simple reply model that takes a message and returns a reply."""
-    is_understood: bool = pydantic.Field(description="Whether the message is understandable in your language.")
+    is_understood: bool = pydantic.Field(description="Whether the message is understandable in the provided language. For example, if the provided language is in english, and the message is mostly japanese, then this should be false.")
     understood_message: str = pydantic.Field(description="The chat message as you understood it, in the language you understand, without any lexical or grammatical errors.")
     understood_message_translation: str = pydantic.Field(description="A translation of the understood message in english.")
     guessed_word: str = pydantic.Field(description="A single word guess, in your language, that you think the player is thinking of.")
@@ -17,24 +15,32 @@ class Reply(pydantic.BaseModel):
 class WordGuessSignature(dspy.Signature):
     """Guesser for a word game. Based on the chat message, guess the word the player is thinking of."""
     language = dspy.InputField(desc="The only language you understand.", default="english")
+    chat_history: list[str] = dspy.InputField(desc="The chat history, made of messages that were understood and your previous replies.", default=[])
     chat_message = dspy.InputField(desc="The message sent by the player describing a word. Assumed to be in the language you understand.")
-    reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
+    reply: Reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
 
 class WordGuesser(dspy.Module):
     def __init__(self):
         super().__init__()
         self.predictor = dspy.Predict(WordGuessSignature)
 
-    def forward(self, chat_message):
-        return self.predictor(chat_message=chat_message)
+    def forward(self, chat_message, language, chat_history):
+        if chat_history is None:
+            chat_history = []
+        return self.predictor(chat_message=chat_message, language=language, chat_history=chat_history)
 
-def get_guessed_word(message:str) -> Reply:
+def get_guessed_word(message:str, chat_history: list[str], language:str = "english") -> Reply:
     """
     Initializes dspy and returns a guessed word based on the chat message.
     """
+    # Load .env from project root explicitly.
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    load_dotenv(dotenv_path=env_path)
+    
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    # Default model name without provider prefix
-    model_name = os.environ.get("AI_MODEL", "gemini-3.5-flash")
+    # Support both names for backward compatibility.
+    model_name = os.environ.get("AI_MODEL") or os.environ.get("GEMINI_MODEL") or "gemini-3.5-flash"
+    print(f"Using model: {model_name} with API key: {'set' if api_key else 'not set'}")
 
     if not api_key:
         return Reply(
@@ -52,7 +58,7 @@ def get_guessed_word(message:str) -> Reply:
 
     try:
         guesser = WordGuesser()
-        prediction = guesser(chat_message=message)
+        prediction = guesser(chat_message=message, language=language, chat_history=chat_history)
         return prediction.reply
     except Exception as e:
         return Reply(

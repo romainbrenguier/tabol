@@ -1,12 +1,25 @@
-var words = 
-  [
-      "beurre", "jus", "kiwi", "lame", "mure", "pamplemousse",
-      "pomme de terre", "soupe", "arête",  "frite", "jambon", "os", "poulet", "puree", "radis", "restaurant", "sole", "animal", "bebes", "bouche", "cage", "câlin", "caresse", "cochon d’Inde", "foin", 
-"graines", "hamster", "lapin", "maison", "nez", "oeil", "oreille", "patte", "toit", "yeux", "legume", 
-"abeille", "agneau", "aile", "âne", "arbre", "bain", "barque", "bassin", "bebe", "bec", "bête", "bœuf", "botte de foin", "boue", 
-"bouquet", "bourgeon", "branche", "caillou", "campagne", "car", "champ", "chariot", "chat", "cheminee", "cheval", "chèvre", "chien", "cochon", "colline", "coq", "coquelicot", "crapaud", "cygne", 
-"depart", "dindon", "escargot", "etang", "ferme", "fermier", "feuille", "flamme", "fleur", "fontaine", "fumee", "grain", "graine", "grenouille", "griffe", "guêpe", "herbe", "herisson", "insecte", "jardin", "mare", "marguerite", "miel", "morceau de pain", "mouche", "mouton", "oie", "oiseau", "pierre", "pigeon", "plante", "plume", "poney", "poule", "poussin", "prairie", "rat", "rivière", "route", "tortue", "tracteur", "tulipe", "vache", "veterinaire", "aigle", "animaux", "aquarium", "bêtes", "cerf", "chouette", "cigogne", "crocodile", "dauphin", "elephant", "girafe", "hibou", "hippopotame", "kangourou", "lion", "loup", "ours", "panda", "panthère", "perroquet", "phoque", "renard", "requin", "rhinoceros", "singe", "tigre", "zèbre",
- "abricot", "ail", "aliment", "ananas", "banane", "bifteck", "cafe", "carotte", "cerise", "chocolat", "chou", "citron", "citrouille", "clementine", "concombre", "coquillage", "corbeille", "crabe", "crevette", "endive", "farine", "fraise", "framboise", "fromage", "fruit", "gâteau", "haricot", "huile", "legume", "marchand", "melon", "monnaie", "navet", "noisette", "noix", "nourriture", "oignon", "orange", "panier", "pâtes", "pêche", "persil", "petit pois", "poire", "poireau", "pomme", "pomme de terre", "prix", "prune", "queue", "raisin", "riz", "salade", "sucre", "the", "tomate", "viande", "vin", "baleine" ];
+var words = [
+    "stylo", "crayon", "gomme", "taille-crayon", "cahier", "trousse", "cartable", "regle", "colle", "ciseaux",
+    "papier", "agenda", "dossier", "tampon", "enveloppe", "timbre", "carte", "affiche", "ticket", "badge",
+    "ordinateur", "ecran", "clavier", "souris", "telephone", "tablette", "chargeur", "batterie", "prise", "cable",
+    "casque", "ecouteurs", "micro", "camera", "telecommande", "lampe", "ampoule", "interrupteur", "alarme", "horloge",
+    "porte", "fenetre", "mur", "sol", "plafond", "escalier", "ascenseur", "couloir", "balcon", "garage",
+    "canape", "fauteuil", "tabouret", "tapis", "rideau", "coussin", "couverture", "oreiller", "matelas", "etagere",
+    "placard", "tiroir", "miroir", "parapluie", "valise", "sac", "portefeuille", "cle", "serrure", "veste",
+    "pantalon", "t-shirt", "pull", "manteau", "chapeau", "bonnet", "echarpe", "gant", "chaussette", "chaussure",
+    "sandale", "ceinture", "pyjama", "brosse", "savon", "shampoing", "serviette", "peigne", "dentifrice", "rasoir",
+    "assiette", "verre", "tasse", "bol", "fourchette", "cuillere", "couteau", "poele", "casserole", "mixeur",
+    "frigo", "congelateur", "four", "micro-ondes", "grille-pain", "evier", "robinet", "eponges", "sac-poubelle", "poubelle",
+    "beurre", "confiture", "biscuit", "bonbon", "yaourt", "omelette", "pizza", "hamburger", "sandwich", "salami",
+    "poivre", "epice", "ketchup", "moutarde", "compote", "gateau", "cookie", "croissant", "baguette", "limonade",
+    "pluie", "neige", "nuage", "vent", "orage", "eclair", "arc-en-ciel", "lune", "etoile", "ciel",
+    "plage", "desert", "ile", "pont", "tunnel", "phare", "chateau", "musee", "cinema", "ecole",
+    "hopital", "pharmacie", "boulangerie", "supermarche", "bibliotheque", "bureau", "usine", "stade", "parc", "statue",
+    "velo", "moto", "camion", "taxi", "metro", "tram", "bateau", "scooter", "trottinette", "parking",
+    "football", "basket", "tennis", "natation", "danse", "musique", "guitare", "piano", "violon", "chanson",
+    "film", "serie", "photo", "dessin", "peinture", "puzzle", "jeu", "jouet", "poupee", "ballon",
+    "cerf-volant", "cadeau", "fete", "anniversaire", "vacances", "weekend", "printemps", "ete", "automne", "hiver"
+];
 
 function nextWord() {
     var i = Math.floor(Math.random () * words.length);
