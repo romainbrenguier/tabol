@@ -15,6 +15,7 @@ class Reply(pydantic.BaseModel):
 class WordGuessSignature(dspy.Signature):
     """Guesser for a word game. Based on the chat message, guess the word the player is thinking of."""
     language = dspy.InputField(desc="The only language you understand.", default="english")
+    chat_history: list[str] = dspy.InputField(desc="The chat history, made of messages that were understood and your previous replies.", default=[])
     chat_message = dspy.InputField(desc="The message sent by the player describing a word. Assumed to be in the language you understand.")
     reply: Reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
 
@@ -23,10 +24,12 @@ class WordGuesser(dspy.Module):
         super().__init__()
         self.predictor = dspy.Predict(WordGuessSignature)
 
-    def forward(self, chat_message, language):
-        return self.predictor(chat_message=chat_message, language=language)
+    def forward(self, chat_message, language, chat_history):
+        if chat_history is None:
+            chat_history = []
+        return self.predictor(chat_message=chat_message, language=language, chat_history=chat_history)
 
-def get_guessed_word(message:str, language:str = "english") -> Reply:
+def get_guessed_word(message:str, chat_history: list[str], language:str = "english") -> Reply:
     """
     Initializes dspy and returns a guessed word based on the chat message.
     """
@@ -55,7 +58,7 @@ def get_guessed_word(message:str, language:str = "english") -> Reply:
 
     try:
         guesser = WordGuesser()
-        prediction = guesser(chat_message=message, language=language)
+        prediction = guesser(chat_message=message, language=language, chat_history=chat_history)
         return prediction.reply
     except Exception as e:
         return Reply(
