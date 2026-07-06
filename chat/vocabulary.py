@@ -141,7 +141,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Expressions & Pensée",
+                "name": "Divers",
                 "words": [
                     {
                         "original": "quoi?",
@@ -1402,11 +1402,11 @@ VOCABULARY = {
         "display_name": "Allemand",
         "categories": [
             {
-                "name": "Divers",
+                "name": "Alimentation",
                 "words": [
                     {
-                        "original": "quoi",
-                        "translation": "was?"
+                        "original": "nourriture",
+                        "translation": "die Nahrung"
                     },
                     {
                         "original": "rien",
@@ -1523,7 +1523,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Expressions & Pensée",
                 "words": [
                     {
                         "original": "ne pas",
@@ -1612,7 +1612,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Verbes d'action",
                 "words": [
                     {
                         "original": "faire",
@@ -1753,7 +1753,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Pronoms & Lieux",
                 "words": [
                     {
                         "original": "qui",
@@ -1878,7 +1878,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Maison & Ville",
                 "words": [
                     {
                         "original": "où",
@@ -2011,7 +2011,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Temps",
                 "words": [
                     {
                         "original": "quand",
@@ -2148,7 +2148,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Adjectifs",
                 "words": [
                     {
                         "original": "comment",
@@ -2293,7 +2293,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Chiffres & Quantité",
                 "words": [
                     {
                         "original": "combien",
@@ -2426,7 +2426,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Politesse",
                 "words": [
                     {
                         "original": "bienvenu",
@@ -2540,7 +2540,7 @@ VOCABULARY = {
         "display_name": "Néerlandais",
         "categories": [
             {
-                "name": "Divers",
+                "name": "Alimentation",
                 "words": [
                     {
                         "original": "Quoi?",
@@ -2693,7 +2693,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Expressions & Pensée",
                 "words": [
                     {
                         "original": "il y a",
@@ -2834,7 +2834,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Verbes d'action",
                 "words": [
                     {
                         "original": "faire",
@@ -2991,7 +2991,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Pronoms & Lieux",
                 "words": [
                     {
                         "original": "Qui?",
@@ -3144,7 +3144,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Maison & Ville",
                 "words": [
                     {
                         "original": "Où?",
@@ -3293,7 +3293,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Temps",
                 "words": [
                     {
                         "original": "Quand?",
@@ -3438,7 +3438,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Adjectifs",
                 "words": [
                     {
                         "original": "Comment?",
@@ -3595,7 +3595,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Chiffres & Quantité",
                 "words": [
                     {
                         "original": "Combien?",
@@ -3748,7 +3748,7 @@ VOCABULARY = {
                 ]
             },
             {
-                "name": "Divers",
+                "name": "Politesse",
                 "words": [
                     {
                         "original": "bonjour",
@@ -3862,6 +3862,693 @@ VOCABULARY = {
                         "original": "attention",
                         "translation": "kijk uit"
                     }
+                ]
+            }
+        ]
+    },
+    "turkish": {
+        "display_name": "Turc",
+        "categories": [
+            {
+                "name": "Alimentation",
+                "words": [
+                    {"original": "nourriture", "translation": "yiyecek"},
+                    {"original": "fruit", "translation": "meyve"},
+                    {"original": "légumes", "translation": "sebze"},
+                    {"original": "pain", "translation": "ekmek"},
+                    {"original": "fromage", "translation": "peynir"},
+                    {"original": "viande", "translation": "et"},
+                    {"original": "poisson", "translation": "balik"},
+                    {"original": "sel", "translation": "tuz"},
+                    {"original": "sucre", "translation": "seker"},
+                    {"original": "eau", "translation": "su"},
+                    {"original": "lait", "translation": "sut"},
+                    {"original": "café", "translation": "kahve"},
+                    {"original": "thé", "translation": "cay"},
+                    {"original": "bière", "translation": "bira"},
+                    {"original": "vin", "translation": "sarap"},
+                    {"original": "riz", "translation": "pirinc"},
+                    {"original": "huile", "translation": "yag"},
+                    {"original": "animal", "translation": "hayvan"}
+                ]
+            },
+            {
+                "name": "Expressions & Pensée",
+                "words": [
+                    {"original": "quoi?", "translation": "ne?"},
+                    {"original": "rien", "translation": "hicbir sey"},
+                    {"original": "quelque chose", "translation": "bir sey"},
+                    {"original": "tout", "translation": "her sey"},
+                    {"original": "il y a", "translation": "var"},
+                    {"original": "il n'y a pas", "translation": "yok"},
+                    {"original": "c'est", "translation": "bu"},
+                    {"original": "je veux", "translation": "istiyorum"},
+                    {"original": "j'aime", "translation": "seviyorum"},
+                    {"original": "je dois", "translation": "gerekiyor"},
+                    {"original": "je peux", "translation": "yapabilirim"},
+                    {"original": "je pense", "translation": "dusunuyorum"},
+                    {"original": "peut-être", "translation": "belki"},
+                    {"original": "et", "translation": "ve"},
+                    {"original": "ou", "translation": "veya"},
+                    {"original": "mais", "translation": "ama"},
+                    {"original": "parce que", "translation": "cunku"},
+                    {"original": "pourquoi", "translation": "neden"}
+                ]
+            },
+            {
+                "name": "Verbes d'action",
+                "words": [
+                    {"original": "faire", "translation": "yapmak"},
+                    {"original": "aller", "translation": "gitmek"},
+                    {"original": "venir", "translation": "gelmek"},
+                    {"original": "partir", "translation": "ayrilmak"},
+                    {"original": "attendre", "translation": "beklemek"},
+                    {"original": "écrire", "translation": "yazmak"},
+                    {"original": "lire", "translation": "okumak"},
+                    {"original": "commencer", "translation": "baslamak"},
+                    {"original": "finir", "translation": "bitirmek"},
+                    {"original": "entrer", "translation": "girmek"},
+                    {"original": "sortir", "translation": "cikmak"},
+                    {"original": "courir", "translation": "kosmak"},
+                    {"original": "voir", "translation": "gormek"},
+                    {"original": "écouter", "translation": "dinlemek"},
+                    {"original": "boire", "translation": "icmek"},
+                    {"original": "manger", "translation": "yemek"},
+                    {"original": "parler", "translation": "konusmak"},
+                    {"original": "comprendre", "translation": "anlamak"}
+                ]
+            },
+            {
+                "name": "Pronoms & Lieux",
+                "words": [
+                    {"original": "qui", "translation": "kim"},
+                    {"original": "moi", "translation": "ben"},
+                    {"original": "toi", "translation": "sen"},
+                    {"original": "il/elle", "translation": "o"},
+                    {"original": "nous", "translation": "biz"},
+                    {"original": "vous", "translation": "siz"},
+                    {"original": "ils", "translation": "onlar"},
+                    {"original": "ceci", "translation": "bu"},
+                    {"original": "cela", "translation": "su"},
+                    {"original": "où", "translation": "nerede"},
+                    {"original": "ici", "translation": "burada"},
+                    {"original": "là", "translation": "orada"},
+                    {"original": "devant", "translation": "onunde"},
+                    {"original": "derrière", "translation": "arkasinda"},
+                    {"original": "à gauche", "translation": "solda"},
+                    {"original": "à droite", "translation": "sagda"},
+                    {"original": "dans", "translation": "icinde"},
+                    {"original": "de", "translation": "-den/-dan"}
+                ]
+            },
+            {
+                "name": "Maison & Ville",
+                "words": [
+                    {"original": "maison", "translation": "ev"},
+                    {"original": "cuisine", "translation": "mutfak"},
+                    {"original": "chambre", "translation": "oda"},
+                    {"original": "lit", "translation": "yatak"},
+                    {"original": "salle de bain", "translation": "banyo"},
+                    {"original": "table", "translation": "masa"},
+                    {"original": "chaise", "translation": "sandalye"},
+                    {"original": "ville", "translation": "sehir"},
+                    {"original": "rue", "translation": "sokak"},
+                    {"original": "magasin", "translation": "magaza"},
+                    {"original": "arbre", "translation": "agac"},
+                    {"original": "montagne", "translation": "dag"},
+                    {"original": "mer", "translation": "deniz"},
+                    {"original": "soleil", "translation": "gunes"},
+                    {"original": "voiture", "translation": "araba"},
+                    {"original": "bus", "translation": "otobus"},
+                    {"original": "train", "translation": "tren"},
+                    {"original": "voyage", "translation": "seyahat"}
+                ]
+            },
+            {
+                "name": "Temps",
+                "words": [
+                    {"original": "quand", "translation": "ne zaman"},
+                    {"original": "temps", "translation": "zaman"},
+                    {"original": "jamais", "translation": "asla"},
+                    {"original": "parfois", "translation": "bazen"},
+                    {"original": "souvent", "translation": "sik sik"},
+                    {"original": "toujours", "translation": "her zaman"},
+                    {"original": "maintenant", "translation": "simdi"},
+                    {"original": "avant", "translation": "once"},
+                    {"original": "après", "translation": "sonra"},
+                    {"original": "matin", "translation": "sabah"},
+                    {"original": "après-midi", "translation": "ogleden sonra"},
+                    {"original": "soir", "translation": "aksam"},
+                    {"original": "nuit", "translation": "gece"},
+                    {"original": "aujourd'hui", "translation": "bugun"},
+                    {"original": "demain", "translation": "yarin"},
+                    {"original": "hier", "translation": "dun"},
+                    {"original": "année", "translation": "yil"},
+                    {"original": "mois", "translation": "ay"}
+                ]
+            },
+            {
+                "name": "Adjectifs",
+                "words": [
+                    {"original": "bon", "translation": "iyi"},
+                    {"original": "mauvais", "translation": "kotu"},
+                    {"original": "beau", "translation": "guzel"},
+                    {"original": "grand", "translation": "buyuk"},
+                    {"original": "petit", "translation": "kucuk"},
+                    {"original": "chaud", "translation": "sicak"},
+                    {"original": "froid", "translation": "soguk"},
+                    {"original": "vite", "translation": "hizli"},
+                    {"original": "lent", "translation": "yavas"},
+                    {"original": "nouveau", "translation": "yeni"},
+                    {"original": "ancien", "translation": "eski"},
+                    {"original": "facile", "translation": "kolay"},
+                    {"original": "difficile", "translation": "zor"},
+                    {"original": "important", "translation": "onemli"},
+                    {"original": "propre", "translation": "temiz"},
+                    {"original": "sale", "translation": "kirli"},
+                    {"original": "près", "translation": "yakin"},
+                    {"original": "loin", "translation": "uzak"}
+                ]
+            },
+            {
+                "name": "Chiffres & Quantité",
+                "words": [
+                    {"original": "combien", "translation": "ne kadar"},
+                    {"original": "un peu", "translation": "biraz"},
+                    {"original": "beaucoup", "translation": "cok"},
+                    {"original": "moins", "translation": "daha az"},
+                    {"original": "plus", "translation": "daha cok"},
+                    {"original": "très", "translation": "cok"},
+                    {"original": "trop", "translation": "fazla"},
+                    {"original": "0", "translation": "sifir"},
+                    {"original": "1", "translation": "bir"},
+                    {"original": "2", "translation": "iki"},
+                    {"original": "3", "translation": "uc"},
+                    {"original": "4", "translation": "dort"},
+                    {"original": "5", "translation": "bes"},
+                    {"original": "6", "translation": "alti"},
+                    {"original": "7", "translation": "yedi"},
+                    {"original": "8", "translation": "sekiz"},
+                    {"original": "9", "translation": "dokuz"},
+                    {"original": "10", "translation": "on"}
+                ]
+            },
+            {
+                "name": "Politesse",
+                "words": [
+                    {"original": "oui", "translation": "evet"},
+                    {"original": "non", "translation": "hayir"},
+                    {"original": "bonjour", "translation": "merhaba"},
+                    {"original": "salut", "translation": "selam"},
+                    {"original": "bonsoir", "translation": "iyi aksamlar"},
+                    {"original": "bonne nuit", "translation": "iyi geceler"},
+                    {"original": "au revoir", "translation": "hosca kal"},
+                    {"original": "s'il vous plaît", "translation": "lutfen"},
+                    {"original": "merci", "translation": "tesekkur ederim"},
+                    {"original": "de rien", "translation": "rica ederim"},
+                    {"original": "excusez-moi", "translation": "affedersiniz"},
+                    {"original": "pardon", "translation": "ozur dilerim"},
+                    {"original": "comment ça va?", "translation": "nasilsin?"},
+                    {"original": "je vais bien", "translation": "iyiyim"},
+                    {"original": "je ne comprends pas", "translation": "anlamiyorum"},
+                    {"original": "parlez plus lentement", "translation": "daha yavas konusun"},
+                    {"original": "comment vous appelez-vous?", "translation": "adiniz ne?"},
+                    {"original": "je m'appelle []", "translation": "benim adim []"}
+                ]
+            },
+            {
+                "name": "Divers",
+                "words": [
+                    {"original": "enfant", "translation": "cocuk"},
+                    {"original": "garçon", "translation": "erkek cocuk"},
+                    {"original": "fille", "translation": "kiz cocuk"},
+                    {"original": "mère", "translation": "anne"},
+                    {"original": "père", "translation": "baba"},
+                    {"original": "frère", "translation": "erkek kardes"},
+                    {"original": "soeur", "translation": "kiz kardes"},
+                    {"original": "ami(e)", "translation": "arkadas"},
+                    {"original": "mari", "translation": "koca"},
+                    {"original": "femme", "translation": "es"},
+                    {"original": "bon appétit", "translation": "afiyet olsun"},
+                    {"original": "santé!", "translation": "serefe!"}
+                ]
+            }
+        ]
+    },
+    "spanish": {
+        "display_name": "Espagnol",
+        "categories": [
+            {
+                "name": "Alimentation",
+                "words": [
+                    {"original": "nourriture", "translation": "comida"},
+                    {"original": "fruit", "translation": "fruta"},
+                    {"original": "légumes", "translation": "verduras"},
+                    {"original": "pain", "translation": "pan"},
+                    {"original": "fromage", "translation": "queso"},
+                    {"original": "viande", "translation": "carne"},
+                    {"original": "poisson", "translation": "pescado"},
+                    {"original": "sel", "translation": "sal"},
+                    {"original": "sucre", "translation": "azucar"},
+                    {"original": "eau", "translation": "agua"},
+                    {"original": "lait", "translation": "leche"},
+                    {"original": "café", "translation": "cafe"},
+                    {"original": "thé", "translation": "te"},
+                    {"original": "bière", "translation": "cerveza"},
+                    {"original": "vin", "translation": "vino"},
+                    {"original": "riz", "translation": "arroz"},
+                    {"original": "huile", "translation": "aceite"},
+                    {"original": "animal", "translation": "animal"}
+                ]
+            },
+            {
+                "name": "Expressions & Pensée",
+                "words": [
+                    {"original": "quoi?", "translation": "que?"},
+                    {"original": "rien", "translation": "nada"},
+                    {"original": "quelque chose", "translation": "algo"},
+                    {"original": "tout", "translation": "todo"},
+                    {"original": "il y a", "translation": "hay"},
+                    {"original": "il n'y a pas", "translation": "no hay"},
+                    {"original": "c'est", "translation": "es"},
+                    {"original": "je veux", "translation": "quiero"},
+                    {"original": "j'aime", "translation": "me gusta"},
+                    {"original": "je dois", "translation": "debo"},
+                    {"original": "je peux", "translation": "puedo"},
+                    {"original": "je pense", "translation": "pienso"},
+                    {"original": "peut-être", "translation": "quizas"},
+                    {"original": "et", "translation": "y"},
+                    {"original": "ou", "translation": "o"},
+                    {"original": "mais", "translation": "pero"},
+                    {"original": "parce que", "translation": "porque"},
+                    {"original": "pourquoi", "translation": "por que"}
+                ]
+            },
+            {
+                "name": "Verbes d'action",
+                "words": [
+                    {"original": "faire", "translation": "hacer"},
+                    {"original": "aller", "translation": "ir"},
+                    {"original": "venir", "translation": "venir"},
+                    {"original": "partir", "translation": "salir"},
+                    {"original": "attendre", "translation": "esperar"},
+                    {"original": "écrire", "translation": "escribir"},
+                    {"original": "lire", "translation": "leer"},
+                    {"original": "commencer", "translation": "empezar"},
+                    {"original": "finir", "translation": "terminar"},
+                    {"original": "entrer", "translation": "entrar"},
+                    {"original": "sortir", "translation": "salir"},
+                    {"original": "courir", "translation": "correr"},
+                    {"original": "voir", "translation": "ver"},
+                    {"original": "écouter", "translation": "escuchar"},
+                    {"original": "boire", "translation": "beber"},
+                    {"original": "manger", "translation": "comer"},
+                    {"original": "parler", "translation": "hablar"},
+                    {"original": "comprendre", "translation": "entender"}
+                ]
+            },
+            {
+                "name": "Pronoms & Lieux",
+                "words": [
+                    {"original": "qui", "translation": "quien"},
+                    {"original": "moi", "translation": "yo"},
+                    {"original": "toi", "translation": "tu"},
+                    {"original": "il/elle", "translation": "el/ella"},
+                    {"original": "nous", "translation": "nosotros"},
+                    {"original": "vous", "translation": "vosotros/usted"},
+                    {"original": "ils", "translation": "ellos"},
+                    {"original": "ceci", "translation": "esto"},
+                    {"original": "cela", "translation": "eso"},
+                    {"original": "où", "translation": "donde"},
+                    {"original": "ici", "translation": "aqui"},
+                    {"original": "là", "translation": "alli"},
+                    {"original": "devant", "translation": "delante"},
+                    {"original": "derrière", "translation": "detras"},
+                    {"original": "à gauche", "translation": "a la izquierda"},
+                    {"original": "à droite", "translation": "a la derecha"},
+                    {"original": "dans", "translation": "en"},
+                    {"original": "de", "translation": "de"}
+                ]
+            },
+            {
+                "name": "Maison & Ville",
+                "words": [
+                    {"original": "maison", "translation": "casa"},
+                    {"original": "cuisine", "translation": "cocina"},
+                    {"original": "chambre", "translation": "habitacion"},
+                    {"original": "lit", "translation": "cama"},
+                    {"original": "salle de bain", "translation": "bano"},
+                    {"original": "table", "translation": "mesa"},
+                    {"original": "chaise", "translation": "silla"},
+                    {"original": "ville", "translation": "ciudad"},
+                    {"original": "rue", "translation": "calle"},
+                    {"original": "magasin", "translation": "tienda"},
+                    {"original": "arbre", "translation": "arbol"},
+                    {"original": "montagne", "translation": "montana"},
+                    {"original": "mer", "translation": "mar"},
+                    {"original": "soleil", "translation": "sol"},
+                    {"original": "voiture", "translation": "coche"},
+                    {"original": "bus", "translation": "autobus"},
+                    {"original": "train", "translation": "tren"},
+                    {"original": "voyage", "translation": "viaje"}
+                ]
+            },
+            {
+                "name": "Temps",
+                "words": [
+                    {"original": "quand", "translation": "cuando"},
+                    {"original": "temps", "translation": "tiempo"},
+                    {"original": "jamais", "translation": "nunca"},
+                    {"original": "parfois", "translation": "a veces"},
+                    {"original": "souvent", "translation": "a menudo"},
+                    {"original": "toujours", "translation": "siempre"},
+                    {"original": "maintenant", "translation": "ahora"},
+                    {"original": "avant", "translation": "antes"},
+                    {"original": "après", "translation": "despues"},
+                    {"original": "matin", "translation": "manana"},
+                    {"original": "après-midi", "translation": "tarde"},
+                    {"original": "soir", "translation": "noche"},
+                    {"original": "nuit", "translation": "noche"},
+                    {"original": "aujourd'hui", "translation": "hoy"},
+                    {"original": "demain", "translation": "manana"},
+                    {"original": "hier", "translation": "ayer"},
+                    {"original": "année", "translation": "ano"},
+                    {"original": "mois", "translation": "mes"}
+                ]
+            },
+            {
+                "name": "Adjectifs",
+                "words": [
+                    {"original": "bon", "translation": "bueno"},
+                    {"original": "mauvais", "translation": "malo"},
+                    {"original": "beau", "translation": "bonito"},
+                    {"original": "grand", "translation": "grande"},
+                    {"original": "petit", "translation": "pequeno"},
+                    {"original": "chaud", "translation": "caliente"},
+                    {"original": "froid", "translation": "frio"},
+                    {"original": "vite", "translation": "rapido"},
+                    {"original": "lent", "translation": "lento"},
+                    {"original": "nouveau", "translation": "nuevo"},
+                    {"original": "ancien", "translation": "viejo"},
+                    {"original": "facile", "translation": "facil"},
+                    {"original": "difficile", "translation": "dificil"},
+                    {"original": "important", "translation": "importante"},
+                    {"original": "propre", "translation": "limpio"},
+                    {"original": "sale", "translation": "sucio"},
+                    {"original": "près", "translation": "cerca"},
+                    {"original": "loin", "translation": "lejos"}
+                ]
+            },
+            {
+                "name": "Chiffres & Quantité",
+                "words": [
+                    {"original": "combien", "translation": "cuanto"},
+                    {"original": "un peu", "translation": "un poco"},
+                    {"original": "beaucoup", "translation": "mucho"},
+                    {"original": "moins", "translation": "menos"},
+                    {"original": "plus", "translation": "mas"},
+                    {"original": "très", "translation": "muy"},
+                    {"original": "trop", "translation": "demasiado"},
+                    {"original": "0", "translation": "cero"},
+                    {"original": "1", "translation": "uno"},
+                    {"original": "2", "translation": "dos"},
+                    {"original": "3", "translation": "tres"},
+                    {"original": "4", "translation": "cuatro"},
+                    {"original": "5", "translation": "cinco"},
+                    {"original": "6", "translation": "seis"},
+                    {"original": "7", "translation": "siete"},
+                    {"original": "8", "translation": "ocho"},
+                    {"original": "9", "translation": "nueve"},
+                    {"original": "10", "translation": "diez"}
+                ]
+            },
+            {
+                "name": "Politesse",
+                "words": [
+                    {"original": "oui", "translation": "si"},
+                    {"original": "non", "translation": "no"},
+                    {"original": "bonjour", "translation": "hola"},
+                    {"original": "salut", "translation": "hola"},
+                    {"original": "bonsoir", "translation": "buenas tardes"},
+                    {"original": "bonne nuit", "translation": "buenas noches"},
+                    {"original": "au revoir", "translation": "adios"},
+                    {"original": "s'il vous plaît", "translation": "por favor"},
+                    {"original": "merci", "translation": "gracias"},
+                    {"original": "de rien", "translation": "de nada"},
+                    {"original": "excusez-moi", "translation": "disculpe"},
+                    {"original": "pardon", "translation": "perdon"},
+                    {"original": "comment ça va?", "translation": "como estas?"},
+                    {"original": "je vais bien", "translation": "estoy bien"},
+                    {"original": "je ne comprends pas", "translation": "no entiendo"},
+                    {"original": "parlez plus lentement", "translation": "hable mas despacio"},
+                    {"original": "comment vous appelez-vous?", "translation": "como se llama?"},
+                    {"original": "je m'appelle []", "translation": "me llamo []"}
+                ]
+            },
+            {
+                "name": "Divers",
+                "words": [
+                    {"original": "enfant", "translation": "nino/nina"},
+                    {"original": "garçon", "translation": "nino"},
+                    {"original": "fille", "translation": "nina"},
+                    {"original": "mère", "translation": "madre"},
+                    {"original": "père", "translation": "padre"},
+                    {"original": "frère", "translation": "hermano"},
+                    {"original": "soeur", "translation": "hermana"},
+                    {"original": "ami(e)", "translation": "amigo/a"},
+                    {"original": "mari", "translation": "marido"},
+                    {"original": "femme", "translation": "esposa"},
+                    {"original": "bon appétit", "translation": "buen provecho"},
+                    {"original": "santé!", "translation": "salud!"}
+                ]
+            }
+        ]
+    },
+    "italian": {
+        "display_name": "Italien",
+        "categories": [
+            {
+                "name": "Alimentation",
+                "words": [
+                    {"original": "nourriture", "translation": "cibo"},
+                    {"original": "fruit", "translation": "frutta"},
+                    {"original": "légumes", "translation": "verdure"},
+                    {"original": "pain", "translation": "pane"},
+                    {"original": "fromage", "translation": "formaggio"},
+                    {"original": "viande", "translation": "carne"},
+                    {"original": "poisson", "translation": "pesce"},
+                    {"original": "sel", "translation": "sale"},
+                    {"original": "sucre", "translation": "zucchero"},
+                    {"original": "eau", "translation": "acqua"},
+                    {"original": "lait", "translation": "latte"},
+                    {"original": "café", "translation": "caffe"},
+                    {"original": "thé", "translation": "te"},
+                    {"original": "bière", "translation": "birra"},
+                    {"original": "vin", "translation": "vino"},
+                    {"original": "riz", "translation": "riso"},
+                    {"original": "huile", "translation": "olio"},
+                    {"original": "animal", "translation": "animale"}
+                ]
+            },
+            {
+                "name": "Expressions & Pensée",
+                "words": [
+                    {"original": "quoi?", "translation": "che?"},
+                    {"original": "rien", "translation": "niente"},
+                    {"original": "quelque chose", "translation": "qualcosa"},
+                    {"original": "tout", "translation": "tutto"},
+                    {"original": "il y a", "translation": "c'e"},
+                    {"original": "il n'y a pas", "translation": "non c'e"},
+                    {"original": "c'est", "translation": "e"},
+                    {"original": "je veux", "translation": "voglio"},
+                    {"original": "j'aime", "translation": "mi piace"},
+                    {"original": "je dois", "translation": "devo"},
+                    {"original": "je peux", "translation": "posso"},
+                    {"original": "je pense", "translation": "penso"},
+                    {"original": "peut-être", "translation": "forse"},
+                    {"original": "et", "translation": "e"},
+                    {"original": "ou", "translation": "o"},
+                    {"original": "mais", "translation": "ma"},
+                    {"original": "parce que", "translation": "perche"},
+                    {"original": "pourquoi", "translation": "perche"}
+                ]
+            },
+            {
+                "name": "Verbes d'action",
+                "words": [
+                    {"original": "faire", "translation": "fare"},
+                    {"original": "aller", "translation": "andare"},
+                    {"original": "venir", "translation": "venire"},
+                    {"original": "partir", "translation": "partire"},
+                    {"original": "attendre", "translation": "aspettare"},
+                    {"original": "écrire", "translation": "scrivere"},
+                    {"original": "lire", "translation": "leggere"},
+                    {"original": "commencer", "translation": "iniziare"},
+                    {"original": "finir", "translation": "finire"},
+                    {"original": "entrer", "translation": "entrare"},
+                    {"original": "sortir", "translation": "uscire"},
+                    {"original": "courir", "translation": "correre"},
+                    {"original": "voir", "translation": "vedere"},
+                    {"original": "écouter", "translation": "ascoltare"},
+                    {"original": "boire", "translation": "bere"},
+                    {"original": "manger", "translation": "mangiare"},
+                    {"original": "parler", "translation": "parlare"},
+                    {"original": "comprendre", "translation": "capire"}
+                ]
+            },
+            {
+                "name": "Pronoms & Lieux",
+                "words": [
+                    {"original": "qui", "translation": "chi"},
+                    {"original": "moi", "translation": "io"},
+                    {"original": "toi", "translation": "tu"},
+                    {"original": "il/elle", "translation": "lui/lei"},
+                    {"original": "nous", "translation": "noi"},
+                    {"original": "vous", "translation": "voi/Lei"},
+                    {"original": "ils", "translation": "loro"},
+                    {"original": "ceci", "translation": "questo"},
+                    {"original": "cela", "translation": "quello"},
+                    {"original": "où", "translation": "dove"},
+                    {"original": "ici", "translation": "qui"},
+                    {"original": "là", "translation": "la"},
+                    {"original": "devant", "translation": "davanti"},
+                    {"original": "derrière", "translation": "dietro"},
+                    {"original": "à gauche", "translation": "a sinistra"},
+                    {"original": "à droite", "translation": "a destra"},
+                    {"original": "dans", "translation": "in"},
+                    {"original": "de", "translation": "di"}
+                ]
+            },
+            {
+                "name": "Maison & Ville",
+                "words": [
+                    {"original": "maison", "translation": "casa"},
+                    {"original": "cuisine", "translation": "cucina"},
+                    {"original": "chambre", "translation": "camera"},
+                    {"original": "lit", "translation": "letto"},
+                    {"original": "salle de bain", "translation": "bagno"},
+                    {"original": "table", "translation": "tavolo"},
+                    {"original": "chaise", "translation": "sedia"},
+                    {"original": "ville", "translation": "citta"},
+                    {"original": "rue", "translation": "strada"},
+                    {"original": "magasin", "translation": "negozio"},
+                    {"original": "arbre", "translation": "albero"},
+                    {"original": "montagne", "translation": "montagna"},
+                    {"original": "mer", "translation": "mare"},
+                    {"original": "soleil", "translation": "sole"},
+                    {"original": "voiture", "translation": "macchina"},
+                    {"original": "bus", "translation": "autobus"},
+                    {"original": "train", "translation": "treno"},
+                    {"original": "voyage", "translation": "viaggio"}
+                ]
+            },
+            {
+                "name": "Temps",
+                "words": [
+                    {"original": "quand", "translation": "quando"},
+                    {"original": "temps", "translation": "tempo"},
+                    {"original": "jamais", "translation": "mai"},
+                    {"original": "parfois", "translation": "a volte"},
+                    {"original": "souvent", "translation": "spesso"},
+                    {"original": "toujours", "translation": "sempre"},
+                    {"original": "maintenant", "translation": "adesso"},
+                    {"original": "avant", "translation": "prima"},
+                    {"original": "après", "translation": "dopo"},
+                    {"original": "matin", "translation": "mattina"},
+                    {"original": "après-midi", "translation": "pomeriggio"},
+                    {"original": "soir", "translation": "sera"},
+                    {"original": "nuit", "translation": "notte"},
+                    {"original": "aujourd'hui", "translation": "oggi"},
+                    {"original": "demain", "translation": "domani"},
+                    {"original": "hier", "translation": "ieri"},
+                    {"original": "année", "translation": "anno"},
+                    {"original": "mois", "translation": "mese"}
+                ]
+            },
+            {
+                "name": "Adjectifs",
+                "words": [
+                    {"original": "bon", "translation": "buono"},
+                    {"original": "mauvais", "translation": "cattivo"},
+                    {"original": "beau", "translation": "bello"},
+                    {"original": "grand", "translation": "grande"},
+                    {"original": "petit", "translation": "piccolo"},
+                    {"original": "chaud", "translation": "caldo"},
+                    {"original": "froid", "translation": "freddo"},
+                    {"original": "vite", "translation": "veloce"},
+                    {"original": "lent", "translation": "lento"},
+                    {"original": "nouveau", "translation": "nuovo"},
+                    {"original": "ancien", "translation": "vecchio"},
+                    {"original": "facile", "translation": "facile"},
+                    {"original": "difficile", "translation": "difficile"},
+                    {"original": "important", "translation": "importante"},
+                    {"original": "propre", "translation": "pulito"},
+                    {"original": "sale", "translation": "sporco"},
+                    {"original": "près", "translation": "vicino"},
+                    {"original": "loin", "translation": "lontano"}
+                ]
+            },
+            {
+                "name": "Chiffres & Quantité",
+                "words": [
+                    {"original": "combien", "translation": "quanto"},
+                    {"original": "un peu", "translation": "un po"},
+                    {"original": "beaucoup", "translation": "molto"},
+                    {"original": "moins", "translation": "meno"},
+                    {"original": "plus", "translation": "piu"},
+                    {"original": "très", "translation": "molto"},
+                    {"original": "trop", "translation": "troppo"},
+                    {"original": "0", "translation": "zero"},
+                    {"original": "1", "translation": "uno"},
+                    {"original": "2", "translation": "due"},
+                    {"original": "3", "translation": "tre"},
+                    {"original": "4", "translation": "quattro"},
+                    {"original": "5", "translation": "cinque"},
+                    {"original": "6", "translation": "sei"},
+                    {"original": "7", "translation": "sette"},
+                    {"original": "8", "translation": "otto"},
+                    {"original": "9", "translation": "nove"},
+                    {"original": "10", "translation": "dieci"}
+                ]
+            },
+            {
+                "name": "Politesse",
+                "words": [
+                    {"original": "oui", "translation": "si"},
+                    {"original": "non", "translation": "no"},
+                    {"original": "bonjour", "translation": "ciao"},
+                    {"original": "salut", "translation": "ciao"},
+                    {"original": "bonsoir", "translation": "buonasera"},
+                    {"original": "bonne nuit", "translation": "buonanotte"},
+                    {"original": "au revoir", "translation": "arrivederci"},
+                    {"original": "s'il vous plaît", "translation": "per favore"},
+                    {"original": "merci", "translation": "grazie"},
+                    {"original": "de rien", "translation": "prego"},
+                    {"original": "excusez-moi", "translation": "mi scusi"},
+                    {"original": "pardon", "translation": "scusa"},
+                    {"original": "comment ça va?", "translation": "come stai?"},
+                    {"original": "je vais bien", "translation": "sto bene"},
+                    {"original": "je ne comprends pas", "translation": "non capisco"},
+                    {"original": "parlez plus lentement", "translation": "parli piu lentamente"},
+                    {"original": "comment vous appelez-vous?", "translation": "come si chiama?"},
+                    {"original": "je m'appelle []", "translation": "mi chiamo []"}
+                ]
+            },
+            {
+                "name": "Divers",
+                "words": [
+                    {"original": "enfant", "translation": "bambino/bambina"},
+                    {"original": "garçon", "translation": "ragazzo"},
+                    {"original": "fille", "translation": "ragazza"},
+                    {"original": "mère", "translation": "madre"},
+                    {"original": "père", "translation": "padre"},
+                    {"original": "frère", "translation": "fratello"},
+                    {"original": "soeur", "translation": "sorella"},
+                    {"original": "ami(e)", "translation": "amico/a"},
+                    {"original": "mari", "translation": "marito"},
+                    {"original": "femme", "translation": "moglie"},
+                    {"original": "bon appétit", "translation": "buon appetito"},
+                    {"original": "santé!", "translation": "salute!"}
                 ]
             }
         ]

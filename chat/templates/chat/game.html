@@ -18,13 +18,17 @@
 </div>
 
 <div class="vocab-container">
-{% for category in categories %}
-<ul>
-    <li class="category-title">{{ category.name }}</li>
-    {% for word in category.words %}
-    <li>{{ word.original }} <b>{{ word.translation }}</b></li>
+{% for column in category_columns %}
+<div class="vocab-column">
+    {% for category in column %}
+    <ul class="{{ category.color_class }}">
+        <li class="category-title">{{ category.emoji }} {{ category.name }}</li>
+        {% for word in category.words %}
+        <li>{{ word.original }} <b>{{ word.translation }}</b></li>
+        {% endfor %}
+    </ul>
     {% endfor %}
-</ul>
+</div>
 {% endfor %}
 
 <div id="chat-container">
