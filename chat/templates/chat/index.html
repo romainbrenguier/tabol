@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
+    <meta charset="utf-8">
+    <title>Tabol - Choisissez une langue</title>
+</head>
+<body>
+
+<div id="head">
+    Choisissez une langue:
+</div>
+
+<div class="vocab-container" style="display: block; text-align: center;">
+    <ul style="display: inline-block; text-align: left; list-style: none; padding: 20px;">
+        {% for lang in languages %}
+        <li style="margin-bottom: 15px;">
+            <a href="{% url 'game' lang.code %}" style="font-size: 1.5em; text-decoration: none; color: #333; font-weight: bold;">
+                {{ lang.display_name }} ({{ lang.word_count }} mots)
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

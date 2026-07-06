@@ -1,11 +1,26 @@
 import json
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, Http404
 from .models import ChatMessage
 from .ai import get_guessed_word
+from .vocabulary import VOCABULARY
 
-def game_view(request):
-    return render(request, 'chat/vocabulaire-japonais.html')
+def game_view(request, lang_code='japanese'):
+    if lang_code not in VOCABULARY:
+        raise Http404("Language not found")
+
+    context = VOCABULARY[lang_code]
+    return render(request, 'chat/game.html', context)
+
+def index_view(request):
+    languages = []
+    for code, data in VOCABULARY.items():
+        languages.append({
+            'code': code,
+            'display_name': data['display_name'],
+            'word_count': sum(len(cat['words']) for cat in data['categories'])
+        })
+    return render(request, 'chat/index.html', {'languages': languages})
 
 # TODO : this shouldn’t be static
 history: list[str] = []
@@ -30,17 +45,18 @@ def messages(request):
                 sender = sender[:97] + "..."
 
             message_text = data.get('message', '')
+            language = data.get('language', 'japanese (romaji)')
 
             msg = ChatMessage.objects.create(
                 sender=sender,
                 message=message_text
             )
             # Log the message to the console for debugging
-            print(f"New message from {sender}: {message_text}")
+            print(f"New message from {sender}: {message_text} (Language: {language})")
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
-                ai_guess = get_guessed_word(message_text, chat_history=history, language="japanese (romaji)")
+                ai_guess = get_guessed_word(message_text, chat_history=history, language=language)
                 print(f"AI guess: {ai_guess}")
                 if not ai_guess.is_understood:
                     ChatMessage.objects.create(

@@ -31,7 +31,23 @@ class ChatAPITest(TestCase):
         self.assertEqual(data['messages'][0]['sender'], 'Alice')
         self.assertEqual(data['messages'][1]['sender'], 'Bob')
 
-    def test_game_view(self):
-        response = self.client.get(reverse('game'))
+    def test_index_view(self):
+        response = self.client.get(reverse('index'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'chat/vocabulaire-japonais.html')
+        self.assertTemplateUsed(response, 'chat/index.html')
+
+    def test_game_view(self):
+        # Test default japanese
+        response = self.client.get(reverse('game', kwargs={'lang_code': 'japanese'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'chat/game.html')
+        self.assertContains(response, 'Japonais')
+
+        # Test german
+        response = self.client.get(reverse('game', kwargs={'lang_code': 'german'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Allemand')
+
+        # Test non-existent language
+        response = self.client.get(reverse('game', kwargs={'lang_code': 'klingon'}))
+        self.assertEqual(response.status_code, 404)
