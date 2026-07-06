@@ -15,7 +15,7 @@ class Reply(pydantic.BaseModel):
 class WordGuessSignature(dspy.Signature):
     """Guesser for a word game. Based on the chat message, guess the word the player is thinking of."""
     language = dspy.InputField(desc="The only language you understand.", default="english")
-    chat_history: list[str] = dspy.InputField(desc="The chat history, made of messages that were understood and your previous replies.", default=[])
+    chat_history: list[str] = dspy.InputField(desc="The chat history, made of messages that were understood and your previous replies, and are meant to make us guess the same word.", default=[])
     chat_message = dspy.InputField(desc="The message sent by the player describing a word. Assumed to be in the language you understand.")
     reply: Reply = dspy.OutputField(desc="A reply to the player, including whether you understood the message, your understanding of the message, a guessed word, and translations.")
 
