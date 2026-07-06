@@ -25,6 +25,13 @@ def index_view(request):
 # TODO : this shouldn’t be static
 history: list[str] = []
 
+def reset_history(request):
+    if request.method == 'POST':
+        history.clear()
+        ChatMessage.objects.all().delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
 def messages(request):
     if request.method == 'GET':
         msgs = ChatMessage.objects.all().order_by('timestamp')
