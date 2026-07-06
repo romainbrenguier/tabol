@@ -98,14 +98,26 @@
     fetchMessages();
     setInterval(fetchMessages, 3000);
 
-    // Game logic (simplified, assuming nextWord is defined in clock.js or needs to be here)
-    // For now, let's just make sure it doesn't crash if nextWord is missing.
-    if (typeof nextWord === 'undefined') {
-        window.nextWord = function() {
-            console.log("nextWord called");
-            // You might want to implement a simple word picker here if it's not in clock.js
-        };
-    }
+    // Redefine nextWord to also reset history
+    const originalNextWord = typeof nextWord !== 'undefined' ? nextWord : function() {
+        console.log("nextWord called");
+    };
+
+    window.nextWord = function() {
+        fetch('{% url "reset_history" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                fetchMessages();
+                originalNextWord();
+            }
+        });
+    };
 </script>
 
 </body>

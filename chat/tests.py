@@ -51,3 +51,26 @@ class ChatAPITest(TestCase):
         # Test non-existent language
         response = self.client.get(reverse('game', kwargs={'lang_code': 'klingon'}))
         self.assertEqual(response.status_code, 404)
+
+    def test_reset_history(self):
+        from chat.views import history
+        # Ensure history is empty initially (or at least we know its state)
+        history.clear()
+
+        # Post a message to populate history
+        # Mocking AI might be needed if we don't want real API calls,
+        # but let's see if we can just check if it's cleared after the call.
+
+        # Manually add to history for testing purposes
+        history.append("Test message")
+        self.assertEqual(len(history), 1)
+        ChatMessage.objects.create(sender='Alice', message='Hello')
+        self.assertEqual(ChatMessage.objects.count(), 1)
+
+        # Call reset endpoint
+        url_reset = reverse('reset_history')
+        response = self.client.post(url_reset)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(len(history), 0)
+        self.assertEqual(ChatMessage.objects.count(), 0)
