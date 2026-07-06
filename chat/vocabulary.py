@@ -6,36 +6,12 @@ VOCABULARY = {
                 "name": "Alimentation",
                 "words": [
                     {
-                        "original": "quoi?",
-                        "translation": "nani"
-                    },
-                    {
-                        "original": "rien",
-                        "translation": "nanimo"
-                    },
-                    {
-                        "original": "quelques chose",
-                        "translation": "nanika"
-                    },
-                    {
-                        "original": "tout",
-                        "translation": "subete"
-                    },
-                    {
-                        "original": "chaque",
-                        "translation": "kaku"
-                    },
-                    {
                         "original": "nourriture",
                         "translation": "tabemono"
                     },
                     {
                         "original": "fruit",
                         "translation": "kudamono"
-                    },
-                    {
-                        "original": "arbre",
-                        "translation": "ki"
                     },
                     {
                         "original": "légumes",
@@ -161,6 +137,31 @@ VOCABULARY = {
                     {
                         "original": "pied",
                         "translation": "ashi"
+                    }
+                ]
+            },
+            {
+                "name": "Expressions & Pensée",
+                "words": [
+                    {
+                        "original": "quoi?",
+                        "translation": "nani"
+                    },
+                    {
+                        "original": "rien",
+                        "translation": "nanimo"
+                    },
+                    {
+                        "original": "quelques chose",
+                        "translation": "nanika"
+                    },
+                    {
+                        "original": "tout",
+                        "translation": "subete"
+                    },
+                    {
+                        "original": "chaque",
+                        "translation": "kaku"
                     },
                     {
                         "original": "?",
@@ -205,12 +206,7 @@ VOCABULARY = {
                     {
                         "original": "c'est pas la peine",
                         "translation": "kekko desu"
-                    }
-                ]
-            },
-            {
-                "name": "Expressions & Pensée",
-                "words": [
+                    },
                     {
                         "original": "je vais []",
                         "translation": "[] ni ikimasu"
@@ -290,26 +286,6 @@ VOCABULARY = {
                     {
                         "original": "neg. prés.",
                         "translation": "-(i)masen"
-                    },
-                    {
-                        "original": "faire",
-                        "translation": "suru"
-                    },
-                    {
-                        "original": "travailler",
-                        "translation": "hataraite imasu"
-                    },
-                    {
-                        "original": "penser",
-                        "translation": "[] to omoimasu"
-                    },
-                    {
-                        "original": "chercher",
-                        "translation": "sagasu"
-                    },
-                    {
-                        "original": "trouver []",
-                        "translation": "[] ga mitsukarimasu"
                     }
                 ]
             },
@@ -419,12 +395,27 @@ VOCABULARY = {
                     {
                         "original": "dormir",
                         "translation": "n(eru)"
-                    }
-                ]
-            },
-            {
-                "name": "Social & Famille",
-                "words": [
+                    },
+                    {
+                        "original": "faire",
+                        "translation": "suru"
+                    },
+                    {
+                        "original": "travailler",
+                        "translation": "hataraite imasu"
+                    },
+                    {
+                        "original": "penser",
+                        "translation": "[] to omoimasu"
+                    },
+                    {
+                        "original": "chercher",
+                        "translation": "sagasu"
+                    },
+                    {
+                        "original": "trouver []",
+                        "translation": "[] ga mitsukarimasu"
+                    },
                     {
                         "original": "donner",
                         "translation": "ataeru"
@@ -460,23 +451,12 @@ VOCABULARY = {
                     {
                         "original": "habiter à []",
                         "translation": "[] ni sunde imasu"
-                    },
-                    {
-                        "original": "qui",
-                        "translation": "dare"
-                    },
-                    {
-                        "original": "personne",
-                        "translation": "daremo"
-                    },
-                    {
-                        "original": "quelqu'un",
-                        "translation": "dareka"
-                    },
-                    {
-                        "original": "tout le monde",
-                        "translation": "mina"
-                    },
+                    }
+                ]
+            },
+            {
+                "name": "Social & Famille",
+                "words": [
                     {
                         "original": "enfant",
                         "translation": "kodomo"
@@ -530,6 +510,22 @@ VOCABULARY = {
             {
                 "name": "Pronoms & Lieux",
                 "words": [
+                    {
+                        "original": "qui",
+                        "translation": "dare"
+                    },
+                    {
+                        "original": "personne",
+                        "translation": "daremo"
+                    },
+                    {
+                        "original": "quelqu'un",
+                        "translation": "dareka"
+                    },
+                    {
+                        "original": "tout le monde",
+                        "translation": "mina"
+                    },
                     {
                         "original": "humain",
                         "translation": "jin"
@@ -684,6 +680,10 @@ VOCABULARY = {
                         "translation": "isu"
                     },
                     {
+                        "original": "arbre",
+                        "translation": "ki"
+                    },
+                    {
                         "original": "soleil",
                         "translation": "taiyoo"
                     },
@@ -732,15 +732,6 @@ VOCABULARY = {
                         "translation": "kootsuu"
                     },
                     {
-                        "original": "voyage",
-                        "translation": "ryokoo"
-                    }
-                ]
-            },
-            {
-                "name": "Temps",
-                "words": [
-                    {
                         "original": "pays",
                         "translation": "kuni"
                     },
@@ -752,6 +743,15 @@ VOCABULARY = {
                         "original": "Angleterre",
                         "translation": "igirisu"
                     },
+                    {
+                        "original": "voyage",
+                        "translation": "ryokoo"
+                    }
+                ]
+            },
+            {
+                "name": "Temps",
+                "words": [
                     {
                         "original": "quand",
                         "translation": "itsu"
