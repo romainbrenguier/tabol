@@ -5,11 +5,56 @@ from .models import ChatMessage
 from .ai import get_guessed_word
 from .vocabulary import VOCABULARY
 
+CATEGORY_EMOJIS = {
+    "Alimentation": "🍽️",
+    "Corps & Objets": "👤",
+    "Expressions & Pensée": "💭",
+    "Verbes d'action": "⚡",
+    "Social & Famille": "👨\u200d👩\u200d👧",
+    "Pronoms & Lieux": "📍",
+    "Maison & Ville": "🏠",
+    "Temps": "⏰",
+    "Temps (suite) & État": "🌤️",
+    "Adjectifs": "✨",
+    "Adjectifs & Divers": "🎨",
+    "Chiffres & Quantité": "🔢",
+    "Politesse": "🤝",
+    "Divers": "📝",
+}
+
+
 def game_view(request, lang_code='japanese'):
     if lang_code not in VOCABULARY:
         raise Http404("Language not found")
 
-    context = VOCABULARY[lang_code]
+    lang_data = VOCABULARY[lang_code]
+    categories = lang_data['categories']
+
+    # Sort by number of words descending, then pair largest with smallest
+    # so each column has one tall and one short category
+    sorted_cats = sorted(
+        [dict(cat) for cat in categories],
+        key=lambda c: len(c['words']), reverse=True
+    )
+    for i, cat in enumerate(sorted_cats):
+        cat['color_class'] = f'cat-color-{i % 14}'
+        cat['emoji'] = CATEGORY_EMOJIS.get(cat['name'], '📚')
+
+    columns = []
+    left, right = 0, len(sorted_cats) - 1
+    while left <= right:
+        if left == right:
+            columns.append([sorted_cats[left]])
+        else:
+            columns.append([sorted_cats[left], sorted_cats[right]])
+        left += 1
+        right -= 1
+
+    context = {
+        'display_name': lang_data['display_name'],
+        'categories': categories,
+        'category_columns': columns,
+    }
     return render(request, 'chat/game.html', context)
 
 def index_view(request):
@@ -63,6 +108,7 @@ def messages(request):
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
+                print(f"Current chat history: {history}")
                 ai_guess = get_guessed_word(message_text, chat_history=history, language=language)
                 print(f"AI guess: {ai_guess}")
                 if not ai_guess.is_understood:
