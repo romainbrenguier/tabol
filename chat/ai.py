@@ -9,7 +9,7 @@ class Reply(pydantic.BaseModel):
     is_understood: bool = pydantic.Field(description="Whether the message is understandable in the provided language. For example, if the provided language is in english, and the message is mostly japanese, then this should be false.")
     understood_message: str = pydantic.Field(description="The chat message as you understood it, in the language you understand, without any lexical or grammatical errors.")
     understood_message_translation: str = pydantic.Field(description="A translation of the understood message in english.")
-    guessed_word: str = pydantic.Field(description="A single word guess, in your language, that you think the player is thinking of.")
+    guessed_word: str = pydantic.Field(description="A single word guess, in your language, that you think the player is thinking of. It won't be a word that is inside the sentence, but an object the sentence is talking about.")
     translation: str = pydantic.Field(description="A translation of the guessed word in english.")
 
 class WordGuessSignature(dspy.Signature):
