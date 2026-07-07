@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
+from django.templatetags.static import static
 from .models import ChatMessage
 from .ai import get_guessed_word
 from .vocabulary import VOCABULARY, get_language_data, get_guess_words
@@ -61,12 +62,24 @@ def game_view(request, lang_code='japanese'):
         left += 1
         right -= 1
 
+    sprite_filename_by_language = {
+        'japanese': 'Japanese.png',
+        'german': 'German.png',
+        'dutch': 'Dutch.jfif',
+        'turkish': 'Turkish.jfif',
+        'spanish': 'Spanish.jfif',
+        'italian': 'Italian.png',
+    }
+    sprite_filename = sprite_filename_by_language.get(lang_code, 'Japanese.png')
+
     context = {
+        'lang_code': lang_code,
         'display_name': lang_data['display_name'],
         'categories': categories,
         'category_columns': columns,
         'difficulty': difficulty,
         'game_words': get_guess_words(categories, difficulty=difficulty),
+        'chat_sprite_url': static(f'chat/img/{sprite_filename}'),
     }
     return render(request, 'chat/game.html', context)
 

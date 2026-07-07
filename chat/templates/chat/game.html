@@ -35,6 +35,12 @@
 {% endfor %}
 
 <div id="chat-container">
+    <div id="chat-visual">
+        <div id="chat-visual-label">Etat: attente</div>
+        <div id="chat-sprite" aria-hidden="true">
+            <img id="chat-sprite-image" src="{{ chat_sprite_url }}" alt="sprite langue">
+        </div>
+    </div>
     <div id="chat-header">Chat</div>
     <div id="chat-messages"></div>
     <div id="chat-input-area">
@@ -54,6 +60,64 @@
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
+    const chatSprite = document.getElementById('chat-sprite');
+    const chatSpriteImage = document.getElementById('chat-sprite-image');
+    const chatVisualLabel = document.getElementById('chat-visual-label');
+
+    const chatStates = {
+        waitingInput: { frame: 0, label: 'attente saisie' },
+        userMessageReceived: { frame: 4, label: 'message utilisateur recu' },
+        aiReply: { frame: 1, label: 'reponse IA' },
+        waitTenSeconds: { frame: 5, label: 'pause 10 sec' }
+    };
+
+    let latestMessageSignature = null;
+    let forcedStateUntil = 0;
+
+    function setSpriteFrame(frameIndex) {
+        // 3 x 3 grid: frames go left-to-right, top-to-bottom
+        const safeFrame = Math.max(0, Math.min(8, frameIndex));
+        const column = safeFrame % 3;
+        const row = Math.floor(safeFrame / 3);
+        chatSpriteImage.style.transform = `translate(-${column * 33.333333}%, -${row * 33.333333}%)`;
+    }
+
+    function setChatVisualState(stateName, holdMs = 0) {
+        const state = chatStates[stateName] || chatStates.waitingInput;
+        setSpriteFrame(state.frame);
+        chatVisualLabel.textContent = `Etat: ${state.label}`;
+        if (holdMs > 0) {
+            forcedStateUntil = Date.now() + holdMs;
+        }
+    }
+
+    function initializeChatSprite() {
+        function applySpriteAspectRatio() {
+            const frameWidth = chatSpriteImage.naturalWidth / 3;
+            const frameHeight = chatSpriteImage.naturalHeight / 3;
+            if (frameWidth > 0 && frameHeight > 0) {
+                chatSprite.style.aspectRatio = `${frameWidth} / ${frameHeight}`;
+            }
+        }
+
+        if (chatSpriteImage.complete && chatSpriteImage.naturalWidth > 0) {
+            applySpriteAspectRatio();
+            chatSpriteImage.style.display = 'block';
+            setChatVisualState('waitingInput');
+            return;
+        }
+
+        chatSpriteImage.onload = function() {
+            applySpriteAspectRatio();
+            chatSpriteImage.style.display = 'block';
+            setChatVisualState('waitingInput');
+        };
+        chatSpriteImage.onerror = function() {
+            chatSpriteImage.style.display = 'none';
+            chatSprite.style.backgroundColor = '#3b2a2a';
+            chatVisualLabel.textContent = 'Etat: image introuvable';
+        };
+    }
 
     // Generate a simple anonymous ID for the session
     const senderId = 'User_' + Math.floor(Math.random() * 1000);
@@ -75,6 +139,43 @@
                     chatMessages.appendChild(msgDiv);
                 });
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                if (data.messages.length === 0) {
+                    if (Date.now() > forcedStateUntil) {
+                        setChatVisualState('waitingInput');
+                    }
+                    latestMessageSignature = null;
+                    return;
+                }
+
+                const latestMessage = data.messages[data.messages.length - 1];
+                const signature = `${latestMessage.sender}|${latestMessage.timestamp}|${latestMessage.message}`;
+                const isNewLatestMessage = signature !== latestMessageSignature;
+
+                if (isNewLatestMessage) {
+                    if (latestMessage.sender.startsWith('AI_Bot')) {
+                        setChatVisualState('aiReply', 2000);
+                        setTimeout(() => {
+                            setChatVisualState('waitTenSeconds', 10000);
+                            setTimeout(() => {
+                                setChatVisualState('waitingInput');
+                            }, 10000);
+                        }, 2000);
+                    } else if (latestMessage.sender.startsWith('User_')) {
+                        setChatVisualState('userMessageReceived', 1200);
+                        setTimeout(() => {
+                            if (Date.now() > forcedStateUntil) {
+                                setChatVisualState('waitingInput');
+                            }
+                        }, 1200);
+                    }
+                    latestMessageSignature = signature;
+                    return;
+                }
+
+                if (Date.now() > forcedStateUntil) {
+                    setChatVisualState('waitingInput');
+                }
             });
     }
 
@@ -107,6 +208,7 @@
     });
 
     // Initial fetch and poll every 3 seconds
+    initializeChatSprite();
     fetchMessages();
     setInterval(fetchMessages, 3000);
 
