@@ -4982,12 +4982,31 @@ DIVERS_CONNECTOR_HINTS = {
     "par example",
 }
 
+MOVEMENT_VERB_HINTS = {
+    "marcher",
+    "se promener",
+    "aller",
+    "venir",
+    "partir",
+    "passer",
+    "entrer",
+    "tourner",
+    "s'asseoir",
+    "sortir",
+    "courir",
+    "habiter à []",
+}
+
 CATEGORY_MERGE_TARGETS = {
     "Divers": "Modaux & Phrases",
     "Interrogations": "Modaux & Phrases",
     "Connecteurs": "Modaux & Phrases",
     "Lieux": "Maison & Ville",
     "Pronoms": "Modaux & Phrases",
+}
+
+PROTECTED_CATEGORIES_FROM_MERGE = {
+    "Verbes de mouvement",
 }
 
 
@@ -5001,6 +5020,9 @@ def _normalize_easy_category_name(category_name, original_word):
 
     if category_name in {"Temps", "Temps (suite) & État"}:
         return "Temps & État"
+
+    if category_name == "Verbes d'action" and normalized_word in MOVEMENT_VERB_HINTS:
+        return "Verbes de mouvement"
 
     if category_name == "Adjectifs & Divers":
         return "Adjectifs"
@@ -5076,6 +5098,9 @@ def _merge_tiny_categories(categories, min_size=3):
             if len(words_by_category[name]) >= min_size:
                 continue
 
+            if name in PROTECTED_CATEGORIES_FROM_MERGE:
+                continue
+
             preferred_target = CATEGORY_MERGE_TARGETS.get(name)
             if preferred_target not in words_by_category:
                 preferred_target = _largest_target(name)
@@ -5100,10 +5125,15 @@ def _merge_tiny_categories(categories, min_size=3):
 
 
 def _easy_categories(categories, target_count=55):
+    source_categories = [
+        category for category in categories
+        if category["name"] != "Politesse"
+    ]
+
     words_by_key = {}
     ordered_keys = []
 
-    for category in categories:
+    for category in source_categories:
         for word in category["words"]:
             key = _normalize_original(word["original"])
             if key not in words_by_key:
@@ -5127,7 +5157,7 @@ def _easy_categories(categories, target_count=55):
             selected_key_set.add(key)
 
     easy_categories = []
-    for category in categories:
+    for category in source_categories:
         filtered_words = [
             dict(word)
             for word in category["words"]
@@ -5204,7 +5234,7 @@ def get_language_data(lang_code, difficulty="normal"):
     categories = _normalized_easy_categories(lang_data["categories"])
 
     if difficulty == "easy":
-        categories = _easy_categories(categories, target_count=200)
+        categories = _easy_categories(categories, target_count=250)
 
     lang_data["categories"] = _merge_tiny_categories(categories, min_size=3)
 

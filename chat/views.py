@@ -10,6 +10,7 @@ CATEGORY_EMOJIS = {
     "Corps & Objets": "👤",
     "Expressions & Pensée": "💭",
     "Verbes d'action": "⚡",
+    "Verbes de mouvement": "🚶",
     "Social & Famille": "👨\u200d👩\u200d👧",
     "Pronoms & Lieux": "📍",
     "Pronoms": "🗣️",
