@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 VOCABULARY = {
     "japanese": {
         "display_name": "Japonais",
@@ -4554,3 +4557,655 @@ VOCABULARY = {
         ]
     }
 }
+
+
+EASY_MODE_PRIORITY_WORDS = [
+    "bonjour",
+    "au revoir",
+    "s'il vous plaît",
+    "merci",
+    "oui",
+    "non",
+    "moi",
+    "toi",
+    "il/elle",
+    "vous",
+    "maison",
+    "ville",
+    "rue",
+    "magasin",
+    "voiture",
+    "bus",
+    "train",
+    "eau",
+    "pain",
+    "riz",
+    "viande",
+    "poisson",
+    "fruit",
+    "café",
+    "thé",
+    "lait",
+    "jour",
+    "nuit",
+    "aujourd'hui",
+    "demain",
+    "hier",
+    "heure",
+    "aller",
+    "venir",
+    "manger",
+    "boire",
+    "parler",
+    "comprendre",
+    "apprendre",
+    "travailler",
+    "dormir",
+    "écrire",
+    "lire",
+    "bon",
+    "grand",
+    "petit",
+    "chaud",
+    "froid",
+    "facile",
+    "difficile",
+    "enfant",
+    "mère",
+    "père",
+    "frère",
+    "soeur",
+    "ami(e)",
+    "femme",
+    "mari",
+    "travail",
+    "argent",
+    "livre",
+    "télévision",
+    "maison",
+    "cuisine",
+    "chambre",
+    "lit",
+    "table",
+    "chaise",
+    "porte",
+    "ville",
+    "rue",
+    "magasin",
+    "pays",
+    "voyage",
+    "France",
+    "Angleterre",
+    "voiture",
+    "bus",
+    "train",
+    "avion",
+    "transport",
+    "arbre",
+    "soleil",
+    "montagne",
+    "forêt",
+    "mer",
+    "temps",
+    "année",
+    "mois",
+    "semaine",
+    "jour",
+    "heure",
+    "minute",
+    "matin",
+    "soir",
+    "nuit",
+    "aujourd'hui",
+    "demain",
+    "hier",
+    "quand",
+    "maintenant",
+    "où",
+    "ici",
+    "là",
+    "qui",
+    "quoi?",
+    "pourquoi",
+    "quel(le,s)",
+    "ceci",
+    "cela",
+    "de []",
+    "avec",
+    "sans",
+    "et",
+    "ou",
+    "mais",
+    "parce que",
+    "donc",
+    "si",
+    "aller",
+    "venir",
+    "marcher",
+    "courir",
+    "manger",
+    "boire",
+    "dormir",
+    "faire",
+    "travailler",
+    "parler",
+    "dire",
+    "écouter",
+    "regarder",
+    "voir",
+    "écrire",
+    "lire",
+    "acheter",
+    "payer",
+    "donner",
+    "prendre",
+    "attendre",
+    "chercher",
+    "trouver []",
+    "comprendre",
+    "apprendre",
+    "avoir",
+    "je veux",
+    "j'ai besoin de []",
+    "je peux []",
+    "j'aime []",
+    "je pense que []",
+    "c'est",
+    "il y a",
+    "peut-être",
+    "bon",
+    "mauvais",
+    "grand",
+    "petit",
+    "chaud",
+    "froid",
+    "vite",
+    "lent",
+    "facile",
+    "difficile",
+    "important",
+    "propre",
+    "sale",
+    "près",
+    "loin",
+]
+
+EASY_NOUN_GUESS_WORDS = [
+    "pizza",
+    "hamburger",
+    "sandwich",
+    "croissant",
+    "baguette",
+    "bonbon",
+    "sushi",
+    "donut",
+    "glace",
+    "chocolat",
+    "gâteau",
+    "pop-corn",
+    "taco",
+    "avocat",
+    "ananas",
+    "banane",
+    "panda",
+    "koala",
+    "tigre",
+    "zèbre",
+    "girafe",
+    "dauphin",
+    "requin",
+    "pieuvre",
+    "licorne",
+    "dragon",
+    "robot",
+    "astronaute",
+    "pirate",
+    "dinosaure",
+    "ninja",
+    "magicien",
+    "super-héros",
+    "trésor",
+    "château",
+    "fusée",
+    "volcan",
+    "arc-en-ciel",
+    "lune",
+    "étoile",
+    "planète",
+    "tempête",
+    "nuage",
+    "montagne",
+    "forêt",
+    "océan",
+    "île",
+    "désert",
+    "jungle",
+    "cascade",
+    "parapluie",
+    "ballon",
+    "guitare",
+    "piano",
+    "caméra",
+    "casque",
+    "télécommande",
+    "trottinette",
+    "skateboard",
+    "roller",
+    "toboggan",
+    "cerf-volant",
+    "trampoline",
+    "puzzle",
+    "masque",
+    "costume",
+]
+
+FUN_NOUN_GUESS_WORDS = [
+    "pizza",
+    "hamburger",
+    "sandwich",
+    "croissant",
+    "baguette",
+    "bonbon",
+    "sushi",
+    "donut",
+    "glace",
+    "chocolat",
+    "gâteau",
+    "pop-corn",
+    "taco",
+    "avocat",
+    "ananas",
+    "banane",
+    "frite",
+    "cookie",
+    "panda",
+    "koala",
+    "tigre",
+    "zèbre",
+    "girafe",
+    "dauphin",
+    "requin",
+    "pieuvre",
+    "licorne",
+    "dragon",
+    "robot",
+    "astronaute",
+    "pirate",
+    "dinosaure",
+    "ninja",
+    "magicien",
+    "super-héros",
+    "trésor",
+    "château",
+    "fusée",
+    "volcan",
+    "arc-en-ciel",
+    "lune",
+    "étoile",
+    "planète",
+    "tempête",
+    "nuage",
+    "montagne",
+    "forêt",
+    "océan",
+    "île",
+    "désert",
+    "jungle",
+    "cascade",
+    "parapluie",
+    "ballon",
+    "guitare",
+    "piano",
+    "caméra",
+    "casque",
+    "télécommande",
+    "trottinette",
+    "skateboard",
+    "roller",
+    "toboggan",
+    "cerf-volant",
+    "trampoline",
+    "puzzle",
+    "masque",
+    "costume",
+    "valise",
+    "miroir",
+    "ampoule",
+    "clé",
+    "serrure",
+    "montre",
+    "horloge",
+    "écharpe",
+    "chapeau",
+    "chaussette",
+    "sandale",
+    "ceinture",
+    "coussin",
+    "oreiller",
+    "matelas",
+    "tapis",
+    "rideau",
+    "placard",
+    "tiroir",
+    "pont",
+    "tunnel",
+    "phare",
+    "musée",
+    "cinéma",
+    "stade",
+    "statue",
+    "taxi",
+    "métro",
+    "tram",
+    "scooter",
+    "parking",
+    "football",
+    "basket",
+    "tennis",
+    "natation",
+    "chanson",
+    "photo",
+    "dessin",
+    "peinture",
+    "jouet",
+    "poupée",
+    "cadeau",
+    "anniversaire",
+    "vacances",
+    "weekend",
+]
+
+
+def _normalize_original(value):
+    return value.strip().lower()
+
+
+LOCATION_WORD_HINTS = {
+    "où",
+    "ici",
+    "là",
+    "là-bas",
+    "nulle-part",
+    "quelques-part",
+    "partout",
+    "en bas",
+    "devant",
+    "derrière",
+    "à gauche",
+    "droite (de [])",
+    "l'intérieur",
+    "l'exterieur",
+    "tout droit",
+    "dessus",
+    "vers",
+    "à côté",
+}
+
+YES_NO_WORDS = {"oui", "non"}
+
+DIVERS_MODAL_HINTS = {
+    "c'est",
+    "ce n'est pas []",
+    "il y a",
+    "il n'y a pas",
+    "je veux",
+    "j'aime []",
+    "je dois []",
+    "j'ai besoin de []",
+    "c'est pas la peine",
+    "je vais []",
+    "je connais []",
+    "je sais que",
+    "je peux []",
+    "je pense que []",
+    "présent",
+    "neg. prés.",
+}
+
+DIVERS_INTERROGATION_HINTS = {
+    "?",
+    "quoi?",
+    "y a t'il?",
+    "pourquoi",
+    "quel(le,s)",
+    "quelle sorte",
+}
+
+DIVERS_CONNECTOR_HINTS = {
+    "mais",
+    "et",
+    "ou",
+    "donc",
+    "puis",
+    "alors",
+    "parce que",
+    "par example",
+}
+
+CATEGORY_MERGE_TARGETS = {
+    "Divers": "Modaux & Phrases",
+    "Interrogations": "Modaux & Phrases",
+    "Connecteurs": "Modaux & Phrases",
+    "Lieux": "Maison & Ville",
+    "Pronoms": "Modaux & Phrases",
+}
+
+
+def _normalize_easy_category_name(category_name, original_word):
+    normalized_word = _normalize_original(original_word)
+
+    if category_name == "Pronoms & Lieux":
+        if normalized_word in LOCATION_WORD_HINTS:
+            return "Lieux"
+        return "Pronoms"
+
+    if category_name in {"Temps", "Temps (suite) & État"}:
+        return "Temps & État"
+
+    if category_name == "Adjectifs & Divers":
+        return "Adjectifs"
+
+    if category_name == "Divers":
+        if normalized_word in DIVERS_MODAL_HINTS or normalized_word.startswith("je "):
+            return "Modaux & Phrases"
+        if normalized_word in DIVERS_INTERROGATION_HINTS or normalized_word.endswith("?"):
+            return "Interrogations"
+        if normalized_word in DIVERS_CONNECTOR_HINTS:
+            return "Connecteurs"
+        return "Divers"
+
+    if category_name == "Chiffres & Quantité" and normalized_word in YES_NO_WORDS:
+        return "Politesse"
+
+    return category_name
+
+
+def _normalized_easy_categories(categories):
+    grouped_words = {}
+    ordered_category_names = []
+
+    for category in categories:
+        original_name = category["name"]
+        for word in category["words"]:
+            normalized_name = _normalize_easy_category_name(original_name, word["original"])
+
+            if normalized_name not in grouped_words:
+                grouped_words[normalized_name] = []
+                ordered_category_names.append(normalized_name)
+
+            grouped_words[normalized_name].append(dict(word))
+
+    normalized_categories = []
+    for category_name in ordered_category_names:
+        normalized_categories.append({
+            "name": category_name,
+            "words": grouped_words[category_name],
+        })
+
+    return normalized_categories
+
+
+def _merge_tiny_categories(categories, min_size=3):
+    if not categories:
+        return categories
+
+    words_by_category = {
+        category["name"]: [dict(word) for word in category["words"]]
+        for category in categories
+    }
+    ordered_names = [category["name"] for category in categories]
+
+    def _largest_target(excluded_name):
+        candidates = [
+            (name, len(words_by_category[name]))
+            for name in ordered_names
+            if name != excluded_name and name in words_by_category
+        ]
+        if not candidates:
+            return None
+        candidates.sort(key=lambda item: item[1], reverse=True)
+        return candidates[0][0]
+
+    merged_any = True
+    while merged_any:
+        merged_any = False
+        for name in list(ordered_names):
+            if name not in words_by_category:
+                continue
+
+            if len(words_by_category[name]) >= min_size:
+                continue
+
+            preferred_target = CATEGORY_MERGE_TARGETS.get(name)
+            if preferred_target not in words_by_category:
+                preferred_target = _largest_target(name)
+
+            if not preferred_target:
+                continue
+
+            words_by_category[preferred_target].extend(words_by_category[name])
+            del words_by_category[name]
+            ordered_names.remove(name)
+            merged_any = True
+
+    merged_categories = []
+    for name in ordered_names:
+        if name in words_by_category and words_by_category[name]:
+            merged_categories.append({
+                "name": name,
+                "words": words_by_category[name],
+            })
+
+    return merged_categories
+
+
+def _easy_categories(categories, target_count=55):
+    words_by_key = {}
+    ordered_keys = []
+
+    for category in categories:
+        for word in category["words"]:
+            key = _normalize_original(word["original"])
+            if key not in words_by_key:
+                words_by_key[key] = word
+                ordered_keys.append(key)
+
+    selected_keys = []
+    selected_key_set = set()
+
+    for preferred in EASY_MODE_PRIORITY_WORDS:
+        key = _normalize_original(preferred)
+        if key in words_by_key and key not in selected_key_set:
+            selected_keys.append(key)
+            selected_key_set.add(key)
+
+    for key in ordered_keys:
+        if len(selected_keys) >= target_count:
+            break
+        if key not in selected_key_set:
+            selected_keys.append(key)
+            selected_key_set.add(key)
+
+    easy_categories = []
+    for category in categories:
+        filtered_words = [
+            dict(word)
+            for word in category["words"]
+            if _normalize_original(word["original"]) in selected_key_set
+        ]
+        if filtered_words:
+            easy_categories.append({
+                "name": category["name"],
+                "words": filtered_words,
+            })
+
+    return easy_categories
+
+
+def _is_guessable_word(original):
+    if not original:
+        return False
+
+    if "[" in original or "]" in original or "?" in original:
+        return False
+
+    if original.startswith("-"):
+        return False
+
+    return True
+
+
+def get_guess_words(categories, difficulty="normal"):
+    vocab_keys = set()
+    for category in categories:
+        for word in category["words"]:
+            vocab_keys.add(_normalize_original(word["original"]))
+
+    if difficulty == "easy":
+        priority_words = EASY_NOUN_GUESS_WORDS
+        extra_words = FUN_NOUN_GUESS_WORDS
+        target_count = 50
+    else:
+        priority_words = FUN_NOUN_GUESS_WORDS
+        extra_words = []
+        target_count = 120
+
+    selected_words = []
+    selected_keys = set()
+
+    for candidate in priority_words:
+        key = _normalize_original(candidate)
+        if key in selected_keys or key in vocab_keys:
+            continue
+        if not _is_guessable_word(candidate):
+            continue
+        selected_words.append(candidate)
+        selected_keys.add(key)
+        if len(selected_words) >= target_count:
+            break
+
+    if len(selected_words) < target_count:
+        for candidate in extra_words:
+            key = _normalize_original(candidate)
+            if key in selected_keys or key in vocab_keys:
+                continue
+            if not _is_guessable_word(candidate):
+                continue
+            selected_words.append(candidate)
+            selected_keys.add(key)
+            if len(selected_words) >= target_count:
+                break
+
+    return selected_words
+
+
+def get_language_data(lang_code, difficulty="normal"):
+    lang_data = deepcopy(VOCABULARY[lang_code])
+    categories = _normalized_easy_categories(lang_data["categories"])
+
+    if difficulty == "easy":
+        categories = _easy_categories(categories, target_count=200)
+
+    lang_data["categories"] = _merge_tiny_categories(categories, min_size=3)
+
+    return lang_data

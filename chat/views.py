@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from .models import ChatMessage
 from .ai import get_guessed_word
-from .vocabulary import VOCABULARY
+from .vocabulary import VOCABULARY, get_language_data, get_guess_words
 
 CATEGORY_EMOJIS = {
     "Alimentation": "🍽️",
@@ -12,14 +12,20 @@ CATEGORY_EMOJIS = {
     "Verbes d'action": "⚡",
     "Social & Famille": "👨\u200d👩\u200d👧",
     "Pronoms & Lieux": "📍",
+    "Pronoms": "🗣️",
+    "Lieux": "🧭",
     "Maison & Ville": "🏠",
     "Temps": "⏰",
     "Temps (suite) & État": "🌤️",
+    "Temps & État": "🌤️",
     "Adjectifs": "✨",
     "Adjectifs & Divers": "🎨",
     "Chiffres & Quantité": "🔢",
     "Politesse": "🤝",
     "Divers": "📝",
+    "Modaux & Phrases": "🛠️",
+    "Interrogations": "❓",
+    "Connecteurs": "🔗",
 }
 
 
@@ -27,7 +33,11 @@ def game_view(request, lang_code='japanese'):
     if lang_code not in VOCABULARY:
         raise Http404("Language not found")
 
-    lang_data = VOCABULARY[lang_code]
+    difficulty = request.GET.get('difficulty', 'normal').lower()
+    if difficulty not in ('normal', 'easy'):
+        difficulty = 'normal'
+
+    lang_data = get_language_data(lang_code, difficulty=difficulty)
     categories = lang_data['categories']
 
     # Sort by number of words descending, then pair largest with smallest
@@ -54,16 +64,23 @@ def game_view(request, lang_code='japanese'):
         'display_name': lang_data['display_name'],
         'categories': categories,
         'category_columns': columns,
+        'difficulty': difficulty,
+        'game_words': get_guess_words(categories, difficulty=difficulty),
     }
     return render(request, 'chat/game.html', context)
 
 def index_view(request):
     languages = []
     for code, data in VOCABULARY.items():
+        normal_word_count = sum(len(cat['words']) for cat in data['categories'])
+        easy_data = get_language_data(code, difficulty='easy')
+        easy_word_count = sum(len(cat['words']) for cat in easy_data['categories'])
+
         languages.append({
             'code': code,
             'display_name': data['display_name'],
-            'word_count': sum(len(cat['words']) for cat in data['categories'])
+            'word_count': normal_word_count,
+            'easy_word_count': easy_word_count,
         })
     return render(request, 'chat/index.html', {'languages': languages})
 

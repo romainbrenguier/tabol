@@ -9,15 +9,21 @@
 <body>
 
 <div id="head">
-    Choisissez une langue:
+    Choisissez une langue et une difficulté:
 </div>
 
 <div class="vocab-container" style="display: block; text-align: center;">
     <ul style="display: inline-block; text-align: left; list-style: none; padding: 20px;">
         {% for lang in languages %}
         <li style="margin-bottom: 15px;">
-            <a href="{% url 'game' lang.code %}" style="font-size: 1.5em; text-decoration: none; color: #333; font-weight: bold;">
-                {{ lang.display_name }} ({{ lang.word_count }} mots)
+            <div style="font-size: 1.5em; color: #333; font-weight: bold; margin-bottom: 6px;">
+                {{ lang.display_name }}
+            </div>
+            <a href="{% url 'game' lang.code %}?difficulty=normal" style="font-size: 1.1em; text-decoration: none; color: #333; margin-right: 14px;">
+                Normal ({{ lang.word_count }} mots)
+            </a>
+            <a href="{% url 'game' lang.code %}?difficulty=easy" style="font-size: 1.1em; text-decoration: none; color: #1c7c54;">
+                Facile ({{ lang.easy_word_count }} mots)
             </a>
         </li>
         {% endfor %}

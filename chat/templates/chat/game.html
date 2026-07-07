@@ -13,6 +13,9 @@
         <button onclick="nextWord()">Next</button>
         <button onclick="initializeClock('clockdiv',100)">Start</button>
     </div>
+    <div style="font-size: 0.95em; color: #4f4f4f; margin: 6px 0 8px;">
+        Difficulté: <b>{% if difficulty == 'easy' %}Facile{% else %}Normal{% endif %}</b>
+    </div>
     <div id="word"> ... </div>
     <div id="clockdiv"> Start </div>
 </div>
@@ -41,6 +44,11 @@
 </div>
 </div>
 
+{{ game_words|json_script:"game-words-data" }}
+<script>
+    window.GAME_WORDS = JSON.parse(document.getElementById('game-words-data').textContent);
+
+</script>
 <script src="{% static 'chat/clock.js' %}"></script>
 <script>
     const chatMessages = document.getElementById('chat-messages');
