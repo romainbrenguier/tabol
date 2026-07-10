@@ -1,4 +1,19 @@
 from django.db import models
+from enum import Enum
+
+class Language(Enum):
+    ENGLISH = "en"
+    SPANISH = "es"
+    FRENCH = "fr"
+    GERMAN = "de"
+    ITALIAN = "it"
+    PORTUGUESE = "pt"
+    RUSSIAN = "ru"
+    CHINESE = "zh"
+    JAPANESE_ROMAJI = "ja(ro)"
+    KOREAN = "ko"
+    DUTCH = "nl"
+    TURKISH = "tr"
 
 class ChatMessage(models.Model):
     sender = models.CharField(max_length=100)

@@ -4997,6 +4997,44 @@ MOVEMENT_VERB_HINTS = {
     "habiter à []",
 }
 
+ADJECTIVE_COLOR_SIZE_HINTS = {
+    "grand",
+    "petit",
+    "haut",
+    "bas",
+    "lourd",
+    "couleur",
+    "bleu",
+    "rouge",
+    "vert",
+    "jaune",
+    "blanc",
+    "noir",
+}
+
+ADJECTIVE_STATE_HINTS = {
+    "(j'ai) faim",
+    "malade",
+    "fatigué",
+    "content",
+    "prêt",
+    "interdit",
+    "chaud",
+    "froid",
+}
+
+TIME_STATE_HINTS = {
+    "loin",
+    "près",
+    "vide",
+    "plein",
+    "ouvert",
+    "fermé",
+    "nouveau",
+    "bon",
+    "mauvais",
+}
+
 CATEGORY_MERGE_TARGETS = {
     "Divers": "Modaux & Phrases",
     "Interrogations": "Modaux & Phrases",
@@ -5007,6 +5045,10 @@ CATEGORY_MERGE_TARGETS = {
 
 PROTECTED_CATEGORIES_FROM_MERGE = {
     "Verbes de mouvement",
+    "État",
+    "Adjectifs d'état",
+    "Adjectifs de description",
+    "Couleurs & Taille",
 }
 
 
@@ -5019,13 +5061,19 @@ def _normalize_easy_category_name(category_name, original_word):
         return "Pronoms"
 
     if category_name in {"Temps", "Temps (suite) & État"}:
-        return "Temps & État"
+        if normalized_word in TIME_STATE_HINTS:
+            return "État"
+        return "Temps"
 
     if category_name == "Verbes d'action" and normalized_word in MOVEMENT_VERB_HINTS:
         return "Verbes de mouvement"
 
-    if category_name == "Adjectifs & Divers":
-        return "Adjectifs"
+    if category_name in {"Adjectifs", "Adjectifs & Divers"}:
+        if normalized_word in ADJECTIVE_COLOR_SIZE_HINTS:
+            return "Couleurs & Taille"
+        if normalized_word in ADJECTIVE_STATE_HINTS:
+            return "Adjectifs d'état"
+        return "Adjectifs de description"
 
     if category_name == "Divers":
         if normalized_word in DIVERS_MODAL_HINTS or normalized_word.startswith("je "):
@@ -5185,20 +5233,416 @@ def _is_guessable_word(original):
     return True
 
 
+EXCLUDED_VOCAB_CATEGORIES = {
+    "Politesse",
+}
+
+LOW_VALUE_VOCAB_WORDS = {
+    "?",
+    "ce n'est pas []",
+    "je dois []",
+    "je vais []",
+    "je connais []",
+    "je pense que []",
+    "de []",
+    "ce [] ci",
+    "ce [] là",
+    "droite (de [])",
+    "habiter à []",
+    "trouver []",
+    "pour []",
+    "plus que []",
+    "présent",
+    "neg. prés.",
+    "bonjour",
+    "salut",
+    "bonsoir",
+    "bonne nuit",
+    "aurevoir",
+    "s'il vous plaît",
+    "merci",
+    "je vous en prie",
+    "excusez moi",
+    "pardon",
+    "pas de problème",
+    "comment vas tu",
+    "merci, je vais bien",
+    "comment vous appelez vous?",
+    "je m'appele []",
+    "d'où venez vous?",
+    "je suis de []",
+    "enchanté",
+    "parlez plus lentement",
+    "écrivez le",
+    "donnez moi []",
+    "voici",
+    "bon appétit",
+    "santé!",
+    "n'est ce pas",
+    "ne t'inquiète pas",
+    "je ne sais pas, je n'ai pas compris",
+    "20",
+    "100",
+    "1000",
+    "10000",
+}
+
+
+def _is_low_value_vocabulary_word(original, translation):
+    normalized_original = _normalize_original(original)
+
+    if not normalized_original:
+        return True
+
+    if normalized_original in LOW_VALUE_VOCAB_WORDS:
+        return True
+
+    if "[" in original or "]" in original:
+        return True
+
+    if "?" in original:
+        return True
+
+    if original.startswith("-"):
+        return True
+
+    return False
+
+
+def _curated_vocabulary_categories(categories, target_count=275):
+    return _curated_vocabulary_categories_with_keys(categories, target_count=target_count)
+
+
+def _curated_vocabulary_categories_with_keys(categories, target_count=275, allowed_keys=None):
+    curated_categories = []
+    seen_keys = set()
+    selected_words = 0
+
+    for category in categories:
+        if category["name"] in EXCLUDED_VOCAB_CATEGORIES:
+            continue
+
+        filtered_words = []
+        for word in category["words"]:
+            original = word.get("original", "")
+            translation = word.get("translation", "")
+            key = _normalize_original(original)
+
+            if key in seen_keys:
+                continue
+
+            if allowed_keys is not None and key not in allowed_keys:
+                continue
+
+            if _is_low_value_vocabulary_word(original, translation):
+                continue
+
+            filtered_words.append(dict(word))
+            seen_keys.add(key)
+            selected_words += 1
+
+            if selected_words >= target_count:
+                break
+
+        if filtered_words:
+            curated_categories.append({
+                "name": category["name"],
+                "words": filtered_words,
+            })
+
+        if selected_words >= target_count:
+            break
+
+    return curated_categories
+
+
+NORMAL_EXTRA_GUESS_WORDS = [
+    "boussole",
+    "jumelles",
+    "marteau",
+    "tournevis",
+    "pince",
+    "lampe",
+    "lanterne",
+    "bougie",
+    "allumette",
+    "batterie",
+    "cable",
+    "prise",
+    "micro",
+    "enceinte",
+    "projecteur",
+    "imprimante",
+    "clavier",
+    "souris",
+    "ecran",
+    "sac a dos",
+    "bouteille",
+    "gobelet",
+    "cuillere",
+    "fourchette",
+    "couteau",
+    "assiette",
+    "poele",
+    "casserole",
+    "four",
+    "frigo",
+    "congelateur",
+    "savon",
+    "shampoing",
+    "brosse",
+    "peigne",
+    "serviette",
+    "valise",
+    "passeport",
+    "ticket",
+    "carte",
+    "chemin",
+    "village",
+    "quartier",
+    "immeuble",
+    "ascenseur",
+    "escalier",
+    "fenetre",
+    "toit",
+    "garage",
+    "jardin",
+    "pelouse",
+    "fleur",
+    "feuille",
+    "champignon",
+    "rivière",
+    "lac",
+    "plage",
+    "vague",
+    "sable",
+    "neige",
+    "glacier",
+    "orage",
+    "eclair",
+    "brouillard",
+    "chaleur",
+    "hiver",
+    "printemps",
+    "ete",
+    "automne",
+    "calendrier",
+    "agenda",
+    "anniversaire",
+    "vacances",
+    "concert",
+    "spectacle",
+    "festival",
+    "match",
+    "tournoi",
+    "medaille",
+    "trophee",
+    "partie",
+    "manette",
+    "jeu de cartes",
+    "plateau",
+    "des",
+    "indice",
+]
+
+
+EASY_EXTRA_GUESS_WORDS = [
+    "orange",
+    "fraise",
+    "pasteque",
+    "pomme",
+    "poire",
+    "citron",
+    "gateau",
+    "yaourt",
+    "biscuit",
+    "salade",
+    "poulet",
+    "tortue",
+    "lapin",
+    "singe",
+    "cheval",
+    "canard",
+    "papillon",
+    "abeille",
+    "ballon de foot",
+    "velo",
+    "patin",
+    "cartable",
+    "crayon",
+    "stylo",
+    "cahier",
+    "carton",
+    "boite",
+    "bois",
+    "neige",
+    "arc",
+]
+
+
+HARD_GUESS_WORDS = [
+    "nostalgie",
+    "patience",
+    "jalousie",
+    "courage",
+    "fierte",
+    "honte",
+    "confiance",
+    "doute",
+    "surprise",
+    "malaise",
+    "solitude",
+    "liberte",
+    "justice",
+    "injustice",
+    "egalite",
+    "responsabilite",
+    "curiosite",
+    "creativite",
+    "intuition",
+    "strategie",
+    "tactique",
+    "discipline",
+    "motivation",
+    "habitude",
+    "routine",
+    "equilibre",
+    "priorite",
+    "urgence",
+    "consequence",
+    "cause",
+    "objectif",
+    "perspective",
+    "vision",
+    "decision",
+    "choix",
+    "compromis",
+    "dialogue",
+    "silence",
+    "rumeur",
+    "secret",
+    "mensonge",
+    "verite",
+    "mystere",
+    "paradoxe",
+    "coincidence",
+    "probabilite",
+    "hypothese",
+    "theorie",
+    "preuve",
+    "memoire",
+    "oubli",
+    "souvenir",
+    "concentration",
+    "fatigue",
+    "insomnie",
+    "vertige",
+    "allergie",
+    "infection",
+    "guerison",
+    "panne",
+    "incident",
+    "accident",
+    "catastrophe",
+    "crise",
+    "penurie",
+    "abondance",
+    "inflation",
+    "economie",
+    "budget",
+    "investissement",
+    "entreprise",
+    "client",
+    "employe",
+    "patron",
+    "entrepreneur",
+    "architecte",
+    "ingenieur",
+    "journaliste",
+    "avocat",
+    "juge",
+    "chercheur",
+    "pharmacien",
+    "infirmier",
+    "pilote",
+    "capitaine",
+    "explorateur",
+    "archeologue",
+    "traducteur",
+    "negociation",
+    "mediation",
+    "cooperation",
+    "competition",
+    "rivalite",
+    "leadership",
+    "autorite",
+    "influence",
+    "reputation",
+    "identite",
+    "culture",
+    "tradition",
+    "rituel",
+    "symbole",
+    "heritage",
+    "civilisation",
+    "democratie",
+    "diplomatie",
+    "frontiere",
+    "territoire",
+    "alliance",
+    "energie",
+    "matiere",
+    "gravite",
+    "friction",
+    "equation",
+    "algorithme",
+    "reseau",
+    "satellite",
+    "comete",
+    "constellation",
+    "orbite",
+    "biodiversite",
+    "ecosysteme",
+    "pollution",
+    "recyclage",
+    "soutenabilite",
+    "innovation",
+    "prototype",
+    "version",
+    "compatibilite",
+    "maintenance",
+    "diagnostic",
+    "simulation",
+    "scenario",
+    "interpretation",
+    "imagination",
+    "inspiration",
+    "vocation",
+    "resilience",
+    "adaptation",
+    "transformation",
+]
+
+
 def get_guess_words(categories, difficulty="normal"):
+    difficulty_guess_pools = {
+        # Easy words can often be described with 1-2 vocabulary words.
+        "easy": (EASY_NOUN_GUESS_WORDS + EASY_EXTRA_GUESS_WORDS, 75),
+        # Normal words usually need around 2-4 vocabulary words.
+        "normal": (FUN_NOUN_GUESS_WORDS + NORMAL_EXTRA_GUESS_WORDS, 130),
+        # Hard words often require 4+ vocabulary words or abstract explanations.
+        "hard": (HARD_GUESS_WORDS + FUN_NOUN_GUESS_WORDS + NORMAL_EXTRA_GUESS_WORDS, 160),
+    }
+
+    if difficulty not in difficulty_guess_pools:
+        difficulty = "normal"
+
+    priority_words, target_count = difficulty_guess_pools[difficulty]
+
     vocab_keys = set()
     for category in categories:
         for word in category["words"]:
             vocab_keys.add(_normalize_original(word["original"]))
-
-    if difficulty == "easy":
-        priority_words = EASY_NOUN_GUESS_WORDS
-        extra_words = FUN_NOUN_GUESS_WORDS
-        target_count = 50
-    else:
-        priority_words = FUN_NOUN_GUESS_WORDS
-        extra_words = []
-        target_count = 120
 
     selected_words = []
     selected_keys = set()
@@ -5214,27 +5658,77 @@ def get_guess_words(categories, difficulty="normal"):
         if len(selected_words) >= target_count:
             break
 
-    if len(selected_words) < target_count:
-        for candidate in extra_words:
-            key = _normalize_original(candidate)
-            if key in selected_keys or key in vocab_keys:
-                continue
-            if not _is_guessable_word(candidate):
-                continue
-            selected_words.append(candidate)
-            selected_keys.add(key)
-            if len(selected_words) >= target_count:
-                break
-
     return selected_words
+
+
+GERMAN_REFERENCE_FALLBACKS = {
+    "tête": "der Kopf",
+    "cheveux": "die Haare",
+    "oeil": "das Auge",
+    "oreille": "das Ohr",
+    "nez": "die Nase",
+    "bouche": "der Mund",
+    "dent": "der Zahn",
+    "main": "die Hand",
+    "pied": "der Fuss",
+}
+
+
+def _uniform_categories_with_japanese_reference(lang_code, categories):
+    if lang_code == "japanese":
+        return categories
+
+    translations_by_original = {}
+    for category in categories:
+        for word in category["words"]:
+            original = word["original"].strip()
+            key = _normalize_original(original)
+            translation = word.get("translation", "")
+
+            # Keep first non-empty translation when duplicates exist.
+            if key not in translations_by_original or (
+                not translations_by_original[key] and translation
+            ):
+                translations_by_original[key] = translation
+
+    if lang_code == "german":
+        for original, translation in GERMAN_REFERENCE_FALLBACKS.items():
+            key = _normalize_original(original)
+            if not translations_by_original.get(key):
+                translations_by_original[key] = translation
+
+    reference_categories = VOCABULARY["japanese"]["categories"]
+    harmonized_categories = []
+
+    for reference_category in reference_categories:
+        harmonized_words = []
+        for reference_word in reference_category["words"]:
+            original = reference_word["original"]
+            key = _normalize_original(original)
+            translation = translations_by_original.get(key, "")
+            if not translation:
+                translation = f"[{original}]"
+            harmonized_words.append({
+                "original": original,
+                "translation": translation,
+            })
+
+        harmonized_categories.append({
+            "name": reference_category["name"],
+            "words": harmonized_words,
+        })
+
+    return harmonized_categories
 
 
 def get_language_data(lang_code, difficulty="normal"):
     lang_data = deepcopy(VOCABULARY[lang_code])
-    categories = _normalized_easy_categories(lang_data["categories"])
-
-    if difficulty == "easy":
-        categories = _easy_categories(categories, target_count=250)
+    categories = _uniform_categories_with_japanese_reference(lang_code, lang_data["categories"])
+    categories = _normalized_easy_categories(categories)
+    categories = _curated_vocabulary_categories_with_keys(
+        categories,
+        target_count=275,
+    )
 
     lang_data["categories"] = _merge_tiny_categories(categories, min_size=3)
 

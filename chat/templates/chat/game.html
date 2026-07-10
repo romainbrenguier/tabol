@@ -14,7 +14,16 @@
         <button onclick="initializeClock('clockdiv',100)">Start</button>
     </div>
     <div style="font-size: 0.95em; color: #4f4f4f; margin: 6px 0 8px;">
-        Difficulté: <b>{% if difficulty == 'easy' %}Facile{% else %}Normal{% endif %}</b>
+        Difficulté:
+        <b>
+            {% if difficulty == 'easy' %}
+                Facile
+            {% elif difficulty == 'hard' %}
+                Difficile
+            {% else %}
+                Normal
+            {% endif %}
+        </b>
     </div>
     <div id="word"> ... </div>
     <div id="clockdiv"> Start </div>
@@ -68,7 +77,8 @@
         waitingInput: { frame: 0, label: 'attente saisie' },
         userMessageReceived: { frame: 4, label: 'message utilisateur recu' },
         aiReply: { frame: 1, label: 'reponse IA' },
-        waitTenSeconds: { frame: 5, label: 'pause 10 sec' }
+        waitTenSeconds: { frame: 5, label: 'pause 10 sec' },
+        win: { frame: 8, label: 'mot trouve' }
     };
 
     let latestMessageSignature = null;
@@ -153,7 +163,12 @@
                 const isNewLatestMessage = signature !== latestMessageSignature;
 
                 if (isNewLatestMessage) {
-                    if (latestMessage.sender.startsWith('AI_Bot')) {
+                    if (latestMessage.sender.startsWith('Arbitre')) {
+                        setChatVisualState('win', 5000);
+                        setTimeout(() => {
+                            setChatVisualState('waitingInput');
+                        }, 5000);
+                    } else if (latestMessage.sender.startsWith('AI_Bot')) {
                         setChatVisualState('aiReply', 2000);
                         setTimeout(() => {
                             setChatVisualState('waitTenSeconds', 10000);
@@ -192,7 +207,9 @@
             body: JSON.stringify({
                 sender: senderId,
                 message: message,
-                language: '{{ display_name|lower }}'
+                target_language: '{{ target_language }}',
+                original_language: '{{ original_language }}',
+                word_to_guess: document.getElementById('word').textContent.trim().toLowerCase()
             })
         })
         .then(response => response.json())

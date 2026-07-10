@@ -61,6 +61,9 @@ body {
     overflow-x: auto;
     overflow-y: auto;
     background-color: #ecf0f1;
+    background-image: url('img/background.png');
+    background-size: cover;
+    background-position: center;
     color: #333;
 }
 

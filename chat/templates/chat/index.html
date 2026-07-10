@@ -12,23 +12,63 @@
     Choisissez une langue et une difficulté:
 </div>
 
+<div style="text-align: center; margin-top: 10px;">
+    <label for="original-language" style="font-size: 1.1em; font-weight: 600; color: #333; margin-right: 10px;">
+        Votre langue:
+    </label>
+    <select id="original-language" style="font-size: 1em; padding: 6px 10px; border-radius: 8px; border: 1px solid #ccc;">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
+        <option value="zh">中文</option>
+        <option value="ja(ro)">Japanese (Romaji)</option>
+        <option value="ko">한국어</option>
+        <option value="nl">Nederlands</option>
+        <option value="tr">Türkçe</option>
+    </select>
+</div>
+
 <div class="vocab-container" style="display: block; text-align: center;">
     <ul style="display: inline-block; text-align: left; list-style: none; padding: 20px;">
         {% for lang in languages %}
         <li style="margin-bottom: 15px;">
             <div style="font-size: 1.5em; color: #333; font-weight: bold; margin-bottom: 6px;">
-                {{ lang.display_name }}
+                {{ lang.flag }} {{ lang.display_name }}
             </div>
-            <a href="{% url 'game' lang.code %}?difficulty=normal" style="font-size: 1.1em; text-decoration: none; color: #333; margin-right: 14px;">
-                Normal ({{ lang.word_count }} mots)
-            </a>
-            <a href="{% url 'game' lang.code %}?difficulty=easy" style="font-size: 1.1em; text-decoration: none; color: #1c7c54;">
-                Facile ({{ lang.easy_word_count }} mots)
-            </a>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                <a href="{% url 'game' lang.code %}?difficulty=easy" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #1c7c54; padding: 6px 10px; border-radius: 8px; background: #e8f5ed;">
+                    Facile
+                </a>
+                <a href="{% url 'game' lang.code %}?difficulty=normal" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #333; padding: 6px 10px; border-radius: 8px; background: #f2f2f2;">
+                    Normal
+                </a>
+                <a href="{% url 'game' lang.code %}?difficulty=hard" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #8b1e3f; padding: 6px 10px; border-radius: 8px; background: #fae8ee;">
+                    Difficile
+                </a>
+            </div>
         </li>
         {% endfor %}
     </ul>
 </div>
+
+<script>
+    const originalLanguageSelect = document.getElementById('original-language');
+    const gameLinks = document.querySelectorAll('.game-link');
+
+    gameLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const selectedOriginalLanguage = originalLanguageSelect.value;
+            const targetUrl = new URL(link.href, window.location.origin);
+            targetUrl.searchParams.set('original_language', selectedOriginalLanguage);
+            window.location.href = targetUrl.toString();
+        });
+    });
+</script>
 
 </body>
 </html>
