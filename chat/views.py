@@ -4,6 +4,8 @@ import unicodedata
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.templatetags.static import static
+from django.utils import timezone
+from django.db.utils import OperationalError, ProgrammingError
 from requests.packages import target
 from .models import ChatMessage, Language
 from .ai import get_guessed_word, WrongLanguageReply, ErrorReply
@@ -68,14 +70,14 @@ def game_view(request, lang_code='japanese'):
 
     if request.GET.get('new_game') == '1':
         _clear_history(request)
-        ChatMessage.objects.all().delete()
+        _clear_chat_messages(request)
 
     target_language = _coerce_language(lang_code)
     original_language = _coerce_language(request.GET.get('original_language'))
     if target_language is None or original_language is None:
         return redirect('index')
 
-    _ensure_welcome_message(target_language, original_language)
+    _ensure_welcome_message(request, target_language, original_language)
 
     difficulty = request.GET.get('difficulty', 'easy').lower()
     if difficulty not in ('easy', 'normal', 'hard'):
@@ -152,6 +154,7 @@ def index_view(request):
 
 
 HISTORY_SESSION_KEY = 'chat_history'
+CHAT_MESSAGES_SESSION_KEY = 'chat_messages'
 
 
 def _get_history(request) -> list[str]:
@@ -170,6 +173,67 @@ def _clear_history(request) -> None:
     if HISTORY_SESSION_KEY in request.session:
         del request.session[HISTORY_SESSION_KEY]
         request.session.modified = True
+
+
+def _chat_db_available() -> bool:
+    try:
+        ChatMessage.objects.exists()
+        return True
+    except (OperationalError, ProgrammingError):
+        return False
+
+
+def _get_session_chat_messages(request) -> list[dict]:
+    messages = request.session.get(CHAT_MESSAGES_SESSION_KEY, [])
+    if isinstance(messages, list):
+        return messages
+    return []
+
+
+def _set_session_chat_messages(request, messages: list[dict]) -> None:
+    request.session[CHAT_MESSAGES_SESSION_KEY] = messages
+    request.session.modified = True
+
+
+def _append_chat_message(request, sender: str, message: str) -> dict:
+    if _chat_db_available():
+        msg = ChatMessage.objects.create(sender=sender, message=message)
+        return {
+            'sender': msg.sender,
+            'message': msg.message,
+            'timestamp': msg.timestamp.isoformat(),
+        }
+
+    session_messages = _get_session_chat_messages(request)
+    payload = {
+        'sender': sender,
+        'message': message,
+        'timestamp': timezone.now().isoformat(),
+    }
+    session_messages.append(payload)
+    _set_session_chat_messages(request, session_messages)
+    return payload
+
+
+def _list_chat_messages(request) -> list[dict]:
+    if _chat_db_available():
+        msgs = ChatMessage.objects.all().order_by('timestamp')
+        return [
+            {
+                'sender': m.sender,
+                'message': m.message,
+                'timestamp': m.timestamp.isoformat(),
+            }
+            for m in msgs
+        ]
+    return _get_session_chat_messages(request)
+
+
+def _clear_chat_messages(request) -> None:
+    if _chat_db_available():
+        ChatMessage.objects.all().delete()
+        return
+    _set_session_chat_messages(request, [])
 
 
 def _normalize_for_match(value: str) -> str:
@@ -237,19 +301,16 @@ def _language_display_name(value) -> str:
     return 'Unknown language'
 
 
-def _ensure_welcome_message(target_language: Language, original_language: Language) -> None:
+def _ensure_welcome_message(request, target_language: Language, original_language: Language) -> None:
     # Only seed the welcome text when chat is empty to avoid duplicates on refresh.
-    if ChatMessage.objects.exists():
+    if _list_chat_messages(request):
         return
 
     target_param = _language_display_name(target_language)
     target_text = WELCOME_MESSAGE[target_language] % target_param
     original_text = WELCOME_MESSAGE[original_language] % target_param
 
-    ChatMessage.objects.create(
-        sender="AI_Bot",
-        message=f"{target_text}\n({original_text})",
-    )
+    _append_chat_message(request, "AI_Bot", f"{target_text}\n({original_text})")
 
 def reset_history(request):
     if request.method == 'POST':
@@ -364,15 +425,8 @@ WORD_FOUND = {
 
 def messages(request):
     if request.method == 'GET':
-        msgs = ChatMessage.objects.all().order_by('timestamp')
         return JsonResponse({
-            'messages': [
-                {
-                    'sender': m.sender,
-                    'message': m.message,
-                    'timestamp': m.timestamp.isoformat()
-                } for m in msgs
-            ]
+            'messages': _list_chat_messages(request)
         })
     elif request.method == 'POST':
         try:
@@ -390,10 +444,7 @@ def messages(request):
 
             word_to_guess = data.get('word_to_guess', '')
 
-            msg = ChatMessage.objects.create(
-                sender=sender,
-                message=message_text
-            )
+            msg = _append_chat_message(request, sender, message_text)
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
@@ -405,15 +456,13 @@ def messages(request):
                     original_language=original_language,
                 )
                 if isinstance(ai_guess, WrongLanguageReply):
-                    ChatMessage.objects.create(
-                        sender="AI_Bot",
-                        message=I_DONT_UNDERSTAND[target_language] % _language_display_name(ai_guess.actual_language)
+                    _append_chat_message(
+                        request,
+                        "AI_Bot",
+                        I_DONT_UNDERSTAND[target_language] % _language_display_name(ai_guess.actual_language),
                     )
                 elif isinstance(ai_guess, ErrorReply):
-                    ChatMessage.objects.create(
-                        sender="AI_Bot",
-                        message=THERE_WAS_AN_ERROR[target_language]
-                    )
+                    _append_chat_message(request, "AI_Bot", THERE_WAS_AN_ERROR[target_language])
                 else: 
                     normalized_translation = _normalize_for_match(ai_guess.translation)
                     normalized_word_to_guess = _normalize_for_match(word_to_guess)
@@ -422,20 +471,22 @@ def messages(request):
                         and normalized_translation == normalized_word_to_guess
                     )
 
-                    ChatMessage.objects.create(
-                        sender="AI_Bot",
-                        message=f"""
+                    _append_chat_message(
+                        request,
+                        "AI_Bot",
+                        f"""
                         {I_UNDERSTOOD_YOUR_MESSAGE[target_language] % ai_guess.understood_message}
                         ({ai_guess.understood_message_translation}).
                         {MY_GUESS_IS[target_language] % ai_guess.guessed_word}
                         ({ai_guess.translation}).
-                    """
+                    """,
                     )
 
                     if is_winning_guess:
-                        ChatMessage.objects.create(
-                            sender="Arbitre",
-                            message=WORD_FOUND[target_language] % ai_guess.translation
+                        _append_chat_message(
+                            request,
+                            "Arbitre",
+                            WORD_FOUND[target_language] % ai_guess.translation,
                         )
 
                     history.append(message_text)
@@ -445,9 +496,9 @@ def messages(request):
             return JsonResponse({
                 'status': 'success',
                 'message': {
-                    'sender': msg.sender,
-                    'message': msg.message,
-                    'timestamp': msg.timestamp.isoformat()
+                    'sender': msg['sender'],
+                    'message': msg['message'],
+                    'timestamp': msg['timestamp']
                 }
             }, status=201)
         except (json.JSONDecodeError, KeyError):
