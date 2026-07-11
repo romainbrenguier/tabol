@@ -51,6 +51,10 @@ def game_view(request, lang_code='japanese'):
     if lang_code not in VOCABULARY:
         raise Http404("Language not found")
 
+    if request.GET.get('new_game') == '1':
+        history.clear()
+        ChatMessage.objects.all().delete()
+
     target_language = _coerce_language(lang_code)
     original_language = _coerce_language(request.GET.get('original_language'))
     if target_language is None or original_language is None:
@@ -101,7 +105,11 @@ def game_view(request, lang_code='japanese'):
         'categories': categories,
         'category_columns': columns,
         'difficulty': difficulty,
-        'game_words': get_guess_words(categories, difficulty=difficulty),
+        'game_words': get_guess_words(
+            categories,
+            difficulty=difficulty,
+            original_language=original_language.value,
+        ),
         'chat_sprite_url': static(f'chat/img/{sprite_filename}'),
     }
     return render(request, 'chat/game.html', context)
@@ -305,11 +313,11 @@ def messages(request):
                     target_language=target_language,
                     original_language=original_language,
                 )
-                print(f"AI guess: {ai_guess}")
+                print(f"AI guess: {ai_guess}, target_language: {target_language}, original_language: {original_language}")
                 if isinstance(ai_guess, WrongLanguageReply):
                     ChatMessage.objects.create(
                         sender="AI_Bot",
-                        message=I_DONT_UNDERSTAND[target_language].format(ai_guess.actual_language)
+                        message=I_DONT_UNDERSTAND[target_language] % ai_guess.actual_language
                     )
                 elif isinstance(ai_guess, ErrorReply):
                     ChatMessage.objects.create(

@@ -27,6 +27,10 @@
     </div>
     <div id="word"> ... </div>
     <div id="clockdiv"> Start </div>
+    <div id="coin-counter" aria-live="polite" aria-label="Compteur de pieces">
+        <span class="coin-icon" aria-hidden="true">🪙</span>
+        <span id="coin-count">0</span>
+    </div>
 </div>
 
 <div class="vocab-container">
@@ -72,6 +76,8 @@
     const chatSprite = document.getElementById('chat-sprite');
     const chatSpriteImage = document.getElementById('chat-sprite-image');
     const chatVisualLabel = document.getElementById('chat-visual-label');
+    const coinCounter = document.getElementById('coin-counter');
+    const coinCountElement = document.getElementById('coin-count');
 
     const chatStates = {
         waitingInput: { frame: 0, label: 'attente saisie' },
@@ -83,6 +89,103 @@
 
     let latestMessageSignature = null;
     let forcedStateUntil = 0;
+    let coinCount = Number(localStorage.getItem('tabolCoinCount') || 0);
+    const targetLanguage = '{{ target_language }}';
+
+    function renderCoinCount() {
+        coinCountElement.textContent = String(coinCount);
+    }
+
+    function incrementCoinCount() {
+        coinCount += 1;
+        localStorage.setItem('tabolCoinCount', String(coinCount));
+        renderCoinCount();
+    }
+
+    function triggerCoinAnimation(originElement) {
+        if (!coinCounter || !originElement) {
+            incrementCoinCount();
+            return;
+        }
+
+        const originRect = originElement.getBoundingClientRect();
+        const targetRect = coinCounter.getBoundingClientRect();
+
+        const coin = document.createElement('div');
+        coin.className = 'flying-coin';
+        coin.textContent = '🪙';
+        coin.style.left = `${originRect.left + originRect.width / 2}px`;
+        coin.style.top = `${originRect.top + originRect.height / 2}px`;
+        document.body.appendChild(coin);
+
+        const deltaX = targetRect.left + targetRect.width / 2 - (originRect.left + originRect.width / 2);
+        const deltaY = targetRect.top + targetRect.height / 2 - (originRect.top + originRect.height / 2);
+
+        requestAnimationFrame(() => {
+            coin.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.6)`;
+            coin.style.opacity = '0.2';
+        });
+
+        const onCoinAnimationEnd = function() {
+            incrementCoinCount();
+            coinCounter.classList.add('coin-pop');
+            setTimeout(() => coinCounter.classList.remove('coin-pop'), 220);
+            coin.removeEventListener('transitionend', onCoinAnimationEnd);
+            coin.remove();
+        };
+
+        coin.addEventListener('transitionend', onCoinAnimationEnd);
+
+        // Fallback in case transitionend is not fired.
+        setTimeout(() => {
+            if (coin.isConnected) {
+                onCoinAnimationEnd();
+            }
+        }, 820);
+    }
+
+    const aiNamesByLanguage = {
+        'en': 'Olivia',
+        'es': 'Sofia',
+        'fr': 'Camille',
+        'de': 'Lena',
+        'it': 'Giulia',
+        'pt': 'Beatriz',
+        'ru': 'Anya',
+        'zh': 'Mei',
+        'ja(ro)': 'Hana',
+        'ko': 'Jiyeon',
+        'nl': 'Noor',
+        'tr': 'Defne'
+    };
+
+    const refereeNamesByLanguage = {
+        'en': 'Ethan',
+        'es': 'Diego',
+        'fr': 'Jules',
+        'de': 'Felix',
+        'it': 'Luca',
+        'pt': 'Rafael',
+        'ru': 'Nikita',
+        'zh': 'Wei',
+        'ja(ro)': 'Ren',
+        'ko': 'Minjun',
+        'nl': 'Daan',
+        'tr': 'Emre'
+    };
+
+    function displaySender(rawSender) {
+        if (rawSender.startsWith('User_')) {
+            return 'you';
+        }
+        if (rawSender.startsWith('AI_Bot')) {
+            return aiNamesByLanguage[targetLanguage] || 'Alex';
+        }
+        if (rawSender.startsWith('Arbitre')) {
+            return refereeNamesByLanguage[targetLanguage] || 'Sam';
+        }
+        return rawSender;
+    }
 
     function setSpriteFrame(frameIndex) {
         // 3 x 3 grid: frames go left-to-right, top-to-bottom
@@ -140,12 +243,17 @@
                 data.messages.forEach(msg => {
                     const msgDiv = document.createElement('div');
                     msgDiv.className = 'chat-message';
-                    const time = new Date(msg.timestamp).toLocaleTimeString();
-                    msgDiv.innerHTML = `
-                        <span class="time">${time}</span>
-                        <span class="sender">${msg.sender}:</span>
-                        <span class="text">${msg.message}</span>
-                    `;
+
+                    const senderSpan = document.createElement('span');
+                    senderSpan.className = 'sender';
+                    senderSpan.textContent = `${displaySender(msg.sender)}: `;
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'text';
+                    textSpan.textContent = msg.message;
+
+                    msgDiv.appendChild(senderSpan);
+                    msgDiv.appendChild(textSpan);
                     chatMessages.appendChild(msgDiv);
                 });
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -165,6 +273,8 @@
                 if (isNewLatestMessage) {
                     if (latestMessage.sender.startsWith('Arbitre')) {
                         setChatVisualState('win', 5000);
+                        const latestMessageElement = chatMessages.lastElementChild;
+                        triggerCoinAnimation(latestMessageElement || chatMessages);
                         setTimeout(() => {
                             setChatVisualState('waitingInput');
                         }, 5000);
@@ -225,6 +335,7 @@
     });
 
     // Initial fetch and poll every 3 seconds
+    renderCoinCount();
     initializeChatSprite();
     fetchMessages();
     setInterval(fetchMessages, 3000);

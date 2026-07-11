@@ -65,6 +65,7 @@
             const selectedOriginalLanguage = originalLanguageSelect.value;
             const targetUrl = new URL(link.href, window.location.origin);
             targetUrl.searchParams.set('original_language', selectedOriginalLanguage);
+            targetUrl.searchParams.set('new_game', '1');
             window.location.href = targetUrl.toString();
         });
     });
