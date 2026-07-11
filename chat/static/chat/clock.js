@@ -42,6 +42,3 @@ function initializeClock(id, endtime){
 window.restartRoundTimer = function() {
     initializeClock('clockdiv', roundSeconds);
 };
-
-nextWord();
-window.restartRoundTimer();

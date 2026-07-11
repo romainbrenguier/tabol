@@ -4,7 +4,7 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
     <meta charset="utf-8">
-    <title>Tabol - {{ display_name }}</title>
+    <title>LingoRail - {{ display_name }}</title>
 </head>
 <body>
 
@@ -354,6 +354,79 @@
         console.log("nextWord called");
     };
 
+    let fallbackTimerId = null;
+
+    function stopFallbackTimer() {
+        if (fallbackTimerId) {
+            clearInterval(fallbackTimerId);
+            fallbackTimerId = null;
+        }
+    }
+
+    function startFallbackTimer(seconds) {
+        stopFallbackTimer();
+
+        const clock = document.getElementById('clockdiv');
+        if (!clock) {
+            return;
+        }
+
+        let remaining = Number(seconds || window.ROUND_SECONDS || 100);
+        clock.textContent = `${remaining} sec.`;
+
+        fallbackTimerId = setInterval(() => {
+            remaining -= 1;
+            clock.textContent = `${remaining} sec.`;
+            if (remaining < 0) {
+                stopFallbackTimer();
+                const coins = typeof window.getCoinCount === 'function' ? window.getCoinCount() : 0;
+                const targetMessage = String(window.TIMEOUT_MESSAGE_TARGET || 'Time is up. You collected {coins} coin(s).').replace('{coins}', String(coins));
+                const originalMessage = String(window.TIMEOUT_MESSAGE_ORIGINAL || targetMessage).replace('{coins}', String(coins));
+                alert(targetMessage + '\n(' + originalMessage + ')');
+                window.location.href = window.LANDING_PAGE_URL || '/';
+            }
+        }, 1000);
+    }
+
+    function ensureTimerStarted() {
+        const seconds = Number(window.ROUND_SECONDS || 100);
+        if (typeof window.restartRoundTimer === 'function') {
+            stopFallbackTimer();
+            window.restartRoundTimer();
+
+            // If the primary timer is stuck, automatically switch to fallback.
+            const clock = document.getElementById('clockdiv');
+            const snapshot = clock ? clock.textContent : '';
+            setTimeout(() => {
+                if (!clock || typeof window.restartRoundTimer !== 'function') {
+                    return;
+                }
+                if (clock.textContent === snapshot) {
+                    startFallbackTimer(seconds);
+                }
+            }, 2200);
+            return;
+        }
+
+        startFallbackTimer(seconds);
+
+        // Retry shortly in case clock.js becomes available.
+        setTimeout(() => {
+            if (typeof window.restartRoundTimer === 'function') {
+                ensureTimerStarted();
+            }
+        }, 120);
+    }
+
+    function startRoundLocally() {
+        originalNextWord();
+        ensureTimerStarted();
+    }
+
+    function changeWordOnly() {
+        originalNextWord();
+    }
+
     window.nextWord = function() {
         fetch('{% url "reset_history" %}', {
             method: 'POST',
@@ -363,15 +436,21 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
-                fetchMessages();
-                originalNextWord();
-                if (typeof window.restartRoundTimer === 'function') {
-                    window.restartRoundTimer();
-                }
+            if (data.status !== 'success') {
+                console.warn('reset_history returned non-success status');
             }
+        })
+        .catch(() => {
+            console.warn('reset_history request failed');
+        })
+        .finally(() => {
+            fetchMessages();
+            changeWordOnly();
         });
     };
+
+    // Start the first round immediately on entering the game page.
+    startRoundLocally();
 </script>
 
 </body>
