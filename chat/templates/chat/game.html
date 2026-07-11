@@ -4,17 +4,32 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
     <meta charset="utf-8">
-    <title>Tabol - {{ display_name }}</title>
+    <title>LingoRail - {{ display_name }}</title>
 </head>
 <body>
 
 <div id="head">
     <div id="nextbutton">
         <button onclick="nextWord()">Next</button>
-        <button onclick="initializeClock('clockdiv',100)">Start</button>
+    </div>
+    <div style="font-size: 0.95em; color: #4f4f4f; margin: 6px 0 8px;">
+        Difficulté:
+        <b>
+            {% if difficulty == 'easy' %}
+                Facile
+            {% elif difficulty == 'hard' %}
+                Difficile
+            {% else %}
+                Normal
+            {% endif %}
+        </b>
     </div>
     <div id="word"> ... </div>
     <div id="clockdiv"> Start </div>
+    <div id="coin-counter" aria-live="polite" aria-label="Compteur de pieces">
+        <span class="coin-icon" aria-hidden="true">🪙</span>
+        <span id="coin-count">0</span>
+    </div>
 </div>
 
 <div class="vocab-container">
@@ -32,6 +47,12 @@
 {% endfor %}
 
 <div id="chat-container">
+    <div id="chat-visual">
+        <div id="chat-visual-label">Etat: attente</div>
+        <div id="chat-sprite" aria-hidden="true">
+            <img id="chat-sprite-image" src="{{ chat_sprite_url }}" alt="sprite langue">
+        </div>
+    </div>
     <div id="chat-header">Chat</div>
     <div id="chat-messages"></div>
     <div id="chat-input-area">
@@ -41,11 +62,181 @@
 </div>
 </div>
 
+{{ game_words|json_script:"game-words-data" }}
+<script>
+    window.GAME_WORDS = JSON.parse(document.getElementById('game-words-data').textContent);
+    window.ROUND_SECONDS = 100;
+    window.LANDING_PAGE_URL = "{% url 'index' %}";
+    window.TIMEOUT_MESSAGE_TARGET = "{{ timeout_message_target|escapejs }}";
+    window.TIMEOUT_MESSAGE_ORIGINAL = "{{ timeout_message_original|escapejs }}";
+    window.getCoinCount = function() {
+        return Number(localStorage.getItem('tabolCoinCount') || 0);
+    };
+
+</script>
 <script src="{% static 'chat/clock.js' %}"></script>
 <script>
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
+    const chatSprite = document.getElementById('chat-sprite');
+    const chatSpriteImage = document.getElementById('chat-sprite-image');
+    const chatVisualLabel = document.getElementById('chat-visual-label');
+    const coinCounter = document.getElementById('coin-counter');
+    const coinCountElement = document.getElementById('coin-count');
+
+    const chatStates = {
+        waitingInput: { frame: 0, label: 'attente saisie' },
+        userMessageReceived: { frame: 4, label: 'message utilisateur recu' },
+        aiReply: { frame: 1, label: 'reponse IA' },
+        waitTenSeconds: { frame: 5, label: 'pause 10 sec' },
+        win: { frame: 8, label: 'mot trouve' }
+    };
+
+    let latestMessageSignature = null;
+    let forcedStateUntil = 0;
+    let coinCount = Number(localStorage.getItem('tabolCoinCount') || 0);
+    const targetLanguage = '{{ target_language }}';
+
+    function renderCoinCount() {
+        coinCountElement.textContent = String(coinCount);
+    }
+
+    function incrementCoinCount() {
+        coinCount += 1;
+        localStorage.setItem('tabolCoinCount', String(coinCount));
+        renderCoinCount();
+    }
+
+    function triggerCoinAnimation(originElement) {
+        if (!coinCounter || !originElement) {
+            incrementCoinCount();
+            return;
+        }
+
+        const originRect = originElement.getBoundingClientRect();
+        const targetRect = coinCounter.getBoundingClientRect();
+
+        const coin = document.createElement('div');
+        coin.className = 'flying-coin';
+        coin.textContent = '🪙';
+        coin.style.left = `${originRect.left + originRect.width / 2}px`;
+        coin.style.top = `${originRect.top + originRect.height / 2}px`;
+        document.body.appendChild(coin);
+
+        const deltaX = targetRect.left + targetRect.width / 2 - (originRect.left + originRect.width / 2);
+        const deltaY = targetRect.top + targetRect.height / 2 - (originRect.top + originRect.height / 2);
+
+        requestAnimationFrame(() => {
+            coin.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.6)`;
+            coin.style.opacity = '0.2';
+        });
+
+        const onCoinAnimationEnd = function() {
+            incrementCoinCount();
+            coinCounter.classList.add('coin-pop');
+            setTimeout(() => coinCounter.classList.remove('coin-pop'), 220);
+            coin.removeEventListener('transitionend', onCoinAnimationEnd);
+            coin.remove();
+        };
+
+        coin.addEventListener('transitionend', onCoinAnimationEnd);
+
+        // Fallback in case transitionend is not fired.
+        setTimeout(() => {
+            if (coin.isConnected) {
+                onCoinAnimationEnd();
+            }
+        }, 820);
+    }
+
+    const aiNamesByLanguage = {
+        'en': 'Olivia',
+        'es': 'Sofia',
+        'fr': 'Camille',
+        'de': 'Lena',
+        'it': 'Giulia',
+        'pt': 'Beatriz',
+        'ru': 'Anya',
+        'zh': 'Mei',
+        'ja(ro)': 'Hana',
+        'ko': 'Jiyeon',
+        'nl': 'Noor',
+        'tr': 'Defne'
+    };
+
+    const refereeNamesByLanguage = {
+        'en': 'Ethan',
+        'es': 'Diego',
+        'fr': 'Jules',
+        'de': 'Felix',
+        'it': 'Luca',
+        'pt': 'Rafael',
+        'ru': 'Nikita',
+        'zh': 'Wei',
+        'ja(ro)': 'Ren',
+        'ko': 'Minjun',
+        'nl': 'Daan',
+        'tr': 'Emre'
+    };
+
+    function displaySender(rawSender) {
+        if (rawSender.startsWith('User_')) {
+            return 'you';
+        }
+        if (rawSender.startsWith('AI_Bot')) {
+            return aiNamesByLanguage[targetLanguage] || 'Alex';
+        }
+        if (rawSender.startsWith('Arbitre')) {
+            return refereeNamesByLanguage[targetLanguage] || 'Sam';
+        }
+        return rawSender;
+    }
+
+    function setSpriteFrame(frameIndex) {
+        // 3 x 3 grid: frames go left-to-right, top-to-bottom
+        const safeFrame = Math.max(0, Math.min(8, frameIndex));
+        const column = safeFrame % 3;
+        const row = Math.floor(safeFrame / 3);
+        chatSpriteImage.style.transform = `translate(-${column * 33.333333}%, -${row * 33.333333}%)`;
+    }
+
+    function setChatVisualState(stateName, holdMs = 0) {
+        const state = chatStates[stateName] || chatStates.waitingInput;
+        setSpriteFrame(state.frame);
+        chatVisualLabel.textContent = `Etat: ${state.label}`;
+        if (holdMs > 0) {
+            forcedStateUntil = Date.now() + holdMs;
+        }
+    }
+
+    function initializeChatSprite() {
+        function applySpriteAspectRatio() {
+            const frameWidth = chatSpriteImage.naturalWidth / 3;
+            const frameHeight = chatSpriteImage.naturalHeight / 3;
+            if (frameWidth > 0 && frameHeight > 0) {
+                chatSprite.style.aspectRatio = `${frameWidth} / ${frameHeight}`;
+            }
+        }
+
+        if (chatSpriteImage.complete && chatSpriteImage.naturalWidth > 0) {
+            applySpriteAspectRatio();
+            chatSpriteImage.style.display = 'block';
+            setChatVisualState('waitingInput');
+            return;
+        }
+
+        chatSpriteImage.onload = function() {
+            applySpriteAspectRatio();
+            chatSpriteImage.style.display = 'block';
+            setChatVisualState('waitingInput');
+        };
+        chatSpriteImage.onerror = function() {
+            chatSpriteImage.style.display = 'none';
+            chatSprite.style.backgroundColor = '#3b2a2a';
+            chatVisualLabel.textContent = 'Etat: image introuvable';
+        };
+    }
 
     // Generate a simple anonymous ID for the session
     const senderId = 'User_' + Math.floor(Math.random() * 1000);
@@ -58,15 +249,67 @@
                 data.messages.forEach(msg => {
                     const msgDiv = document.createElement('div');
                     msgDiv.className = 'chat-message';
-                    const time = new Date(msg.timestamp).toLocaleTimeString();
-                    msgDiv.innerHTML = `
-                        <span class="time">${time}</span>
-                        <span class="sender">${msg.sender}:</span>
-                        <span class="text">${msg.message}</span>
-                    `;
+
+                    const senderSpan = document.createElement('span');
+                    senderSpan.className = 'sender';
+                    senderSpan.textContent = `${displaySender(msg.sender)}: `;
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'text';
+                    textSpan.textContent = msg.message;
+
+                    msgDiv.appendChild(senderSpan);
+                    msgDiv.appendChild(textSpan);
                     chatMessages.appendChild(msgDiv);
                 });
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                if (data.messages.length === 0) {
+                    if (Date.now() > forcedStateUntil) {
+                        setChatVisualState('waitingInput');
+                    }
+                    latestMessageSignature = null;
+                    return;
+                }
+
+                const latestMessage = data.messages[data.messages.length - 1];
+                const signature = `${latestMessage.sender}|${latestMessage.timestamp}|${latestMessage.message}`;
+                const isNewLatestMessage = signature !== latestMessageSignature;
+
+                if (isNewLatestMessage) {
+                    if (latestMessage.sender.startsWith('Arbitre')) {
+                        setChatVisualState('win', 5000);
+                        const latestMessageElement = chatMessages.lastElementChild;
+                        triggerCoinAnimation(latestMessageElement || chatMessages);
+                        setTimeout(() => {
+                            window.nextWord();
+                        }, 1200);
+                        setTimeout(() => {
+                            setChatVisualState('waitingInput');
+                        }, 5000);
+                    } else if (latestMessage.sender.startsWith('AI_Bot')) {
+                        setChatVisualState('aiReply', 2000);
+                        setTimeout(() => {
+                            setChatVisualState('waitTenSeconds', 10000);
+                            setTimeout(() => {
+                                setChatVisualState('waitingInput');
+                            }, 10000);
+                        }, 2000);
+                    } else if (latestMessage.sender.startsWith('User_')) {
+                        setChatVisualState('userMessageReceived', 1200);
+                        setTimeout(() => {
+                            if (Date.now() > forcedStateUntil) {
+                                setChatVisualState('waitingInput');
+                            }
+                        }, 1200);
+                    }
+                    latestMessageSignature = signature;
+                    return;
+                }
+
+                if (Date.now() > forcedStateUntil) {
+                    setChatVisualState('waitingInput');
+                }
             });
     }
 
@@ -83,7 +326,9 @@
             body: JSON.stringify({
                 sender: senderId,
                 message: message,
-                language: '{{ display_name|lower }}'
+                target_language: '{{ target_language }}',
+                original_language: '{{ original_language }}',
+                word_to_guess: document.getElementById('word').textContent.trim().toLowerCase()
             })
         })
         .then(response => response.json())
@@ -99,13 +344,86 @@
     });
 
     // Initial fetch and poll every 3 seconds
+    renderCoinCount();
+    initializeChatSprite();
     fetchMessages();
     setInterval(fetchMessages, 3000);
 
     // Redefine nextWord to also reset history
-    const originalNextWord = typeof nextWord !== 'undefined' ? nextWord : function() {
-        console.log("nextWord called");
-    };
+    const originalNextWord = typeof nextWord !== 'undefined' ? nextWord : function() {};
+
+    let fallbackTimerId = null;
+
+    function stopFallbackTimer() {
+        if (fallbackTimerId) {
+            clearInterval(fallbackTimerId);
+            fallbackTimerId = null;
+        }
+    }
+
+    function startFallbackTimer(seconds) {
+        stopFallbackTimer();
+
+        const clock = document.getElementById('clockdiv');
+        if (!clock) {
+            return;
+        }
+
+        let remaining = Number(seconds || window.ROUND_SECONDS || 100);
+        clock.textContent = `${remaining} sec.`;
+
+        fallbackTimerId = setInterval(() => {
+            remaining -= 1;
+            clock.textContent = `${remaining} sec.`;
+            if (remaining < 0) {
+                stopFallbackTimer();
+                const coins = typeof window.getCoinCount === 'function' ? window.getCoinCount() : 0;
+                const targetMessage = String(window.TIMEOUT_MESSAGE_TARGET || 'Time is up. You collected {coins} coin(s).').replace('{coins}', String(coins));
+                const originalMessage = String(window.TIMEOUT_MESSAGE_ORIGINAL || targetMessage).replace('{coins}', String(coins));
+                alert(targetMessage + '\n(' + originalMessage + ')');
+                window.location.href = window.LANDING_PAGE_URL || '/';
+            }
+        }, 1000);
+    }
+
+    function ensureTimerStarted() {
+        const seconds = Number(window.ROUND_SECONDS || 100);
+        if (typeof window.restartRoundTimer === 'function') {
+            stopFallbackTimer();
+            window.restartRoundTimer();
+
+            // If the primary timer is stuck, automatically switch to fallback.
+            const clock = document.getElementById('clockdiv');
+            const snapshot = clock ? clock.textContent : '';
+            setTimeout(() => {
+                if (!clock || typeof window.restartRoundTimer !== 'function') {
+                    return;
+                }
+                if (clock.textContent === snapshot) {
+                    startFallbackTimer(seconds);
+                }
+            }, 2200);
+            return;
+        }
+
+        startFallbackTimer(seconds);
+
+        // Retry shortly in case clock.js becomes available.
+        setTimeout(() => {
+            if (typeof window.restartRoundTimer === 'function') {
+                ensureTimerStarted();
+            }
+        }, 120);
+    }
+
+    function startRoundLocally() {
+        originalNextWord();
+        ensureTimerStarted();
+    }
+
+    function changeWordOnly() {
+        originalNextWord();
+    }
 
     window.nextWord = function() {
         fetch('{% url "reset_history" %}', {
@@ -115,13 +433,15 @@
             }
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                fetchMessages();
-                originalNextWord();
-            }
+        .catch(() => {})
+        .finally(() => {
+            fetchMessages();
+            changeWordOnly();
         });
     };
+
+    // Start the first round immediately on entering the game page.
+    startRoundLocally();
 </script>
 
 </body>
