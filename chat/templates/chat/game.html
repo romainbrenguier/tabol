@@ -11,7 +11,6 @@
 <div id="head">
     <div id="nextbutton">
         <button onclick="nextWord()">Next</button>
-        <button onclick="initializeClock('clockdiv',100)">Start</button>
     </div>
     <div style="font-size: 0.95em; color: #4f4f4f; margin: 6px 0 8px;">
         Difficulté:
@@ -66,6 +65,13 @@
 {{ game_words|json_script:"game-words-data" }}
 <script>
     window.GAME_WORDS = JSON.parse(document.getElementById('game-words-data').textContent);
+    window.ROUND_SECONDS = 100;
+    window.LANDING_PAGE_URL = "{% url 'index' %}";
+    window.TIMEOUT_MESSAGE_TARGET = "{{ timeout_message_target|escapejs }}";
+    window.TIMEOUT_MESSAGE_ORIGINAL = "{{ timeout_message_original|escapejs }}";
+    window.getCoinCount = function() {
+        return Number(localStorage.getItem('tabolCoinCount') || 0);
+    };
 
 </script>
 <script src="{% static 'chat/clock.js' %}"></script>
@@ -276,6 +282,9 @@
                         const latestMessageElement = chatMessages.lastElementChild;
                         triggerCoinAnimation(latestMessageElement || chatMessages);
                         setTimeout(() => {
+                            window.nextWord();
+                        }, 1200);
+                        setTimeout(() => {
                             setChatVisualState('waitingInput');
                         }, 5000);
                     } else if (latestMessage.sender.startsWith('AI_Bot')) {
@@ -357,6 +366,9 @@
             if (data.status === 'success') {
                 fetchMessages();
                 originalNextWord();
+                if (typeof window.restartRoundTimer === 'function') {
+                    window.restartRoundTimer();
+                }
             }
         });
     };

@@ -9,5 +9,6 @@ dependencies = [
     "django>=6.0.6",
     "dspy-ai>=3.2.1",
     "python-dotenv>=1.2.2",
+    "pyyaml>=6.0.3",
     "whitenoise>=6.12.0",
 ]

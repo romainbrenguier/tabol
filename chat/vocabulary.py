@@ -520,10 +520,6 @@ TIME_STATE_HINTS = {
 
 CATEGORY_MERGE_TARGETS = {
     "Divers": "Modaux & Phrases",
-    "Interrogations": "Modaux & Phrases",
-    "Connecteurs": "Modaux & Phrases",
-    "Lieux": "Maison & Ville",
-    "Pronoms": "Modaux & Phrases",
 }
 
 PROTECTED_CATEGORIES_FROM_MERGE = {
@@ -532,10 +528,14 @@ PROTECTED_CATEGORIES_FROM_MERGE = {
     "Adjectifs d'état",
     "Adjectifs de description",
     "Couleurs & Taille",
+    "Interrogations",
+    "Connecteurs",
+    "Lieux",
+    "Pronoms",
 }
 
 
-def _normalize_easy_category_name(category_name, original_word):
+def _normalize_easy_category_name_with_hints(category_name, original_word):
     normalized_word = _normalize_original(original_word)
 
     if normalized_word in CORE_MODAL_WORD_HINTS:
@@ -576,6 +576,36 @@ def _normalize_easy_category_name(category_name, original_word):
         return "Politesse"
 
     return category_name
+
+
+_JP_REFERENCE_CATEGORY_BY_WORD = None
+
+
+def _reference_category_for_word(normalized_word):
+    global _JP_REFERENCE_CATEGORY_BY_WORD
+    if _JP_REFERENCE_CATEGORY_BY_WORD is None:
+        reference_map = {}
+        for category in JAPANESE_DATA["categories"]:
+            category_name = category["name"]
+            for word in category["words"]:
+                key = _normalize_original(word.get("original", ""))
+                if not key:
+                    continue
+                reference_map.setdefault(
+                    key,
+                    _normalize_easy_category_name_with_hints(category_name, word.get("original", "")),
+                )
+        _JP_REFERENCE_CATEGORY_BY_WORD = reference_map
+
+    return _JP_REFERENCE_CATEGORY_BY_WORD.get(normalized_word)
+
+
+def _normalize_easy_category_name(category_name, original_word):
+    normalized_word = _normalize_original(original_word)
+    reference_category = _reference_category_for_word(normalized_word)
+    if reference_category:
+        return reference_category
+    return _normalize_easy_category_name_with_hints(category_name, original_word)
 
 
 def _normalized_easy_categories(categories):
@@ -1148,65 +1178,200 @@ ENGLISH_GUESS_WORDS = [
 ]
 
 
-def _translation_map_for_original_language(original_language):
-    if not original_language:
-        return {}
-
-    normalized = str(original_language).strip().lower()
-    vocab_key = ORIGINAL_LANGUAGE_TO_VOCAB_KEY.get(normalized)
-
-    if vocab_key is None:
-        return {}
-
-    language_data = VOCABULARY.get(vocab_key, {})
-    categories = language_data.get("categories", [])
-
-    translations = {}
-    for category in categories:
-        for word in category.get("words", []):
-            original = word.get("original", "")
-            translation = word.get("translation", "")
-            key = _normalize_original(original)
-            if key and translation and key not in translations:
-                translations[key] = translation
-
-    return translations
+def _dedupe_preserve_order(values):
+    seen = set()
+    ordered = []
+    for value in values:
+        key = _normalize_original(value)
+        if key in seen:
+            continue
+        seen.add(key)
+        ordered.append(value)
+    return ordered
 
 
-def _localized_guess_word(word, translation_map):
-    return translation_map.get(_normalize_original(word), word)
+# Single merged pool: keep words concrete/easy and avoid abstract hard words.
+CONCRETE_GUESS_WORDS = _dedupe_preserve_order(
+    ["grenouille", "ours", "chat", "chien", "bateau", "avion", "banane", "orange"]
+    + EASY_NOUN_GUESS_WORDS
+    + FUN_NOUN_GUESS_WORDS
+)
+
+
+# Keep only concrete English words (trim abstract tail), plus concrete replacements.
+ENGLISH_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "frog", "bear", "cat", "dog", "boat", "airplane", "banana", "orange",
+    "pizza", "hamburger", "sandwich", "croissant", "baguette", "candy", "sushi", "donut",
+    "ice cream", "chocolate", "cake", "popcorn", "taco", "avocado", "pineapple", "banana",
+    "fries", "cookie", "panda", "koala", "tiger", "zebra", "giraffe", "dolphin", "shark",
+    "octopus", "unicorn", "dragon", "robot", "astronaut", "pirate", "dinosaur", "ninja",
+    "wizard", "superhero", "treasure", "castle", "rocket", "volcano", "rainbow", "moon",
+    "star", "planet", "storm", "cloud", "mountain", "forest", "ocean", "island", "desert",
+    "jungle", "waterfall", "umbrella", "balloon", "guitar", "piano", "camera", "headphones",
+    "remote", "scooter", "skateboard", "roller skates", "slide", "kite", "trampoline", "puzzle",
+    "mask", "costume", "suitcase", "mirror", "light bulb", "key", "lock", "watch", "clock",
+    "scarf", "hat", "sock", "sandal", "belt", "cushion", "pillow", "mattress", "carpet",
+    "curtain", "closet", "drawer", "bridge", "tunnel", "lighthouse", "museum", "cinema",
+    "stadium", "statue", "taxi", "subway", "tram", "parking", "football", "basketball",
+    "tennis", "swimming", "song", "photo", "drawing", "painting", "toy", "doll", "gift",
+    "birthday", "vacation", "weekend", "compass", "binoculars", "hammer", "screwdriver", "pliers",
+    "lamp", "lantern", "candle", "match", "battery", "cable", "socket", "microphone", "speaker",
+    "projector", "printer", "keyboard", "mouse", "screen", "backpack", "bottle", "cup", "spoon",
+    "fork", "knife", "plate", "pan", "pot", "oven", "fridge", "freezer", "soap", "shampoo",
+    "brush", "comb", "towel", "passport", "ticket", "map", "path", "crossroad", "traffic",
+    "sidewalk", "building", "garden", "fountain", "library", "bookstore", "bakery", "pharmacy",
+    "hospital", "airport", "harbor", "engine", "motor", "wheel", "pedal", "battery pack",
+])
+
+
+GERMAN_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "frosch", "baer", "katze", "hund", "boot", "flugzeug", "banane", "orange", "pizza", "hamburger",
+    "sandwich", "croissant", "bonbon", "sushi", "donut", "eis", "schokolade", "kuchen", "popcorn", "taco",
+    "ananas", "keks", "panda", "koala", "tiger", "zebra", "giraffe", "delfin", "hai", "krake",
+    "einhorn", "drache", "roboter", "astronaut", "pirat", "dinosaurier", "ninja", "zauberer", "superheld", "schatz",
+    "schloss", "rakete", "vulkan", "regenbogen", "mond", "stern", "planet", "wolke", "berg", "wald",
+    "ozean", "insel", "wueste", "dschungel", "wasserfall", "regenschirm", "ballon", "gitarre", "klavier", "kamera",
+    "koffer", "spiegel", "schluessel", "uhr", "hut", "socke", "guertel", "kissen", "teppich", "bruecke",
+    "tunnel", "museum", "kino", "stadion", "statue", "taxi", "fussball", "basketball", "tennis", "foto",
+    "zeichnung", "spielzeug", "puppe", "geschenk", "kompass", "hammer", "schraubenzieher", "lampe", "kerze", "batterie",
+    "mikrofon", "lautsprecher", "rucksack", "flasche", "tasse", "loeffel", "gabel", "messer", "teller", "pfanne",
+    "topf", "ofen", "kuehlschrank", "seife", "shampoo", "buerste", "kamm", "handtuch", "pass", "ticket",
+    "karte", "garten", "bibliothek", "baeckerei", "apotheke", "krankenhaus", "flughafen", "hafen", "motor", "rad",
+])
+
+SPANISH_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "rana", "oso", "gato", "perro", "barco", "avion", "banana", "naranja", "pizza", "hamburguesa",
+    "sandwich", "croissant", "caramelo", "sushi", "dona", "helado", "chocolate", "pastel", "palomitas", "taco",
+    "pina", "galleta", "panda", "koala", "tigre", "cebra", "jirafa", "delfin", "tiburon", "pulpo",
+    "unicornio", "dragon", "robot", "astronauta", "pirata", "dinosaurio", "ninja", "mago", "superheroe", "tesoro",
+    "castillo", "cohete", "volcan", "arcoiris", "luna", "estrella", "planeta", "nube", "montana", "bosque",
+    "oceano", "isla", "desierto", "jungla", "cascada", "paraguas", "globo", "guitarra", "piano", "camara",
+    "maleta", "espejo", "llave", "reloj", "sombrero", "calcetin", "cinturon", "cojin", "alfombra", "puente",
+    "tunel", "museo", "cine", "estadio", "estatua", "taxi", "futbol", "baloncesto", "tenis", "foto",
+    "dibujo", "juguete", "muneca", "regalo", "brujula", "martillo", "destornillador", "lampara", "vela", "bateria",
+    "microfono", "altavoz", "mochila", "botella", "taza", "cuchara", "tenedor", "cuchillo", "plato", "sarten",
+    "olla", "horno", "nevera", "jabon", "champu", "cepillo", "peine", "toalla", "pasaporte", "billete",
+    "mapa", "jardin", "biblioteca", "panaderia", "farmacia", "hospital", "aeropuerto", "puerto", "motor", "rueda",
+])
+
+ITALIAN_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "rana", "orso", "gatto", "cane", "barca", "aereo", "banana", "arancia", "pizza", "hamburger",
+    "panino", "croissant", "caramella", "sushi", "donut", "gelato", "cioccolato", "torta", "popcorn", "taco",
+    "ananas", "biscotto", "panda", "koala", "tigre", "zebra", "giraffa", "delfino", "squalo", "polpo",
+    "unicorno", "drago", "robot", "astronauta", "pirata", "dinosauro", "ninja", "mago", "supereroe", "tesoro",
+    "castello", "razzo", "vulcano", "arcobaleno", "luna", "stella", "pianeta", "nuvola", "montagna", "foresta",
+    "oceano", "isola", "deserto", "giungla", "cascata", "ombrello", "palloncino", "chitarra", "pianoforte", "fotocamera",
+    "valigia", "specchio", "chiave", "orologio", "cappello", "calzino", "cintura", "cuscino", "tappeto", "ponte",
+    "tunnel", "museo", "cinema", "stadio", "statua", "taxi", "calcio", "pallacanestro", "tennis", "foto",
+    "disegno", "giocattolo", "bambola", "regalo", "bussola", "martello", "cacciavite", "lampada", "candela", "batteria",
+    "microfono", "altoparlante", "zaino", "bottiglia", "tazza", "cucchiaio", "forchetta", "coltello", "piatto", "padella",
+    "pentola", "forno", "frigorifero", "sapone", "shampoo", "spazzola", "pettine", "asciugamano", "passaporto", "biglietto",
+    "mappa", "giardino", "biblioteca", "panetteria", "farmacia", "ospedale", "aeroporto", "porto", "motore", "ruota",
+])
+
+DUTCH_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "kikker", "beer", "kat", "hond", "boot", "vliegtuig", "banaan", "sinaasappel", "pizza", "hamburger",
+    "sandwich", "croissant", "snoep", "sushi", "donut", "ijs", "chocolade", "taart", "popcorn", "taco",
+    "ananas", "koekje", "panda", "koala", "tijger", "zebra", "giraf", "dolfijn", "haai", "inktvis",
+    "eenhoorn", "draak", "robot", "astronaut", "piraat", "dinosaurus", "ninja", "tovenaar", "superheld", "schat",
+    "kasteel", "raket", "vulkaan", "regenboog", "maan", "ster", "planeet", "wolk", "berg", "bos",
+    "oceaan", "eiland", "woestijn", "jungle", "waterval", "paraplu", "ballon", "gitaar", "piano", "camera",
+    "koffer", "spiegel", "sleutel", "horloge", "hoed", "sok", "riem", "kussen", "tapijt", "brug",
+    "tunnel", "museum", "bioscoop", "stadion", "standbeeld", "taxi", "voetbal", "basketbal", "tennis", "foto",
+    "tekening", "speelgoed", "pop", "cadeau", "kompas", "hamer", "schroevendraaier", "lamp", "kaars", "batterij",
+    "microfoon", "luidspreker", "rugzak", "fles", "kop", "lepel", "vork", "mes", "bord", "pan",
+    "pot", "oven", "koelkast", "zeep", "shampoo", "borstel", "kam", "handdoek", "paspoort", "ticket",
+    "kaart", "tuin", "bibliotheek", "bakkerij", "apotheek", "ziekenhuis", "luchthaven", "haven", "motor", "wiel",
+])
+
+TURKISH_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "kurbaga", "ayi", "kedi", "kopek", "tekne", "ucak", "muz", "portakal", "pizza", "hamburger",
+    "sandvic", "kruvasan", "seker", "sushi", "donut", "dondurma", "cikolata", "pasta", "patlamis misir", "taco",
+    "ananas", "kurabiye", "panda", "koala", "kaplan", "zebra", "zurafa", "yunus", "kopekbaligi", "ahtapot",
+    "tekboynuz", "ejderha", "robot", "astronot", "korsan", "dinozor", "ninja", "buyucu", "super kahraman", "hazine",
+    "sato", "roket", "volkan", "gokkusagi", "ay", "yildiz", "gezegen", "bulut", "dag", "orman",
+    "okyanus", "ada", "col", "jungla", "selale", "semsiye", "balon", "gitar", "piyano", "kamera",
+    "valiz", "ayna", "anahtar", "saat", "sapka", "corap", "kemer", "yastik", "hali", "kopru",
+    "tunel", "muze", "sinema", "stadyum", "heykel", "taksi", "futbol", "basketbol", "tenis", "fotograf",
+    "cizim", "oyuncak", "bebek", "hediye", "pusula", "cekic", "tornavida", "lamba", "mum", "pil",
+    "mikrofon", "hoparlor", "sirt cantasi", "sise", "fincan", "kasik", "catal", "bicak", "tabak", "tava",
+    "tencere", "firin", "buzdolabi", "sabun", "sampuan", "firca", "tarak", "havlu", "pasaport", "bilet",
+    "harita", "bahce", "kutuphane", "pastane", "eczane", "hastane", "havalimani", "liman", "motor", "tekerlek",
+])
+
+JAPANESE_ROMAJI_CONCRETE_GUESS_WORDS = _dedupe_preserve_order([
+    "kaeru", "kuma", "neko", "inu", "fune", "hikooki", "banana", "orenji", "pizza", "hamburger",
+    "sandoicchi", "kurowassan", "ame", "sushi", "donatsu", "aisukurimu", "chokoreeto", "keeki", "poppukoon", "takosu",
+    "ananasu", "kukkii", "panda", "koara", "tora", "zebra", "kirin", "iruka", "same", "tako",
+    "yunikoon", "doragon", "robotto", "asutoronauto", "kaizoku", "kyooryuu", "ninja", "majutsushi", "suupaa hiiroo", "takara",
+    "shiro", "roketto", "kazan", "niji", "tsuki", "hoshi", "wakusei", "kumo", "yama", "mori",
+    "umi", "shima", "sabaku", "jyanguru", "taki", "kasa", "fuusen", "gitaa", "piano", "kamera",
+    "suutukeesu", "kagami", "kagi", "tokei", "booshi", "kutsushita", "beruto", "kusshon", "juutan", "hashi",
+    "tonneru", "hakubutsukan", "eigakan", "sutajiamu", "zou", "takushii", "sakaa booru", "basuketto booru", "tenisu", "shashin",
+    "e", "omocha", "ningyoo", "purezento", "rashinban", "kanazuchi", "doraibaa", "ranpu", "roosoku", "denchi",
+    "maiku", "supiikaa", "ryukkusakku", "botoru", "kappu", "supuun", "fooku", "naifu", "osara", "furai pan",
+    "nabe", "oobun", "reizooko", "sekken", "shanpuu", "burashi", "kushi", "taoru", "pasupooto", "chiketto",
+    "chizu", "niwa", "toshokan", "panya", "yakkyoku", "byooin", "kuukoo", "minato", "enjin", "sharin",
+])
+
+
+LANGUAGE_CONCRETE_GUESS_POOLS = {
+    "fr": CONCRETE_GUESS_WORDS,
+    "french": CONCRETE_GUESS_WORDS,
+    "en": ENGLISH_CONCRETE_GUESS_WORDS,
+    "english": ENGLISH_CONCRETE_GUESS_WORDS,
+    "de": GERMAN_CONCRETE_GUESS_WORDS,
+    "german": GERMAN_CONCRETE_GUESS_WORDS,
+    "es": SPANISH_CONCRETE_GUESS_WORDS,
+    "spanish": SPANISH_CONCRETE_GUESS_WORDS,
+    "it": ITALIAN_CONCRETE_GUESS_WORDS,
+    "italian": ITALIAN_CONCRETE_GUESS_WORDS,
+    "nl": DUTCH_CONCRETE_GUESS_WORDS,
+    "dutch": DUTCH_CONCRETE_GUESS_WORDS,
+    "tr": TURKISH_CONCRETE_GUESS_WORDS,
+    "turkish": TURKISH_CONCRETE_GUESS_WORDS,
+    "ja(ro)": JAPANESE_ROMAJI_CONCRETE_GUESS_WORDS,
+    "japanese": JAPANESE_ROMAJI_CONCRETE_GUESS_WORDS,
+}
+
+
+VERB_LIKE_GUESS_WORDS = {
+    "aller", "venir", "manger", "boire", "parler", "comprendre", "apprendre",
+    "travailler", "dormir", "ecrire", "lire", "marcher", "courir", "faire",
+    "donner", "prendre", "chercher", "trouver", "payer", "aimer", "pouvoir",
+    "to go", "to come", "to eat", "to drink", "to speak", "to understand",
+    "to learn", "to work", "to sleep", "to write", "to read", "to walk",
+    "to run", "to do", "to give", "to take", "to search", "to find", "to pay",
+}
+
+
+def _is_preferred_guess_word(word):
+    key = _normalize_original(word)
+    if not _is_guessable_word(word):
+        return False
+    if key in VERB_LIKE_GUESS_WORDS:
+        return False
+    if key.startswith("je "):
+        return False
+    return True
 
 
 def get_guess_words(categories, difficulty="normal", original_language="fr"):
     normalized_original_language = str(original_language).strip().lower() if original_language else ""
+    priority_words = LANGUAGE_CONCRETE_GUESS_POOLS.get(
+        normalized_original_language,
+        CONCRETE_GUESS_WORDS,
+    )
 
-    if normalized_original_language in {"en", "english"}:
-        difficulty_guess_pools = {
-            "easy": (ENGLISH_GUESS_WORDS, 75),
-            "normal": (ENGLISH_GUESS_WORDS, 130),
-            "hard": (ENGLISH_GUESS_WORDS, 160),
-        }
-    else:
-        difficulty_guess_pools = {
-            # Easy words can often be described with 1-2 vocabulary words.
-            "easy": (EASY_NOUN_GUESS_WORDS + EASY_EXTRA_GUESS_WORDS, 75),
-            # Normal words usually need around 2-4 vocabulary words.
-            "normal": (FUN_NOUN_GUESS_WORDS + NORMAL_EXTRA_GUESS_WORDS, 130),
-            # Hard words often require 4+ vocabulary words or abstract explanations.
-            "hard": (HARD_GUESS_WORDS + FUN_NOUN_GUESS_WORDS + NORMAL_EXTRA_GUESS_WORDS, 160),
-        }
-
-    if difficulty not in difficulty_guess_pools:
-        difficulty = "normal"
-
-    priority_words, target_count = difficulty_guess_pools[difficulty]
-    translation_map = _translation_map_for_original_language(original_language)
-    translation_required = ORIGINAL_LANGUAGE_TO_VOCAB_KEY.get(normalized_original_language) is not None
+    # Difficulty is intentionally ignored: one merged easy/concrete list for all modes.
+    target_count = 130
 
     vocab_keys = set()
+    vocab_translation_keys = set()
     for category in categories:
         for word in category["words"]:
-            vocab_keys.add(_normalize_original(word["original"]))
+            vocab_keys.add(_normalize_original(word.get("original", "")))
+            vocab_translation_keys.add(_normalize_original(word.get("translation", "")))
 
     selected_words = []
     selected_keys = set()
@@ -1215,29 +1380,17 @@ def get_guess_words(categories, difficulty="normal", original_language="fr"):
         key = _normalize_original(candidate)
         if key in selected_keys:
             continue
-        if not translation_required and key in vocab_keys:
+        if key in vocab_keys:
             continue
-        if not _is_guessable_word(candidate):
+        if key in vocab_translation_keys:
             continue
-        if translation_required and key not in translation_map:
+        if not _is_preferred_guess_word(candidate):
             continue
 
-        selected_words.append(_localized_guess_word(candidate, translation_map))
+        selected_words.append(candidate)
         selected_keys.add(key)
         if len(selected_words) >= target_count:
             break
-
-    if translation_required and len(selected_words) < target_count:
-        for original, translated in translation_map.items():
-            if original in selected_keys:
-                continue
-            if not _is_guessable_word(original):
-                continue
-
-            selected_words.append(translated)
-            selected_keys.add(original)
-            if len(selected_words) >= target_count:
-                break
 
     return selected_words
 

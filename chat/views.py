@@ -46,13 +46,28 @@ LANGUAGE_FLAGS = {
     'italian': '🇮🇹',
 }
 
+LANGUAGE_DISPLAY_NAMES = {
+    Language.ENGLISH: 'English',
+    Language.SPANISH: 'Spanish',
+    Language.FRENCH: 'French',
+    Language.GERMAN: 'German',
+    Language.ITALIAN: 'Italian',
+    Language.PORTUGUESE: 'Portuguese',
+    Language.RUSSIAN: 'Russian',
+    Language.CHINESE: 'Chinese',
+    Language.JAPANESE_ROMAJI: 'Japanese (Romaji)',
+    Language.KOREAN: 'Korean',
+    Language.DUTCH: 'Dutch',
+    Language.TURKISH: 'Turkish',
+}
+
 
 def game_view(request, lang_code='japanese'):
     if lang_code not in VOCABULARY:
         raise Http404("Language not found")
 
     if request.GET.get('new_game') == '1':
-        history.clear()
+        _clear_history(request)
         ChatMessage.objects.all().delete()
 
     target_language = _coerce_language(lang_code)
@@ -60,9 +75,11 @@ def game_view(request, lang_code='japanese'):
     if target_language is None or original_language is None:
         return redirect('index')
 
-    difficulty = request.GET.get('difficulty', 'normal').lower()
+    _ensure_welcome_message(target_language, original_language)
+
+    difficulty = request.GET.get('difficulty', 'easy').lower()
     if difficulty not in ('easy', 'normal', 'hard'):
-        difficulty = 'normal'
+        difficulty = 'easy'
 
     lang_data = get_language_data(lang_code)
     categories = lang_data['categories']
@@ -96,12 +113,17 @@ def game_view(request, lang_code='japanese'):
         'italian': 'Italian.png',
     }
     sprite_filename = sprite_filename_by_language.get(lang_code, 'Japanese.png')
+    target_language_name = _language_display_name(target_language)
+    timeout_message_target = TIME_UP_MESSAGE[target_language] % target_language_name
+    timeout_message_original = TIME_UP_MESSAGE[original_language] % target_language_name
 
     context = {
         'lang_code': lang_code,
         'display_name': lang_data['display_name'],
         'target_language': target_language.value,
         'original_language': original_language.value,
+        'timeout_message_target': timeout_message_target,
+        'timeout_message_original': timeout_message_original,
         'categories': categories,
         'category_columns': columns,
         'difficulty': difficulty,
@@ -128,8 +150,26 @@ def index_view(request):
         })
     return render(request, 'chat/index.html', {'languages': languages})
 
-# TODO : this shouldn’t be static
-history: list[str] = []
+
+HISTORY_SESSION_KEY = 'chat_history'
+
+
+def _get_history(request) -> list[str]:
+    history = request.session.get(HISTORY_SESSION_KEY, [])
+    if isinstance(history, list):
+        return history
+    return []
+
+
+def _set_history(request, history: list[str]) -> None:
+    request.session[HISTORY_SESSION_KEY] = history
+    request.session.modified = True
+
+
+def _clear_history(request) -> None:
+    if HISTORY_SESSION_KEY in request.session:
+        del request.session[HISTORY_SESSION_KEY]
+        request.session.modified = True
 
 
 def _normalize_for_match(value: str) -> str:
@@ -187,12 +227,65 @@ def _coerce_language(value) -> Language:
 
     return None
 
+
+def _language_display_name(value) -> str:
+    language = _coerce_language(value)
+    if language is not None:
+        return LANGUAGE_DISPLAY_NAMES.get(language, language.name.replace('_', ' ').title())
+    if isinstance(value, str):
+        return value.strip() or 'Unknown language'
+    return 'Unknown language'
+
+
+def _ensure_welcome_message(target_language: Language, original_language: Language) -> None:
+    # Only seed the welcome text when chat is empty to avoid duplicates on refresh.
+    if ChatMessage.objects.exists():
+        return
+
+    target_param = _language_display_name(target_language)
+    target_text = WELCOME_MESSAGE[target_language] % target_param
+    original_text = WELCOME_MESSAGE[original_language] % target_param
+
+    ChatMessage.objects.create(
+        sender="AI_Bot",
+        message=f"{target_text}\n({original_text})",
+    )
+
 def reset_history(request):
     if request.method == 'POST':
-        history.clear()
-        ChatMessage.objects.all().delete()
+        _clear_history(request)
         return JsonResponse({'status': 'success'})
     return JsonResponse({'error': 'Invalid method'}, status=405)
+
+WELCOME_MESSAGE = {
+    Language.ENGLISH: "Welcome! I will try to guess the word you are thinking of based on your messages. Please send me a message in %s. You will get a coin for each correct guess.",
+    Language.SPANISH: "¡Bienvenido! Intentaré adivinar la palabra en la que estás pensando basándome en tus mensajes. Por favor, envíame un mensaje en %s. Obtendrás una moneda por cada acierto.",
+    Language.FRENCH: "Bienvenue ! Je vais essayer de deviner le mot auquel vous pensez en fonction de vos messages. Veuillez m'envoyer un message en %s. Vous recevrez une pièce pour chaque bonne réponse.",
+    Language.GERMAN: "Willkommen! Ich werde versuchen, das Wort zu erraten, an das du denkst, basierend auf deinen Nachrichten. Bitte sende mir eine Nachricht in %s. Du bekommst eine Münze für jeden richtigen Tipp.",
+    Language.ITALIAN: "Benvenuto! Cercherò di indovinare la parola a cui stai pensando basandomi sui tuoi messaggi. Per favore, inviami un messaggio in %s. Riceverai una moneta per ogni risposta corretta.",
+    Language.PORTUGUESE: "Bem-vindo! Vou tentar adivinhar a palavra em que você está pensando com base em suas mensagens. Por favor, envie-me uma mensagem em %s. Você receberá uma moeda por cada acerto.",
+    Language.RUSSIAN: "Добро пожал овать! Я постараюсь угадать слово, о котором вы думаете, основываясь на ваших сообщениях. Пожалуйста, отправьте мне сообщение на %s. Вы получите монету за каждую правильную догадку.",
+    Language.CHINESE: "欢迎！我将根据您的消息尝试猜测您正在想的单词。请用%s给我发送一条消息。每猜对一个单词，您将获得一枚硬币。",
+    Language.JAPANESE_ROMAJI: "Yōkoso! Watashi wa anata no messeeji ni motozuki, anata ga kangaete iru kotoba o atemasu. %s de watashi ni messeeji o okutte kudasai. Tadashī atemasu goto ni ichimai no kōin o moraemasu.",
+    Language.KOREAN: "환영합니다! 메시지를 기반으로 생각하고 있는 단어를 추측하려고 합니다. %s로 메시지를 보내주세요. 올바른 추측마다 동전을 받게 됩니다.",
+    Language.DUTCH: "Welkom! Ik zal proberen het woord te raden waar je aan denkt op basis van je berichten. Stuur me een bericht in %s. Je krijgt een munt voor elke juiste gok.",
+    Language.TURKISH: "Hoş geldiniz! Mesajlarınıza dayanarak düşündüğünüz kelimeyi tahmin etmeye çalışacağım. Lütfen bana %s dilinde bir mesaj gönderin. Her doğru tahmin için bir madeni para alacaksınız.",
+}
+
+TIME_UP_MESSAGE = {
+    Language.ENGLISH: "Time is up for %s. You collected {coins} coin(s).",
+    Language.SPANISH: "Se acabó el tiempo para %s. Has conseguido {coins} moneda(s).",
+    Language.FRENCH: "Le temps est écoulé pour %s. Vous avez gagné {coins} pièce(s).",
+    Language.GERMAN: "Die Zeit für %s ist abgelaufen. Du hast {coins} Münze(n) gesammelt.",
+    Language.ITALIAN: "Il tempo è scaduto per %s. Hai raccolto {coins} moneta/e.",
+    Language.PORTUGUESE: "O tempo acabou para %s. Você coletou {coins} moeda(s).",
+    Language.RUSSIAN: "Время для %s истекло. Вы получили {coins} монет(ы).",
+    Language.CHINESE: "%s 的时间到了。你获得了 {coins} 枚硬币。",
+    Language.JAPANESE_ROMAJI: "%s no jikan ga owarimashita. {coins} mai no coin o moraimashita.",
+    Language.KOREAN: "%s 시간 종료. 코인 {coins}개를 획득했습니다.",
+    Language.DUTCH: "De tijd voor %s is om. Je hebt {coins} munt(en) verzameld.",
+    Language.TURKISH: "%s için süre doldu. {coins} adet para topladınız.",
+}
 
 I_DONT_UNDERSTAND = {
     Language.ENGLISH: "I don't understand the language of your message. I guess you speak %s.",
@@ -306,6 +399,7 @@ def messages(request):
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
+                history = _get_history(request)
                 print(f"Current chat history: {history}")
                 ai_guess = get_guessed_word(
                     message_text,
@@ -317,7 +411,7 @@ def messages(request):
                 if isinstance(ai_guess, WrongLanguageReply):
                     ChatMessage.objects.create(
                         sender="AI_Bot",
-                        message=I_DONT_UNDERSTAND[target_language] % ai_guess.actual_language
+                        message=I_DONT_UNDERSTAND[target_language] % _language_display_name(ai_guess.actual_language)
                     )
                 elif isinstance(ai_guess, ErrorReply):
                     ChatMessage.objects.create(
@@ -350,6 +444,7 @@ def messages(request):
 
                     history.append(message_text)
                     history.append(f"My guess: {ai_guess.guessed_word}")
+                    _set_history(request, history)
             else:
                 print("Message from AI_Bot, no reply generated.")
 

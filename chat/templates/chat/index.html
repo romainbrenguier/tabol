@@ -9,7 +9,7 @@
 <body>
 
 <div id="head">
-    Choisissez une langue et une difficulté:
+    Choisissez une langue:
 </div>
 
 <div style="text-align: center; margin-top: 10px;">
@@ -40,14 +40,8 @@
                 {{ lang.flag }} {{ lang.display_name }}
             </div>
             <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
-                <a href="{% url 'game' lang.code %}?difficulty=easy" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #1c7c54; padding: 6px 10px; border-radius: 8px; background: #e8f5ed;">
-                    Facile
-                </a>
-                <a href="{% url 'game' lang.code %}?difficulty=normal" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #333; padding: 6px 10px; border-radius: 8px; background: #f2f2f2;">
-                    Normal
-                </a>
-                <a href="{% url 'game' lang.code %}?difficulty=hard" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #8b1e3f; padding: 6px 10px; border-radius: 8px; background: #fae8ee;">
-                    Difficile
+                <a href="{% url 'game' lang.code %}" class="game-link" style="font-size: 1.25em; font-weight: 600; text-decoration: none; color: #1c7c54; padding: 6px 10px; border-radius: 8px; background: #e8f5ed;">
+                    Jouer
                 </a>
             </div>
         </li>
