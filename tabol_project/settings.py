@@ -92,6 +92,16 @@ if os.environ.get("VERCEL"):
     if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
         DATABASES["default"]["NAME"] = "/tmp/db.sqlite3"
 
+    # Vercel serverless does not guarantee DB tables like django_session.
+    # Use non-DB sessions to prevent OperationalError on session save.
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "tabol-session-cache",
+        }
+    }
+    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -138,6 +148,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
+# On Vercel, collectstatic output may not always be available at runtime.
+# Let WhiteNoise resolve app static files via Django finders as a fallback.
+WHITENOISE_USE_FINDERS = True
 
 WHITENOISE_MANIFEST_STRICT = False
 
