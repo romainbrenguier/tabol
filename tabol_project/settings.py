@@ -14,6 +14,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 # Load environment variables
 load_dotenv()
@@ -89,18 +90,14 @@ DATABASES = {
 
 # On Vercel, the filesystem is read-only. We might need to use /tmp for SQLite if not using a real DB.
 if os.environ.get("VERCEL"):
+    if not os.environ.get("DATABASE_URL"):
+        raise ImproperlyConfigured(
+            "DATABASE_URL is required on Vercel for production reliability. "
+            "Configure a managed Postgres database and redeploy."
+        )
+
     if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
         DATABASES["default"]["NAME"] = "/tmp/db.sqlite3"
-
-    # Vercel serverless does not guarantee DB tables like django_session.
-    # Use non-DB sessions to prevent OperationalError on session save.
-    CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-            "LOCATION": "tabol-session-cache",
-        }
-    }
-    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 
 # Password validation
