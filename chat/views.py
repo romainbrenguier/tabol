@@ -394,20 +394,16 @@ def messages(request):
                 sender=sender,
                 message=message_text
             )
-            # Log the message to the console for debugging
-            print(f"New message from {sender}: {message_text} (Language: {target_language})")
 
             # AI Reply Logic
             if not sender.startswith("AI_Bot"):
                 history = _get_history(request)
-                print(f"Current chat history: {history}")
                 ai_guess = get_guessed_word(
                     message_text,
                     chat_history=history,
                     target_language=target_language,
                     original_language=original_language,
                 )
-                print(f"AI guess: {ai_guess}, target_language: {target_language}, original_language: {original_language}")
                 if isinstance(ai_guess, WrongLanguageReply):
                     ChatMessage.objects.create(
                         sender="AI_Bot",
@@ -445,8 +441,6 @@ def messages(request):
                     history.append(message_text)
                     history.append(f"My guess: {ai_guess.guessed_word}")
                     _set_history(request, history)
-            else:
-                print("Message from AI_Bot, no reply generated.")
 
             return JsonResponse({
                 'status': 'success',

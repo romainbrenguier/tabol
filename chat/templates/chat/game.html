@@ -350,9 +350,7 @@
     setInterval(fetchMessages, 3000);
 
     // Redefine nextWord to also reset history
-    const originalNextWord = typeof nextWord !== 'undefined' ? nextWord : function() {
-        console.log("nextWord called");
-    };
+    const originalNextWord = typeof nextWord !== 'undefined' ? nextWord : function() {};
 
     let fallbackTimerId = null;
 
@@ -435,14 +433,7 @@
             }
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.status !== 'success') {
-                console.warn('reset_history returned non-success status');
-            }
-        })
-        .catch(() => {
-            console.warn('reset_history request failed');
-        })
+        .catch(() => {})
         .finally(() => {
             fetchMessages();
             changeWordOnly();

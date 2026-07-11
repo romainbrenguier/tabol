@@ -76,7 +76,6 @@ def get_guessed_word(
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
     # Support both names for backward compatibility.
     model_name = os.environ.get("AI_MODEL") or os.environ.get("GEMINI_MODEL") or "gemini-3.5-flash"
-    print(f"Using model: {model_name} with API key: {'set' if api_key else 'not set'}")
 
     if not api_key:
         return ErrorReply(error_message="I need an API key to guess!")
