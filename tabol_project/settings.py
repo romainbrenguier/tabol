@@ -14,6 +14,7 @@ import os
 import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 # Load environment variables
 load_dotenv()
@@ -89,6 +90,12 @@ DATABASES = {
 
 # On Vercel, the filesystem is read-only. We might need to use /tmp for SQLite if not using a real DB.
 if os.environ.get("VERCEL"):
+    if not os.environ.get("DATABASE_URL"):
+        raise ImproperlyConfigured(
+            "DATABASE_URL is required on Vercel for production reliability. "
+            "Configure a managed Postgres database and redeploy."
+        )
+
     if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
         DATABASES["default"]["NAME"] = "/tmp/db.sqlite3"
 
@@ -138,6 +145,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
+# On Vercel, collectstatic output may not always be available at runtime.
+# Let WhiteNoise resolve app static files via Django finders as a fallback.
+WHITENOISE_USE_FINDERS = True
 
 WHITENOISE_MANIFEST_STRICT = False
 
