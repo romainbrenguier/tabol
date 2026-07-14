@@ -1,0 +1,190 @@
+map_settings:
+  width: 100
+  height: 100
+  base_terrain: WATER
+  font_size: 1.2
+
+regions:
+  - name: "Northern Highlands"
+    description: "A rugged and icy region dominated by towering mountains and frigid tundra."
+    position: [50, 10]
+    area: 25
+    base_terrain: MOUNTAIN
+
+  - name: "Central Heartlands"
+    description: "Fertile plains and dense forests, home to thriving settlements and trade routes."
+    position: [50, 50]
+    area: 30
+    base_terrain: GRASS
+
+  - name: "Eastern Wetlands & Swamps"
+    description: "A marshy expanse filled with treacherous swamps and slow-moving rivers."
+    position: [80, 50]
+    area: 20
+    base_terrain: SWAMP
+
+  - name: "Southern Wastelands"
+    description: "Arid deserts and sulfurous wastelands, sparsely populated and harsh."
+    position: [50, 90]
+    area: 25
+    base_terrain: DESERT
+
+land:
+  # --- The Northern Highlands ---
+  - terrain_type: MOUNTAIN
+    position: [50, 15]
+    radius_min: 20
+    radius_max: 45
+    area: 45
+    label: "The Razor Crags"
+    in_region: "Northern Highlands"
+
+  - terrain_type: TUNDRA
+    position: [50, 5]
+    radius_min: 10
+    radius_max: 30
+    area: 45
+    label: "Frostbite Expanse"
+    in_region: "Northern Highlands"
+
+  # --- The Central Heartlands ---
+  - terrain_type: GRASS
+    position: [10, 10]
+    radius_min: 30
+    radius_max: 70
+    area: 20
+    label: "The Golden Vale"
+    in_region: "Central Heartlands"
+
+  - terrain_type: FOREST
+    position: [90, 90]
+    radius_min: 15
+    radius_max: 40
+    area: 20
+    label: "Whispering Woods"
+    in_region: "Central Heartlands"
+  
+  - terrain_type: FOREST
+    position: [50, 10]
+    radius_min: 20
+    radius_max: 50
+    area: 40
+    label: "Emerald Thicket"
+    in_region: "Central Heartlands"
+
+  # --- The Eastern Wetlands & Swamps ---
+  - terrain_type: FOREST
+    position: [50, 50]
+    radius_min: 20
+    radius_max: 50
+    area: 22
+    label: "The Sinking Fens"
+    in_region: "Eastern Wetlands & Swamps"
+
+  # --- The Southern Wastelands ---
+  - terrain_type: DESERT
+    position: [30, 85]
+    radius_min: 25
+    radius_max: 55
+    area: 45
+    label: "The Sunken Coast Desert"
+    in_region: "Southern Wastelands"
+
+  - terrain_type: TUNDRA
+    position: [70, 85]
+    radius_min: 15
+    radius_max: 35
+    area: 45
+    label: "The Sulfur Wastes"
+    in_region: "Southern Wastelands"
+
+paths:
+  # --- Major Rivers (Waterways) ---
+  - start: [50, 18] # Starts just below the northern peaks
+    end: [85, 50]   # Flows east into the fens
+    width: 2
+    type: RIVER
+    label: "Glacier Run"
+    avoid:
+      - MOUNTAIN
+      - DESERT
+      - BADLANDS
+
+  - start: [20, 35] # Deep forest spring
+    end: [45, 95]   # Empties out into the southern sea
+    width: 1.5
+    type: RIVER
+    label: "The Silver Serpent"
+    avoid:
+      - MOUNTAIN
+      - BADLANDS
+
+  # --- Commercial & Military Roads ---
+  - start: [15, 20] # Northwest Citadel
+    end: [50, 52]   # Central Trading Hub
+    width: 1
+    type: ROAD
+    label: "The King's Highway"
+    avoid:
+      - MOUNTAIN
+      - SWAMP
+
+  - start: [50, 52] # Central Trading Hub
+    end: [85, 80]   # Southeast Outpost
+    width: 1
+    type: ROAD
+    label: "The Sulfur Trail"
+    avoid:
+      - SWAMP
+      - DESERT
+      - MOUNTAIN
+
+  - start: [50, 52] # Central Trading Hub
+    end: [15, 75]   # Southwest Port
+    width: 1
+    type: ROAD
+    label: "Dune-Runner's Pass"
+    avoid:
+      - MOUNTAIN
+      - SWAMP
+
+features:
+  # --- Major Settlements & Strongholds ---
+  - object_type: CASTLE
+    position: [15, 20]
+    label: "Highgard Keep"
+
+  - object_type: CITY
+    position: [50, 52]
+    label: "Grand Oakhaven"
+
+  - object_type: PORT
+    position: [15, 75]
+    label: "Bay of Merchants"
+    on_terrain: DESERT
+    adjacent_to: [WATER]
+
+  - object_type: OUTPOST
+    position: [85, 80]
+    label: "Scorched Watch"
+
+  # --- Points of Interest & Dangers ---
+  - object_type: RUINS
+    position: [50, 8]
+    label: "Skyreach Citadel Remains"
+
+  - object_type: VILLAGE
+    position: [38, 42]
+    label: "Riverbend"
+
+  - object_type: VILLAGE
+    position: [68, 48]
+    label: "Muddy Waters"
+
+  - object_type: OUTPOST
+    position: [28, 90]
+    label: "The Sunken Spire"
+
+  - object_type: MINE
+    position: [78, 92]
+    label: "Sulfur Extraction Pit"
