@@ -1,0 +1,111 @@
+
+  <!-- 1. CITY: Multiple layered roofs and a prominent central tower to feel dense -->
+  <symbol id="city_asset" viewBox="-50 -50 100 100">
+    <!-- Main walls -->
+    <rect x="-35" y="-10" width="70" height="45" fill="#3498db" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Central tall tower -->
+    <rect x="-12" y="-30" width="24" height="40" fill="#2980b9" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="-16,-30 0,-48 16,-30" fill="#e74c3c" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Side roofs -->
+    <polygon points="-40,-10 -20,-25 0,-10" fill="#d35400" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="0,-10 20,-25 40,-10" fill="#d35400" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Tiny gate/door -->
+    <rect x="-7" y="15" width="14" height="20" rx="3" fill="#2c3e50"/>
+  </symbol>
+
+  <!-- 2. CASTLE: Visualized with classic crenellated battlements and twin towers -->
+  <symbol id="castle_asset" viewBox="-50 -50 100 100">
+    <!-- Curtain wall -->
+    <rect x="-25" y="-10" width="50" height="45" fill="#95a5a6" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Left Tower -->
+    <rect x="-40" y="-30" width="20" height="65" fill="#7f8c8d" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="-43,-30 -30,-45 -17,-30" fill="#c0392b" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Right Tower -->
+    <rect x="20" y="-30" width="20" height="65" fill="#7f8c8d" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="17,-30 30,-45 43,-30" fill="#c0392b" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Battlements (Crenellations) on center wall -->
+    <polygon points="-20,-10 -20,-16 -13,-16 -13,-10 -7,-10 -7,-16 0,-16 0,-10 7,-10 7,-16 13,-16 13,-10 20,-10 20,-5 -20,-5" fill="#2c3e50"/>
+    <!-- Large arched gate -->
+    <path d="M-10,35 A10,10 0 0,1 10,35 Z" fill="#2c3e50"/>
+  </symbol>
+
+  <!-- 3. PORT: An anchor combined with stylized water waves -->
+  <symbol id="port_asset" viewBox="-50 -50 100 100">
+    <!-- Anchor Shank & Ring -->
+    <circle cx="0" cy="-25" r="8" fill="none" stroke="#2c3e50" stroke-width="4"/>
+    <line x1="0" y1="-17" x2="0" y2="20" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+    <line x1="-15" y1="-5" x2="15" y2="-5" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+    <!-- Anchor Flukes -->
+    <path d="M-30,5 C-30,25 30,25 30,5" fill="none" stroke="#2c3e50" stroke-width="5" stroke-linecap="round"/>
+    <polygon points="-33,7 -30,-2 -23,5" fill="#2c3e50"/>
+    <polygon points="33,7 30,-2 23,5" fill="#2c3e50"/>
+    <!-- Waves underneath -->
+    <path d="M-40,30 Q-20,20 0,30 T40,30" fill="none" stroke="#1abc9c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M-35,40 Q-15,30 5,40 T45,40" fill="none" stroke="#1abc9c" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- 4. OUTPOST: A tall, singular watchtower with a flag -->
+  <symbol id="outpost_asset" viewBox="-50 -50 100 100">
+    <!-- Tapered tower body -->
+    <polygon points="-15,35 -10,-25 10,-25 15,35" fill="#f1c40f" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Watch platform -->
+    <rect x="-15" y="-32" width="30" height="8" rx="2" fill="#e67e22" stroke="#2c3e50" stroke-width="3"/>
+    <!-- Conical Roof -->
+    <polygon points="-15,-32 0,-50 15,-32" fill="#d35400" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Flag flying from top -->
+    <line x1="0" y1="-50" x2="0" y2="-60" stroke="#2c3e50" stroke-width="2"/>
+    <polygon points="0,-60 18,-55 0,-50" fill="#e74c3c"/>
+    <!-- Small viewing window -->
+    <rect x="-4" y="-15" width="8" height="12" rx="2" fill="#2c3e50"/>
+  </symbol>
+
+  <!-- 5. RUIN: A broken tower and crumbling wall segments -->
+  <symbol id="ruin_asset" viewBox="-50 -50 100 100">
+    <!-- Left crumbling wall -->
+    <path d="M-40,35 L-40,10 L-30,5 L-25,15 L-15,10 L-10,35 Z" fill="#95a5a6" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Main Broken Tower -->
+    <polygon points="-5,35 -5,-20 8,-10 5,-3 15,-5 20,35" fill="#7f8c8d" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Loose debris stones -->
+    <rect x="-25" y="30" width="8" height="6" rx="1" fill="#7f8c8d" stroke="#2c3e50" stroke-width="2"/>
+    <rect x="25" y="28" width="10" height="7" rx="1" fill="#95a5a6" stroke="#2c3e50" stroke-width="2" transform="rotate(15 25 28)"/>
+    <!-- Cracks (fine lines) -->
+    <path d="M5,10 L0,0 L7,-10" fill="none" stroke="#2c3e50" stroke-width="2"/>
+  </symbol>
+
+  <!-- 6. MINE: Crossed pickaxes over a dark cave entrance -->
+  <symbol id="mine_asset" viewBox="-50 -50 100 100">
+    <!-- Mountain/Cave entrance silhouette -->
+    <path d="M-45,35 C-40,5 -25,-15 0,-15 C25,-15 40,5 45,35 Z" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+    <path d="M-20,35 C-20,15 -10,5 0,5 C10,5 20,15 20,35 Z" fill="#2c3e50"/>
+    
+    <!-- Crossed Pickaxes -->
+    <g transform="translate(0, -20)">
+      <!-- Pickaxe 1 (Tilting right) -->
+      <g transform="rotate(45)">
+        <line x1="0" y1="-20" x2="0" y2="20" stroke="#7f8c8d" stroke-width="3" stroke-linecap="round"/>
+        <path d="M-15,-18 C-5,-22 5,-22 15,-18" fill="none" stroke="#bdc3c7" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <!-- Pickaxe 2 (Tilting left) -->
+      <g transform="rotate(-45)">
+        <line x1="0" y1="-20" x2="0" y2="20" stroke="#7f8c8d" stroke-width="3" stroke-linecap="round"/>
+        <path d="M-15,-18 C-5,-22 5,-22 15,-18" fill="none" stroke="#bdc3c7" stroke-width="4" stroke-linecap="round"/>
+      </g>
+    </g>
+  </symbol>
+
+  <!-- 7. VILLAGE: A cluster of small houses with staggered roofs to look like a small community -->
+  <symbol id="village_asset" viewBox="-50 -50 100 100">
+    <!-- Left/Back House -->
+    <rect x="-35" y="0" width="24" height="30" fill="#e67e22" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="-39,0 -23,-15 -7,0" fill="#f1c40f" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    
+    <!-- Right/Back House -->
+    <rect x="11" y="5" width="24" height="25" fill="#e67e22" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="7,5 23,-10 39,5" fill="#f1c40f" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+
+    <!-- Center/Front House (Larger to create depth) -->
+    <rect x="-14" y="10" width="28" height="30" fill="#d35400" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="-19,10 0,-8 19,10" fill="#f1c40f" stroke="#2c3e50" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Tiny door for the main house -->
+    <rect x="-5" y="25" width="10" height="15" rx="1" fill="#2c3e50"/>
+  </symbol>
