@@ -11,7 +11,12 @@ class ChatAPITest(TestCase):
     def test_post_message(self):
         response = self.client.post(
             self.url,
-            data=json.dumps({'sender': 'Alice', 'message': 'Hello world'}),
+            data=json.dumps({
+                'sender': 'Alice',
+                'message': 'Hello world',
+                'target_language': 'japanese',
+                'original_language': 'fr'
+            }),
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 201)
@@ -37,14 +42,14 @@ class ChatAPITest(TestCase):
         self.assertTemplateUsed(response, 'chat/index.html')
 
     def test_game_view(self):
-        # Test default japanese
-        response = self.client.get(reverse('game', kwargs={'lang_code': 'japanese'}))
+        # Test default japanese with original_language param
+        response = self.client.get(reverse('game', kwargs={'lang_code': 'japanese'}) + '?original_language=fr')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'chat/game.html')
         self.assertContains(response, 'Japonais')
 
         # Test german
-        response = self.client.get(reverse('game', kwargs={'lang_code': 'german'}))
+        response = self.client.get(reverse('game', kwargs={'lang_code': 'german'}) + '?original_language=fr')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Allemand')
 
@@ -52,25 +57,21 @@ class ChatAPITest(TestCase):
         response = self.client.get(reverse('game', kwargs={'lang_code': 'klingon'}))
         self.assertEqual(response.status_code, 404)
 
+    def test_timers_view(self):
+        response = self.client.get(reverse('timers'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'chat/timers.html')
+        self.assertContains(response, 'Machine à laver')
+        self.assertContains(response, 'Four')
+
     def test_reset_history(self):
-        from chat.views import history
-        # Ensure history is empty initially (or at least we know its state)
-        history.clear()
-
-        # Post a message to populate history
-        # Mocking AI might be needed if we don't want real API calls,
-        # but let's see if we can just check if it's cleared after the call.
-
-        # Manually add to history for testing purposes
-        history.append("Test message")
-        self.assertEqual(len(history), 1)
-        ChatMessage.objects.create(sender='Alice', message='Hello')
-        self.assertEqual(ChatMessage.objects.count(), 1)
+        session = self.client.session
+        session['chat_history'] = ["Test message"]
+        session.save()
 
         # Call reset endpoint
         url_reset = reverse('reset_history')
         response = self.client.post(url_reset)
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(len(history), 0)
-        self.assertEqual(ChatMessage.objects.count(), 0)
+        self.assertEqual(self.client.session.get('chat_history'), None)
