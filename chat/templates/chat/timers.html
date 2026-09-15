@@ -99,23 +99,33 @@
         }
 
         /* Spinning Drum Animation for Washing Machine */
-        @keyframes spin Drum {
+        @keyframes spinDrum {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
         .washing-machine.active .drum-inner {
-            animation: spinDrum 2s linear infinite;
-            transform-origin: center;
+            animation: spinDrum 1.5s linear infinite;
+            transform-origin: 80px 95px;
+            transform-box: fill-box;
         }
 
         @keyframes waterWave {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-3px) scaleY(1.1); }
         }
 
         .washing-machine.active .water-line {
-            animation: waterWave 1s ease-in-out infinite;
+            animation: waterWave 0.8s ease-in-out infinite;
+        }
+
+        @keyframes powerPulse {
+            0%, 100% { fill: #10ac84; opacity: 1; }
+            50% { fill: #1dd1a1; opacity: 0.5; }
+        }
+
+        .washing-machine.active .power-led {
+            animation: powerPulse 1s ease-in-out infinite;
         }
 
         /* Pulsing Glow Animation for Oven */
@@ -258,24 +268,46 @@
                 <!-- Top Control Panel Line -->
                 <line x1="20" y1="45" x2="140" y2="45" stroke="#CBD5E1" stroke-width="4"/>
                 <!-- Power button & knob -->
-                <circle cx="40" cy="30" r="6" fill="#2e86de"/>
+                <circle class="power-led" cx="40" cy="30" r="6" fill="#2e86de"/>
                 <circle cx="60" cy="30" r="4" fill="#94A3B8"/>
                 <circle cx="72" cy="30" r="4" fill="#94A3B8"/>
                 <circle cx="120" cy="30" r="8" fill="#E2E8F0" stroke="#64748B" stroke-width="3"/>
 
-                <!-- Door Frame -->
-                <circle cx="80" cy="95" r="40" fill="#E2E8F0" stroke="#475569" stroke-width="6"/>
-                <!-- Door Glass Inner -->
-                <circle cx="80" cy="95" r="30" fill="#38BDF8" fill-opacity="0.25" stroke="#0284C7" stroke-width="3"/>
+                <!-- Outer Door Ring Backing -->
+                <circle cx="80" cy="95" r="40" fill="#CBD5E1" stroke="#475569" stroke-width="6"/>
+                <!-- Drum Tub Opening Background -->
+                <circle cx="80" cy="95" r="32" fill="#1E293B"/>
 
                 <!-- Rotating Drum Group -->
                 <g class="drum-inner">
-                    <circle cx="80" cy="95" r="22" stroke="#64748B" stroke-width="2" stroke-dasharray="6 6"/>
-                    <!-- Clothes inside -->
-                    <circle cx="72" cy="90" r="7" fill="#F43F5E"/>
-                    <circle cx="88" cy="98" r="8" fill="#3B82F6"/>
-                    <path class="water-line" d="M 55 98 Q 80 106 105 98 Q 80 112 55 98 Z" fill="#0284C7" opacity="0.6"/>
+                    <!-- Metallic drum back wall with perforated holes pattern -->
+                    <circle cx="80" cy="95" r="28" fill="#475569"/>
+                    <circle cx="80" cy="95" r="24" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 6"/>
+                    <circle cx="80" cy="95" r="16" stroke="#64748B" stroke-width="2" stroke-dasharray="3 5"/>
+
+                    <!-- Laundry Items inside drum -->
+                    <!-- Red shirt/cloth -->
+                    <circle cx="68" cy="85" r="7" fill="#F43F5E"/>
+                    <!-- Blue jeans/pants -->
+                    <path d="M 85 82 Q 95 85 92 95 Q 83 92 85 82 Z" fill="#3B82F6"/>
+                    <!-- Yellow garment -->
+                    <circle cx="74" cy="108" r="6" fill="#FACC15"/>
+                    <!-- Emerald sock -->
+                    <circle cx="92" cy="102" r="5" fill="#10B981"/>
+                    <!-- Purple garment -->
+                    <circle cx="80" cy="95" r="6" fill="#A855F7"/>
+
+                    <!-- Water Level and foam/waves in drum -->
+                    <path class="water-line" d="M 54 96 Q 80 106 106 96 Q 80 114 54 96 Z" fill="#0284C7" opacity="0.75"/>
+                    <circle cx="65" cy="96" r="2" fill="#FFFFFF" opacity="0.8"/>
+                    <circle cx="80" cy="100" r="3" fill="#FFFFFF" opacity="0.8"/>
+                    <circle cx="95" cy="97" r="2" fill="#FFFFFF" opacity="0.8"/>
                 </g>
+
+                <!-- Door Glass Inner & Highlights (Overlay over rotating drum) -->
+                <circle cx="80" cy="95" r="32" fill="#38BDF8" fill-opacity="0.2" stroke="#0284C7" stroke-width="3"/>
+                <!-- Glass Reflection Gloss -->
+                <path d="M 60 75 A 30 30 0 0 1 100 75 A 32 32 0 0 0 60 75 Z" fill="#FFFFFF" opacity="0.4"/>
             </svg>
 
             <div class="timer-display" id="display-washer">01:00</div>
