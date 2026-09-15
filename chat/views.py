@@ -64,6 +64,10 @@ LANGUAGE_DISPLAY_NAMES = {
 }
 
 
+def timers_view(request):
+    return render(request, 'chat/timers.html')
+
+
 def game_view(request, lang_code='japanese'):
     if lang_code not in VOCABULARY:
         raise Http404("Language not found")

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minuteurs - Machine à laver et Four</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
+    <style>
+        .timers-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2f5 0%, #d6e4f0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .header-bar {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-bar h1 {
+            margin: 0;
+            color: #1f3a55;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ffffff;
+            color: #2e86de;
+            border: 1px solid #c8d6e5;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-link:hover {
+            background: #2e86de;
+            color: #ffffff;
+            border-color: #2e86de;
+        }
+
+        .timers-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .timer-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(31, 58, 85, 0.1);
+            border: 1px solid #e1e8ed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .timer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(31, 58, 85, 0.14);
+        }
+
+        .timer-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 16px 0;
+        }
+
+        /* Appliance Illustrations */
+        .appliance-icon {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Spinning Drum Animation for Washing Machine */
+        @keyframes spin Drum {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .washing-machine.active .drum-inner {
+            animation: spinDrum 2s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes waterWave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .washing-machine.active .water-line {
+            animation: waterWave 1s ease-in-out infinite;
+        }
+
+        /* Pulsing Glow Animation for Oven */
+        @keyframes ovenGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.95; }
+        }
+
+        .oven.active .oven-heat {
+            animation: ovenGlow 1.2s ease-in-out infinite;
+        }
+
+        /* Timer Display */
+        .timer-display {
+            font-size: 54px;
+            font-weight: 800;
+            font-family: 'Courier New', Courier, monospace;
+            color: #1e272e;
+            background: #f1f2f6;
+            padding: 10px 24px;
+            border-radius: 14px;
+            border: 2px solid #dcdde1;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            min-width: 180px;
+        }
+
+        .timer-card.active .timer-display {
+            color: #10ac84;
+            border-color: #10ac84;
+            background: #e8f8f5;
+        }
+
+        .timer-card.finished .timer-display {
+            color: #ee5253;
+            border-color: #ee5253;
+            background: #ff6b6b15;
+            animation: blink 0.6s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.4; }
+        }
+
+        /* Action Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #10ac84, #1dd1a1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 172, 132, 0.3);
+        }
+
+        .btn-start:hover {
+            background: linear-gradient(135deg, #0e9e79, #10ac84);
+            box-shadow: 0 6px 16px rgba(16, 172, 132, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            background: #ee5253;
+            color: white;
+            box-shadow: 0 4px 12px rgba(238, 82, 83, 0.3);
+        }
+
+        .btn-reset:hover {
+            background: #ff6b6b;
+            box-shadow: 0 6px 16px rgba(238, 82, 83, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Status Banner */
+        .status-badge {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            background: #f1f2f6;
+            color: #576574;
+        }
+
+        .timer-card.active .status-badge {
+            background: #e8f8f5;
+            color: #10ac84;
+        }
+
+        .timer-card.finished .status-badge {
+            background: #ff6b6b22;
+            color: #ee5253;
+        }
+    </style>
+</head>
+<body>
+
+<div class="timers-page">
+
+    <div class="header-bar">
+        <h1>⏱️ Minuteurs de Cuisine & Lessive</h1>
+        <a href="{% url 'index' %}" class="back-link">← Accueil</a>
+    </div>
+
+    <div class="timers-container">
+
+        <!-- CARD 1: Machine à Laver -->
+        <div class="timer-card" id="card-washer">
+            <h2 class="timer-title">Machine à laver</h2>
+            <div class="status-badge" id="status-washer">Prêt (1 minute)</div>
+
+            <!-- SVG Drawing of Washing Machine -->
+            <svg class="appliance-icon washing-machine" id="icon-washer" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Machine Outer Body -->
+                <rect x="20" y="15" width="120" height="135" rx="16" fill="#F8FAFC" stroke="#334155" stroke-width="6"/>
+                <!-- Top Control Panel Line -->
+                <line x1="20" y1="45" x2="140" y2="45" stroke="#CBD5E1" stroke-width="4"/>
+                <!-- Power button & knob -->
+                <circle cx="40" cy="30" r="6" fill="#2e86de"/>
+                <circle cx="60" cy="30" r="4" fill="#94A3B8"/>
+                <circle cx="72" cy="30" r="4" fill="#94A3B8"/>
+                <circle cx="120" cy="30" r="8" fill="#E2E8F0" stroke="#64748B" stroke-width="3"/>
+
+                <!-- Door Frame -->
+                <circle cx="80" cy="95" r="40" fill="#E2E8F0" stroke="#475569" stroke-width="6"/>
+                <!-- Door Glass Inner -->
+                <circle cx="80" cy="95" r="30" fill="#38BDF8" fill-opacity="0.25" stroke="#0284C7" stroke-width="3"/>
+
+                <!-- Rotating Drum Group -->
+                <g class="drum-inner">
+                    <circle cx="80" cy="95" r="22" stroke="#64748B" stroke-width="2" stroke-dasharray="6 6"/>
+                    <!-- Clothes inside -->
+                    <circle cx="72" cy="90" r="7" fill="#F43F5E"/>
+                    <circle cx="88" cy="98" r="8" fill="#3B82F6"/>
+                    <path class="water-line" d="M 55 98 Q 80 106 105 98 Q 80 112 55 98 Z" fill="#0284C7" opacity="0.6"/>
+                </g>
+            </svg>
+
+            <div class="timer-display" id="display-washer">01:00</div>
+
+            <div class="button-group">
+                <button class="btn btn-start" id="btn-start-washer" onclick="startTimer('washer')">
+                    ▶ Démarre
+                </button>
+                <button class="btn btn-reset" id="btn-reset-washer" onclick="resetTimer('washer')">
+                    ↺ Arrêt
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD 2: Four -->
+        <div class="timer-card" id="card-oven">
+            <h2 class="timer-title">Four</h2>
+            <div class="status-badge" id="status-oven">Prêt (1 minute)</div>
+
+            <!-- SVG Drawing of Oven -->
+            <svg class="appliance-icon oven" id="icon-oven" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Oven Main Body -->
+                <rect x="20" y="15" width="120" height="135" rx="14" fill="#1E293B" stroke="#0F172A" stroke-width="6"/>
+                <!-- Control Panel -->
+                <rect x="20" y="15" width="120" height="32" rx="14" fill="#334155"/>
+                <line x1="20" y1="47" x2="140" y2="47" stroke="#0F172A" stroke-width="4"/>
+
+                <!-- Dials / Knobs -->
+                <circle cx="42" cy="31" r="7" fill="#64748B" stroke="#94A3B8" stroke-width="2"/>
+                <circle cx="80" cy="31" r="7" fill="#64748B" stroke="#94A3B8" stroke-width="2"/>
+                <circle cx="118" cy="31" r="7" fill="#64748B" stroke="#94A3B8" stroke-width="2"/>
+
+                <!-- Digital Display on panel -->
+                <rect x="58" y="24" width="44" height="14" rx="3" fill="#090D16"/>
+
+                <!-- Glass Window Frame -->
+                <rect x="32" y="58" width="96" height="78" rx="8" fill="#0F172A" stroke="#475569" stroke-width="5"/>
+
+                <!-- Heat / Fire Glow Inside Window -->
+                <rect class="oven-heat" x="38" y="64" width="84" height="66" rx="4" fill="#F97316" fill-opacity="0.15"/>
+
+                <!-- Grill Wire Grate -->
+                <line x1="38" y1="90" x2="122" y2="90" stroke="#64748B" stroke-width="3"/>
+                <line x1="38" y1="105" x2="122" y2="105" stroke="#64748B" stroke-width="3"/>
+
+                <!-- Heating Elements (Top & Bottom) -->
+                <path class="oven-heat" d="M 45 70 Q 60 76 80 70 Q 100 76 115 70" stroke="#EF4444" stroke-width="3" fill="none" opacity="0.4"/>
+                <path class="oven-heat" d="M 45 122 Q 60 116 80 122 Q 100 116 115 122" stroke="#EF4444" stroke-width="3" fill="none" opacity="0.4"/>
+
+                <!-- Door Handle -->
+                <rect x="44" y="52" width="72" height="6" rx="3" fill="#94A3B8"/>
+            </svg>
+
+            <div class="timer-display" id="display-oven">01:00</div>
+
+            <div class="button-group">
+                <button class="btn btn-start" id="btn-start-oven" onclick="startTimer('oven')">
+                    ▶ Démarre
+                </button>
+                <button class="btn btn-reset" id="btn-reset-oven" onclick="resetTimer('oven')">
+                    ↺ Arrêt
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const timers = {
+        washer: {
+            duration: 60, // 1 minute
+            remaining: 60,
+            interval: null,
+            alarmInterval: null
+        },
+        oven: {
+            duration: 60, // 1 minute
+            remaining: 60,
+            interval: null,
+            alarmInterval: null
+        }
+    };
+
+    // Web Audio API for synthetic alarm beep
+    let audioCtx = null;
+
+    function getAudioContext() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        return audioCtx;
+    }
+
+    function playBeep(freq = 880, type = 'sine', duration = 0.2) {
+        try {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + duration);
+        } catch (e) {
+            console.warn("Audio playback not supported or blocked", e);
+        }
+    }
+
+    function playAlarm() {
+        // Play sequence of alarm beeps
+        playBeep(880, 'square', 0.25);
+        setTimeout(() => playBeep(880, 'square', 0.25), 300);
+        setTimeout(() => playBeep(1046.5, 'square', 0.4), 600);
+    }
+
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function updateDisplay(id) {
+        const t = timers[id];
+        document.getElementById(`display-${id}`).textContent = formatTime(t.remaining);
+    }
+
+    function startTimer(id) {
+        getAudioContext(); // Warm up Web Audio on user gesture
+        const t = timers[id];
+
+        // If alarm was running or previous timer was active, clear it first
+        resetTimer(id, false);
+
+        t.remaining = t.duration;
+        updateDisplay(id);
+
+        const card = document.getElementById(`card-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+        const status = document.getElementById(`status-${id}`);
+        const btnStart = document.getElementById(`btn-start-${id}`);
+
+        card.classList.add('active');
+        card.classList.remove('finished');
+        icon.classList.add('active');
+        status.textContent = "En cours...";
+        btnStart.disabled = true;
+
+        t.interval = setInterval(() => {
+            t.remaining--;
+            updateDisplay(id);
+
+            if (t.remaining <= 0) {
+                clearInterval(t.interval);
+                t.interval = null;
+
+                // Timer finished!
+                card.classList.remove('active');
+                card.classList.add('finished');
+                icon.classList.remove('active');
+                status.textContent = "⏰ Terminé ! (Alarme)";
+                btnStart.disabled = false;
+
+                // Sound the alarm (repeat 3 times)
+                playAlarm();
+                let alarmCount = 0;
+                t.alarmInterval = setInterval(() => {
+                    alarmCount++;
+                    if (alarmCount >= 3) {
+                        clearInterval(t.alarmInterval);
+                        t.alarmInterval = null;
+                    } else {
+                        playAlarm();
+                    }
+                }, 1200);
+            }
+        }, 1000);
+    }
+
+    function resetTimer(id, resetDisplay = true) {
+        const t = timers[id];
+
+        if (t.interval) {
+            clearInterval(t.interval);
+            t.interval = null;
+        }
+        if (t.alarmInterval) {
+            clearInterval(t.alarmInterval);
+            t.alarmInterval = null;
+        }
+
+        const card = document.getElementById(`card-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+        const status = document.getElementById(`status-${id}`);
+        const btnStart = document.getElementById(`btn-start-${id}`);
+
+        card.classList.remove('active', 'finished');
+        icon.classList.remove('active');
+        btnStart.disabled = false;
+        status.textContent = "Prêt (1 minute)";
+
+        if (resetDisplay) {
+            t.remaining = t.duration;
+            updateDisplay(id);
+        }
+    }
+</script>
+
+</body>
+</html>
