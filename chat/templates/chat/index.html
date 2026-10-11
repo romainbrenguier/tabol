@@ -159,7 +159,11 @@
 <div class="ticket-page">
 
     <div id="head">
-        LingoRail - Language Ticket
+        <div>LingoRail - Language Ticket</div>
+        <div class="weather-widget" title="Météo du jour" style="font-size: 14px;">
+            <span class="weather-symbol" id="weather-symbol-index">☀️</span>
+            <span class="weather-temp" id="weather-temp-index">20°C</span>
+        </div>
     </div>
     
     <div class="ticket-hero">
@@ -247,6 +251,34 @@
         targetUrl.searchParams.set('new_game', '1');
         window.location.href = targetUrl.toString();
     });
+
+    (function loadWeatherForecastIndex() {
+        const symbolEl = document.getElementById('weather-symbol-index');
+        const tempEl = document.getElementById('weather-temp-index');
+        if (!symbolEl || !tempEl) return;
+
+        function getWeatherSymbol(code) {
+            if (code === 0) return '☀️';
+            if (code >= 1 && code <= 3) return '⛅';
+            if (code === 45 || code === 48) return '🌫️';
+            if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return '🌧️';
+            if (code >= 71 && code <= 77) return '❄️';
+            if (code >= 95) return '⛈️';
+            return '☀️';
+        }
+
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current_weather=true')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    symbolEl.textContent = getWeatherSymbol(code);
+                    tempEl.textContent = `${temp}°C`;
+                }
+            })
+            .catch(() => {});
+    })();
 </script>
 
 </body>

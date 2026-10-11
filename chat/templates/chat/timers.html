@@ -251,7 +251,13 @@
 
     <div class="header-bar">
         <h1>⏱️ Minuteurs de Cuisine & Lessive</h1>
-        <a href="{% url 'index' %}" class="back-link">← Accueil</a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="weather-widget" id="weather-widget" title="Météo du jour">
+                <span class="weather-symbol" id="weather-symbol">☀️</span>
+                <span class="weather-temp" id="weather-temp">20°C</span>
+            </div>
+            <a href="{% url 'index' %}" class="back-link">← Accueil</a>
+        </div>
     </div>
 
     <div class="timers-container">
@@ -446,6 +452,36 @@
         const t = timers[id];
         document.getElementById(`display-${id}`).textContent = formatTime(t.remaining);
     }
+
+    function getWeatherSymbol(code) {
+        if (code === 0) return '☀️';
+        if (code >= 1 && code <= 3) return '⛅';
+        if (code === 45 || code === 48) return '🌫️';
+        if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return '🌧️';
+        if (code >= 71 && code <= 77) return '❄️';
+        if (code >= 95) return '⛈️';
+        return '☀️';
+    }
+
+    function loadWeatherForecast() {
+        const symbolEl = document.getElementById('weather-symbol');
+        const tempEl = document.getElementById('weather-temp');
+        if (!symbolEl || !tempEl) return;
+
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current_weather=true')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    symbolEl.textContent = getWeatherSymbol(code);
+                    tempEl.textContent = `${temp}°C`;
+                }
+            })
+            .catch(() => {});
+    }
+
+    document.addEventListener('DOMContentLoaded', loadWeatherForecast);
 
     function startTimer(id) {
         getAudioContext(); // Warm up Web Audio on user gesture
