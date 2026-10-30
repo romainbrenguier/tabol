@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bridge at Bracken Ford — Battle Masters</title>
+<style>
+:root{color-scheme:light;--ink:#26342d;--grass:#d9e4b6;--road:#c6a978;--water:#79b9c8}
+*{box-sizing:border-box}body{margin:0;background:#e8e3d5;color:var(--ink);font:15px/1.45 system-ui,"Segoe UI",sans-serif}
+main{max-width:1250px;margin:auto;padding:26px 20px 36px}h1{margin:0;font:700 clamp(1.65rem,4vw,2.4rem)/1.12 Georgia,serif}.subtitle{margin:5px 0 20px;color:#59685d}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}.board-wrap{overflow:auto;padding:14px;background:#faf8f0;border:1px solid #b9b5a6;border-radius:12px;box-shadow:0 5px 18px #28372a18}
+.board{min-width:830px;width:max-content;background:var(--grass)}.axis-row,.hex-row{display:flex;align-items:center;height:52px}.axis-row{height:25px;margin-left:28px}.hex-row.odd{margin-left:29px;margin-top:-7px;margin-bottom:-7px}.axis{width:58px;text-align:center;color:#667166;font-weight:700;font-size:.76rem}.row-axis{width:28px;margin-right:1px}
+.hex{position:relative;flex:0 0 58px;width:58px;height:52px;margin-right:0;display:grid;place-items:center;clip-path:polygon(50% 0,98% 25%,98% 75%,50% 100%,2% 75%,2% 25%);background:#829071}
+.hex::before{content:"";position:absolute;inset:1px;background:var(--grass);clip-path:polygon(50% 0,98% 25%,98% 75%,50% 100%,2% 75%,2% 25%)}.hex.road::before{background:var(--road)}.hex.river::before{background:var(--water)}.hex.woods::before{background:#91ad78}.hex.bridge::before{background:repeating-linear-gradient(0deg,#a87848 0 6px,#d2ad78 6px 9px)}.hex.ford::before{background:linear-gradient(0deg,#79b9c8 0 27%,#cdbb91 27% 73%,#79b9c8 73%)}
+.hex.woods::after{content:"♣";position:absolute;z-index:1;color:#426747;font-size:1.35rem;opacity:.8}.coord{position:absolute;z-index:3;top:7px;left:17px;color:#243329aa;font-size:.55rem;font-weight:700}.pieces{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:1px;max-width:48px;padding-top:7px}.piece{width:15px;height:15px;display:grid;place-items:center;border:1px solid #fff9;border-radius:50%;color:white;font-size:.52rem;font-weight:800;text-shadow:0 1px 2px #0009;box-shadow:0 1px 2px #17231975}.empire{background:#336e9c}.chaos{background:#9a453d}
+.side section{margin-bottom:14px;padding:13px;background:#faf8f0;border:1px solid #c8c1af;border-radius:10px}.side h2{margin:0 0 8px;font:700 1.12rem Georgia,serif}.legend{display:grid;gap:6px}.legend-item{display:flex;align-items:center;gap:8px;font-size:.83rem}.swatch{width:21px;height:17px;flex:none;border:1px solid #829071;background:var(--grass)}.swatch.road{background:var(--road)}.swatch.river{background:var(--water)}.swatch.bridge{background:repeating-linear-gradient(0deg,#a87848 0 4px,#d2ad78 4px 7px)}.swatch.ford{background:linear-gradient(0deg,#79b9c8 0 27%,#cdbb91 27% 73%,#79b9c8 73%)}.swatch.woods{background:#91ad78}
+table{width:100%;border-collapse:collapse;font-size:.77rem}th,td{padding:5px 4px;text-align:left;border-bottom:1px solid #ddd6c5}th{color:#526053;font-size:.7rem}td:first-child{font-weight:700}.army{font-size:.71rem;color:#58665b;margin:0 0 5px}.rules{margin:0;padding-left:17px;font-size:.81rem}.rules li{margin:0 0 6px}.foot{margin:10px 2px 0;color:#59685d;font-size:.82rem}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}.side section{margin:0}}
+@media print{body{background:#fff}main{padding:0}.layout{grid-template-columns:minmax(0,1fr) 280px;gap:8px}.board-wrap,.side section{box-shadow:none}.board{min-width:0;transform:scale(.88);transform-origin:top left;margin-bottom:-45px}}
+</style>
+</head>
+<body>
+<main>
+<h1>The Bridge at Bracken Ford</h1>
+<p class="subtitle">12 × 12 hex battlefield · North is at the top · coordinates are column letter and row number</p>
+<div class="layout">
+<div>
+<div class="board-wrap"><div class="board" id="board" role="img" aria-label="Twelve by twelve hex map. River runs north-south along column F, bridge at F6 and F7, ford at F9. Empire deploys west; Chaos east."></div></div>
+<p class="foot">Blue markers are Empire; red markers are Chaos. Every marker is one figure and one hit point. Unit labels and exact deployment hexes are listed at right.</p>
+</div>
+<aside class="side">
+<section><h2>Terrain key</h2><div class="legend">
+<div class="legend-item"><i class="swatch"></i>Clear ground</div><div class="legend-item"><i class="swatch road"></i>Road · +1 movement when following</div><div class="legend-item"><i class="swatch river"></i>River · impassable except crossings</div><div class="legend-item"><i class="swatch bridge"></i>Bridge · F6–F7</div><div class="legend-item"><i class="swatch ford"></i>Ford · F9, infantry only</div><div class="legend-item"><i class="swatch woods"></i>Woods · blocks ranged line of sight</div></div></section>
+<section><h2>Unit stats</h2>
+<p class="army"><strong style="color:#336e9c">Empire</strong> · west side</p>
+<table><thead><tr><th>Unit (count)</th><th>HP</th><th>Atk</th><th>Def</th><th>Move</th><th>Range</th></tr></thead><tbody>
+<tr><td>Swordsmen (2)</td><td>4 ea.</td><td>2</td><td>2</td><td>2</td><td>1</td></tr><tr><td>Crossbowmen (1)</td><td>3</td><td>2</td><td>1</td><td>1</td><td>4</td></tr><tr><td>Knights (1)</td><td>3</td><td>3</td><td>2</td><td>3</td><td>1</td></tr>
+</tbody></table><p class="army" style="margin-top:10px"><strong style="color:#9a453d">Chaos</strong> · east side</p><table><thead><tr><th>Unit (count)</th><th>HP</th><th>Atk</th><th>Def</th><th>Move</th><th>Range</th></tr></thead><tbody>
+<tr><td>Orcs (2)</td><td>4 ea.</td><td>2</td><td>2</td><td>2</td><td>1</td></tr><tr><td>Goblin archers (1)</td><td>3</td><td>2</td><td>1</td><td>1</td><td>3</td></tr><tr><td>Chaos warriors (1)</td><td>3</td><td>3</td><td>2</td><td>2</td><td>1</td></tr>
+</tbody></table><p class="army" style="margin-top:6px">HP = figures; Atk/Def = dice; Move/Range = hexes.</p></section>
+<section><h2>Deployment</h2><p class="army"><strong style="color:#336e9c">Empire:</strong> Swordsmen at C5 and C6; Crossbowmen B4; Knights B7.</p><p class="army"><strong style="color:#9a453d">Chaos:</strong> Orcs H6 and H7; Goblin archers I8; Chaos warriors I5.</p><p class="army">Each unit occupies one hex; figures are grouped together in that hex.</p></section>
+<section><h2>Scenario rules</h2><ul class="rules">
+<li><strong>Turn cards:</strong> At turn start, each player draws 3 cards from their own activation deck. Alternate playing one card at a time, Empire first on turn 1. Discard unplayed cards at turn end; reshuffle discards when a deck runs out.</li>
+<li><strong>Activation:</strong> A card names a unit type. When played, activate any, all, or none of your living units of that type. Each activated unit may move or attack, not both. Ranged units may attack without moving.</li>
+<li><strong>Movement:</strong> A unit may move up to its Move in adjacent hexes. If it follows the road for at least one hex, it may move one additional hex, which must also follow the road. Knights cross the river only at the bridge; infantry may cross at the bridge or ford.</li>
+<li><strong>Combat:</strong> Attacker rolls its Atk dice; defender rolls its Def dice. Skulls score hits; shields cancel hits. Remove one figure per uncancelled hit. Ranged attacks need line of sight; woods block it.</li>
+<li><strong>Victory:</strong> At the end of turn 10, a side wins if it occupies F6 or F7, or destroys every opposing unit. If both occupy the bridge, the side with more figures on F6–F7 wins; tie is a draw. No qualifying winner by turn 10 is a draw.</li>
+</ul></section>
+</aside></div></main>
+<script>
+const cols="ABCDEFGHIJKL";
+const woods=new Set(["D8","E8","H4","I4"]);
+const deployments=[
+ {side:"empire",mark:"S",cells:["C5","C6"],hp:4},{side:"empire",mark:"X",cells:["B4"],hp:3},{side:"empire",mark:"K",cells:["B7"],hp:3},
+ {side:"chaos",mark:"O",cells:["H6","H7"],hp:4},{side:"chaos",mark:"G",cells:["I8"],hp:3},{side:"chaos",mark:"C",cells:["I5"],hp:3}
+];
+const occupied=new Map();for(const u of deployments)for(const c of u.cells)occupied.set(c,u);
+const board=document.getElementById("board");
+const axis=document.createElement("div");axis.className="axis-row";axis.append(document.createElement("span"));for(const col of cols){const a=document.createElement("span");a.className="axis";a.textContent=col;axis.append(a)}board.append(axis);
+for(let row=1;row<=12;row++){
+ const line=document.createElement("div");line.className="hex-row"+(row%2?" odd":"");const n=document.createElement("span");n.className="axis row-axis";n.textContent=row;line.append(n);
+ for(const col of cols){const coord=col+row;const onRiver=col==="F";const bridge=onRiver&&(row===6||row===7);const ford=onRiver&&row===9;const hex=document.createElement("div");hex.className="hex"+(row===6?" road":"")+(onRiver?" river":"")+(woods.has(coord)?" woods":"")+(bridge?" bridge":"")+(ford?" ford":"");hex.title=coord;const label=document.createElement("span");label.className="coord";label.textContent=coord;hex.append(label);
+  const u=occupied.get(coord);if(u){const pieces=document.createElement("span");pieces.className="pieces";for(let i=0;i<u.hp;i++){const p=document.createElement("i");p.className="piece "+u.side;p.textContent=u.mark;pieces.append(p)}hex.append(pieces);hex.setAttribute("aria-label",`${coord}: ${u.side}, ${u.hp} ${u.mark} figures`)}line.append(hex)}board.append(line)
+}
+</script>
+</body>
+</html>
