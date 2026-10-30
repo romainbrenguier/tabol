@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#26342d">
+  <title>Battle Masters · Campaign Scenarios</title>
+  <style>
+    :root{color-scheme:light;--ink:#26342d;--paper:#f5f1e5;--panel:#fffdf7;--muted:#657066;--gold:#ae8950;--blue:#336e9c;--red:#91443e}
+    *{box-sizing:border-box}body{margin:0;background:#e8e3d5;color:var(--ink);font:16px/1.5 system-ui,"Segoe UI",sans-serif}
+    .hero{position:relative;isolation:isolate;overflow:hidden;background:#26342d;color:#fff;padding:54px max(24px,calc((100vw - 1160px)/2)) 44px}
+    .hero:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,#1d2b28ed 0%,#1d2b28d9 48%,#1d2b2830 100%),url("skyreach_story_art.png") center 43%/cover;opacity:.95}
+    .eyebrow{margin:0 0 8px;color:#e7c98c;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    h1{max-width:760px;margin:0;font:700 clamp(2.2rem,6vw,4rem)/1.03 Georgia,serif;letter-spacing:-.025em}
+    .hero p:last-child{max-width:660px;margin:15px 0 0;color:#eee9db;font:italic 1.08rem/1.65 Georgia,serif}
+    main{max-width:1200px;margin:0 auto;padding:34px 22px 48px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 0 16px}
+    h2{margin:0;font:700 1.65rem/1.15 Georgia,serif}.section-head p{max-width:520px;margin:0;color:var(--muted);font-size:.92rem}
+    .campaign{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .mission{display:grid;grid-template-columns:minmax(155px,.72fr) minmax(0,1.28fr);overflow:hidden;min-height:235px;background:var(--panel);border:1px solid #c9c1af;border-radius:14px;box-shadow:0 5px 18px #28372a12;transition:transform .16s ease,box-shadow .16s ease}
+    .mission:hover{transform:translateY(-3px);box-shadow:0 9px 24px #28372a20}
+    .thumb{position:relative;overflow:hidden;min-height:100%;background:#c8b89b}.thumb img{position:absolute;max-width:none;width:200%;height:200%;object-fit:fill}.thumb .q0{left:0;top:0}.thumb .q1{left:-100%;top:0}.thumb .q2{left:0;top:-100%}.thumb .full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .mission-copy{display:flex;flex-direction:column;padding:16px 17px 15px}
+    .number{display:inline-flex;align-items:center;gap:7px;color:#765b32;font-size:.72rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+    .number:before{content:"";width:21px;height:2px;background:var(--gold)}
+    h3{margin:6px 0 7px;font:700 1.28rem/1.15 Georgia,serif}
+    .mission p{margin:0;color:#566156;font-size:.88rem}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+    .tag{padding:3px 8px;border:1px solid #d8d0bd;border-radius:999px;background:#f4f0e3;color:#546154;font-size:.7rem;font-weight:700}
+    .tag.empire{border-color:#b7cbd7;color:var(--blue)}.tag.chaos{border-color:#d9b8b1;color:var(--red)}
+    .open{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:auto;padding:8px 12px;border-radius:7px;background:#405f49;color:white;font-size:.82rem;font-weight:750;text-decoration:none}
+    .open:hover{background:#314d39}.open span{font-size:1.1rem;line-height:.8}
+    .note{margin:22px 0 0;padding:14px 16px;border-left:3px solid var(--gold);background:#f7f3e7;color:#5e685e;font-size:.86rem}
+    footer{max-width:1200px;margin:0 auto;padding:0 22px 28px;color:#6a756a;font-size:.77rem}
+    @media(max-width:850px){.campaign{grid-template-columns:1fr}.mission{min-height:210px}.hero{padding-top:42px}}
+    @media(max-width:560px){main{padding:26px 14px 36px}.section-head{display:block}.section-head p{margin-top:7px}.mission{grid-template-columns:120px minmax(0,1fr);min-height:230px}.mission-copy{padding:13px}.mission p{font-size:.82rem}.tags{margin:9px 0 11px}.hero{padding-left:18px;padding-right:18px}}
+    @media print{body{background:white}.hero{padding:28px}.campaign{grid-template-columns:1fr 1fr}.mission{box-shadow:none;break-inside:avoid}.open{border:1px solid #405f49;background:white;color:#26342d}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">Battle Masters · A four-part campaign</p>
+    <h1>Roads, Ruins &amp; the Ironpass</h1>
+    <p>From a contested river crossing to the mountain gate, four linked battles put the Empire and Chaos host against one another across the frontier. Choose a mission to open its map, forces, rules, unit cards, and lightweight play simulator.</p>
+  </header>
+  <main>
+    <div class="section-head">
+      <h2>Campaign scenarios</h2>
+      <p>Each page includes a 12 × 12 hex battlefield, complete terrain placement, unit stats, deployment, objectives, and click-to-move or click-to-attack play.</p>
+    </div>
+    <section class="campaign" aria-label="Battle Masters scenario list">
+      <article class="mission">
+        <div class="thumb"><img class="q0" src="scenario_additional_art.png" alt="Empire and Chaos armies approach the bridge at Bracken Ford"></div>
+        <div class="mission-copy"><span class="number">Scenario 01</span><h3>The Bridge at Bracken Ford</h3><p>Race to claim the only safe crossing before the river road is cut off.</p><div class="tags"><span class="tag empire">Empire</span><span class="tag chaos">Chaos</span><span class="tag">Bridge &amp; ford</span></div><a class="open" href="bracken_ford_map.html">Open scenario <span>›</span></a></div>
+      </article>
+      <article class="mission">
+        <div class="thumb"><img class="full" src="skyreach_story_art.png" alt="Skyreach tower glowing blue at twilight"></div>
+        <div class="mission-copy"><span class="number">Scenario 02</span><h3>The Ruins of Skyreach</h3><p>Fight through broken walls to secure the chart hidden beneath the ruined tower.</p><div class="tags"><span class="tag empire">Empire</span><span class="tag chaos">Chaos</span><span class="tag">Ruins &amp; high ground</span></div><a class="open" href="skyreach_ruins_map.html">Open scenario <span>›</span></a></div>
+      </article>
+      <article class="mission">
+        <div class="thumb"><img class="q1" src="scenario_additional_art.png" alt="Imperial defenders hold the road before Oakhaven"></div>
+        <div class="mission-copy"><span class="number">Scenario 03</span><h3>The Last Road to Oakhaven</h3><p>Hold the King’s Highway while the town evacuates behind its western gate.</p><div class="tags"><span class="tag empire">Empire</span><span class="tag chaos">Chaos</span><span class="tag">Cannon &amp; river</span></div><a class="open" href="last_road_to_oakhaven.html">Open scenario <span>›</span></a></div>
+      </article>
+      <article class="mission">
+        <div class="thumb"><img class="full" src="skyreach_story_art.png" alt="A ruined mountain tower under a stormy sky"></div>
+        <div class="mission-copy"><span class="number">Scenario 04</span><h3>The Siege of Ironpass</h3><p>Fifteen units per army clash at the gatehouse, with an Empire cannon and a Chaos ogre.</p><div class="tags"><span class="tag empire">15 Empire units</span><span class="tag chaos">15 Chaos units</span><span class="tag">Cannon &amp; ogre</span></div><a class="open" href="siege_of_ironpass.html">Open scenario <span>›</span></a></div>
+      </article>
+    </section>
+    <p class="note">Tip: Start with Bracken Ford to learn the crossings and card activations. Ironpass is the large battle, with more unit activations and several routes through its river and gate defenses.</p>
+  </main>
+  <footer>Battle Masters fan-made scenario collection · Open any mission for its complete setup.</footer>
+</body>
+</html>
