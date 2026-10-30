@@ -5,9 +5,21 @@
       "src": "tabol_project/wsgi.py",
       "use": "@vercel/python",
       "config": { "runtime": "python3.12" }
+    },
+    {
+      "src": "scenarios/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/scenarios/?$",
+      "dest": "/scenarios/index.html"
+    },
+    {
+      "src": "/scenarios/(.*)",
+      "dest": "/scenarios/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "tabol_project/wsgi.py"
