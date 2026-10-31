@@ -19,7 +19,48 @@
 table{width:100%;border-collapse:collapse;font-size:.77rem}th,td{padding:5px 4px;text-align:left;border-bottom:1px solid #ddd6c5}th{color:#526053;font-size:.7rem}td:first-child{font-weight:700}.army{font-size:.71rem;color:#58665b;margin:0 0 5px}.rules{margin:0;padding-left:17px;font-size:.81rem}.rules li{margin:0 0 6px}.foot{margin:10px 2px 0;color:#59685d;font-size:.82rem}
 .cards-section{margin-top:20px}.cards-section h2{margin:0 0 10px;font:700 1.35rem Georgia,serif}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px}.unit-card{overflow:hidden;border:2px solid #c5b999;border-radius:12px;background:#fbf8ed;box-shadow:0 3px 10px #28372a18;break-inside:avoid}.unit-card.empire-card{border-color:#6d99b2}.unit-card.chaos-card{border-color:#b87970}.card-head{display:flex;align-items:center;gap:10px;padding:10px 12px;color:#fff}.empire-card .card-head{background:#336e9c}.chaos-card .card-head{background:#91443e}.unit-icon{display:grid;place-items:center;width:42px;height:42px;flex:none;border:2px solid #ffffffa8;border-radius:50%;background:#ffffff20;font-size:1.15rem;font-weight:900}.card-head h3{margin:0;font:700 1.06rem Georgia,serif}.card-head small{display:block;opacity:.86;font-size:.75rem}.card-art{position:relative;overflow:hidden;aspect-ratio:1/1;background:#c8b89b}.card-art img{position:absolute;width:300%;height:200%;max-width:none;object-fit:fill}.card-art.p0 img{left:0;top:0}.card-art.p1 img{left:-100%;top:0}.card-art.p2 img{left:-200%;top:0}.card-art.p3 img{left:0;top:-100%}.card-art.p4 img{left:-100%;top:-100%}.card-art.p5 img{left:-200%;top:-100%}.card-body{padding:11px 12px}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stat{padding:6px 3px;text-align:center;border-radius:7px;background:#ece8dc}.stat b{display:block;font-size:1.02rem}.stat span{display:block;color:#59685d;font-size:.67rem;text-transform:uppercase;letter-spacing:.04em}.hp-line{margin:0 0 9px;font-size:.8rem}.hp-pips{display:inline-flex;gap:3px;vertical-align:middle;margin-left:4px}.hp-pips i{display:block;width:11px;height:11px;border:1px solid #72836b;border-radius:50%;background:#a9c985}.card-note{min-height:30px;margin:9px 0 0;color:#58665b;font-size:.75rem}.activation{display:flex;justify-content:space-between;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid #ddd6c5;color:#58665b;font-size:.72rem}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}.side section{margin:0}.story{grid-template-columns:1fr}.story img{max-height:280px}}@media print{body{background:#fff}main{padding:0}.layout{grid-template-columns:minmax(0,1fr) 280px;gap:8px}.board-wrap,.side section{box-shadow:none}.board{min-width:0;transform:scale(.88);transform-origin:top left;margin-bottom:-45px}}
- .terrain-print-cta{max-width:1250px;margin:-8px auto 18px;padding:11px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px dashed #b8aa89;border-radius:9px;background:#fbf7eb}.terrain-print-cta a{color:#3e654a;font-weight:800;text-decoration:none}.terrain-print-cta a:hover{text-decoration:underline}.terrain-print-cta span{color:#647064;font-size:.82rem}</style>
+ .terrain-print-cta{max-width:1250px;margin:-8px auto 18px;padding:11px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px dashed #b8aa89;border-radius:9px;background:#fbf7eb}.terrain-print-cta a{color:#3e654a;font-weight:800;text-decoration:none}.terrain-print-cta a:hover{text-decoration:underline}.terrain-print-cta span{color:#647064;font-size:.82rem}
+/* Painted tabletop terrain textures */
+.hex.river.bridge:before{background-image:url("terrain_art/bridge_straight_h.jpg")}
+.hex.river.bridge.terrain-alt:before{background-image:url("terrain_art/bridge_straight_h.jpg")}
+.hex.river.ford:before{background-image:url("terrain_art/ford_straight_h.jpg")}
+.hex.river.ford.terrain-alt:before{background-image:url("terrain_art/ford_straight_h.jpg")}
+.hex.road:before{background-image:url("terrain_art/road_straight_h.jpg");background-size:cover;background-position:center}
+.hex.terrain-alt.road:before{background-image:url("terrain_art/road_stone_h.jpg")}
+.hex.river:before{background-image:url("terrain_art/river_straight_v.jpg");background-size:cover;background-position:center}
+.hex.terrain-alt.river:before{background-image:url("terrain_art/river_straight_v_alt.jpg")}
+.hex.bridge:before{background-image:url("terrain_art/bridge_straight_h.jpg");background-size:cover;background-position:center}
+.hex.bridge.terrain-alt:before{background-image:url("terrain_art/bridge_stone_h.jpg")}
+.hex.ford:before{background-image:url("terrain_art/ford_straight_h.jpg");background-size:cover;background-position:center}
+.hex.ford.terrain-alt:before{background-image:url("terrain_art/ford_straight_h.jpg")}
+.hex.woods:before{background-image:url("terrain_art/woods.jpg");background-size:cover;background-position:center}
+.hex.woods.terrain-alt:before{background-image:url("terrain_art/woods_pine_alt.jpg")}
+.hex.scrub:before{background-image:url("terrain_art/scrub.jpg");background-size:cover;background-position:center}
+.hex.scrub.terrain-alt:before{background-image:url("terrain_art/scrub_alt.jpg")}
+.hex.rock:before{background-image:url("terrain_art/rock.jpg");background-size:cover;background-position:center}
+.hex.rock.terrain-alt:before{background-image:url("terrain_art/rock_alt.jpg")}
+.hex.high:before{background-image:url("terrain_art/high_ground.jpg");background-size:cover;background-position:center}
+.hex.high.terrain-alt:before{background-image:url("terrain_art/high_ground_alt.jpg")}
+.hex.ruins:before{background-image:url("terrain_art/ruins.jpg");background-size:cover;background-position:center}
+.hex.ruins.terrain-alt:before{background-image:url("terrain_art/ruins_alt.jpg")}
+.hex.tower:before{background-image:url("terrain_art/tower.jpg");background-size:cover;background-position:center}
+.hex.wall:before{background-image:url("terrain_art/wall.jpg");background-size:cover;background-position:center}
+.hex.ditch:before{background-image:url("terrain_art/ditch.jpg");background-size:cover;background-position:center}
+.hex.village:before{background-image:url("terrain_art/village.jpg");background-size:cover;background-position:center}
+.hex.village.terrain-alt:before{background-image:url("terrain_art/village_alt.jpg")}
+.coord{padding:1px 3px;border-radius:4px;background:#f8f2dfd9;color:#202b24;font-size:.58rem}
+.swatch.road{background:url("terrain_art/road_straight_h.jpg") center/cover}
+.swatch.river{background:url("terrain_art/river_straight_v.jpg") center/cover}
+.swatch.bridge{background:url("terrain_art/bridge_straight_h.jpg") center/cover}
+.swatch.ford{background:url("terrain_art/ford_straight_h.jpg") center/cover}
+.swatch.woods{background:url("terrain_art/woods.jpg") center/cover}
+.swatch.ruins{background:url("terrain_art/ruins.jpg") center/cover}
+.swatch.high{background:url("terrain_art/high_ground.jpg") center/cover}
+.swatch.rock{background:url("terrain_art/rock.jpg") center/cover}
+.swatch.wall{background:url("terrain_art/wall.jpg") center/cover}
+.swatch.ditch{background:url("terrain_art/ditch.jpg") center/cover}
+.swatch.village{background:url("terrain_art/village.jpg") center/cover}
+</style>
 </head>
 <body><main>
 <h1>The Ruins of Skyreach</h1>
@@ -56,9 +97,9 @@ const units=[
  {id:"champion",name:"Champion",side:"chaos",mark:"C",cell:"J5",hp:1,attack:4,defence:3,move:2,range:1}
 ];
 const board=document.getElementById("board"),hexNodes=new Map();let selectedUnit=null,legalMoves=new Set(),attackTargets=new Set();
-function terrainClass(coord){return (roads.has(coord)?" road":"")+(rivers.has(coord)?" river":"")+(bridges.has(coord)?" bridge":"")+(fords.has(coord)?" ford":"")+(ruins.has(coord)?" ruins":"")+(high.has(coord)?" high":"")+(walls.has(coord)?" wall":"")+(rocks.has(coord)?" rock":"")+(scrub.has(coord)?" woods":"")+(tower.has(coord)?" tower":"")}
+function terrainClass(coord){return (roads.has(coord)?" road":"")+(rivers.has(coord)?" river":"")+(bridges.has(coord)?" bridge":"")+(fords.has(coord)?" ford":"")+(ruins.has(coord)?" ruins":"")+(high.has(coord)?" high":"")+(walls.has(coord)?" wall":"")+(rocks.has(coord)?" rock":"")+(scrub.has(coord)?" scrub":"")+(tower.has(coord)?" tower":"")}
 function renderBoard(){board.replaceChildren();hexNodes.clear();const axis=document.createElement("div");axis.className="axis-row";axis.append(document.createElement("span"));for(const col of cols){const a=document.createElement("span");a.className="axis";a.textContent=col;axis.append(a)}board.append(axis);
- for(let row=1;row<=12;row++){const line=document.createElement("div");line.className="hex-row"+(row%2?" odd":"");const n=document.createElement("span");n.className="axis row-axis";n.textContent=row;line.append(n);for(const col of cols){const coord=col+row,hex=document.createElement("div");hex.className="hex"+terrainClass(coord);hex.title=coord;const label=document.createElement("span");label.className="coord";label.textContent=coord;hex.append(label);const unit=units.find(u=>u.cell===coord);if(unit){const pieces=document.createElement("span");pieces.className="pieces";for(let i=0;i<unit.hp;i++){const p=document.createElement("i");p.className="piece "+unit.side;p.textContent=unit.mark;pieces.append(p)}hex.append(pieces);hex.setAttribute("aria-label",`${coord}: ${unit.name}, ${unit.hp} figures`)}if(unit===selectedUnit)hex.classList.add("selected");if(legalMoves.has(coord))hex.classList.add("movable");if(attackTargets.has(coord))hex.classList.add("attackable");hex.addEventListener("click",()=>onHexClick(coord));hexNodes.set(coord,hex);line.append(hex)}board.append(line)} }
+ for(let row=1;row<=12;row++){const line=document.createElement("div");line.className="hex-row"+(row%2?" odd":"");const n=document.createElement("span");n.className="axis row-axis";n.textContent=row;line.append(n);for(const col of cols){const coord=col+row,hex=document.createElement("div");hex.className="hex"+terrainClass(coord);if((coord.charCodeAt(0)+row)%2===0)hex.classList.add("terrain-alt");hex.title=coord;const label=document.createElement("span");label.className="coord";label.textContent=coord;hex.append(label);const unit=units.find(u=>u.cell===coord);if(unit){const pieces=document.createElement("span");pieces.className="pieces";for(let i=0;i<unit.hp;i++){const p=document.createElement("i");p.className="piece "+unit.side;p.textContent=unit.mark;pieces.append(p)}hex.append(pieces);hex.setAttribute("aria-label",`${coord}: ${unit.name}, ${unit.hp} figures`)}if(unit===selectedUnit)hex.classList.add("selected");if(legalMoves.has(coord))hex.classList.add("movable");if(attackTargets.has(coord))hex.classList.add("attackable");hex.addEventListener("click",()=>onHexClick(coord));hexNodes.set(coord,hex);line.append(hex)}board.append(line)} }
 function parseCell(cell){return {c:cols.indexOf(cell[0]),r:Number(cell.slice(1))}}
 function neighbours(cell){const {c,r}=parseCell(cell),out=[];const add=(x,y)=>{if(x>=0&&x<12&&y>=1&&y<=12)out.push(cols[x]+y)};add(c-1,r);add(c+1,r);if(r%2){add(c,r-1);add(c+1,r-1);add(c,r+1);add(c+1,r+1)}else{add(c-1,r-1);add(c,r-1);add(c-1,r+1);add(c,r+1)}return out}
 function canEnter(unit,c){if(tower.has(c))return false;if(rivers.has(c))return bridges.has(c)||(fords.has(c)&&!unit.cavalry);return true}function reachable(unit){const seen=new Map([[unit.cell,0]]),queue=[unit.cell];for(let i=0;i<queue.length;i++){const here=queue[i],steps=seen.get(here);if(steps>=unit.move+1)continue;for(const next of neighbours(here)){if(seen.has(next)||units.some(u=>u.cell===next)||!canEnter(unit,next))continue;if(steps>=unit.move&&!((roads.has(here)||bridges.has(here))&&(roads.has(next)||bridges.has(next))))continue;const nextSteps=steps+1;seen.set(next,nextSteps);if(!(unit.cavalry&&rocks.has(next)))queue.push(next)}}seen.delete(unit.cell);return new Set(seen.keys())}
