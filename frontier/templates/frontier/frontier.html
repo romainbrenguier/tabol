@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dust &amp; Dollars — Frontier Town</title>
+    <link rel="stylesheet" href="{% static 'frontier/frontier.css' %}">
+</head>
+<body>
+    <main class="game-shell">
+        <header class="topbar">
+            <div class="brand"><span class="brand-star">✦</span><div><h1>Dust &amp; Dollars</h1><p>FRONTIER TOWN COMPANY</p></div></div>
+            <div class="town-title"><span id="town-name">SUNDOWN</span><small>EST. 1874</small></div>
+            <div class="date-card"><span id="date">May 1874</span><button id="pause-btn" aria-label="Pause game">❚❚</button></div>
+        </header>
+
+        <section class="dashboard" aria-label="Town status">
+            <div class="resource"><i>♜</i><span><b id="cash">$12,500</b><small>treasury</small></span></div>
+            <div class="resource"><i>♟</i><span><b id="population">42</b><small>townfolk</small></span></div>
+            <div class="resource"><i>☀</i><span><b id="happiness">71%</b><small>spirits</small></span></div>
+            <div class="resource wide"><i>✦</i><span><b id="income">+$180</b><small>monthly income</small></span></div>
+            <button class="settings" id="speed-btn" title="Change game speed">1×</button>
+        </section>
+
+        <section class="content">
+            <aside class="build-panel">
+                <div class="panel-heading"><span>Town Ledger</span><button id="help-btn">?</button></div>
+                <div class="ledger">
+                    <div><span>Houses</span><b id="houses">0</b></div><div><span>Jobs</span><b id="jobs">0</b></div>
+                    <div><span>Gold stock</span><b id="gold">0 oz</b></div><div><span>Tax rate</span><b id="tax-rate">8%</b></div>
+                </div>
+                <div class="divider"><span>BUILDINGS</span></div>
+                <div class="build-list" id="build-list">
+                    <button class="build-card selected" data-building="ranch"><span class="building-icon ranch-icon">♞</span><span><b>Ranch</b><small>Homes · +8 folks</small></span><em>$350</em></button>
+                    <button class="build-card" data-building="saloon"><span class="building-icon saloon-icon">★</span><span><b>Saloon</b><small>Joy · +12 spirits</small></span><em>$800</em></button>
+                    <button class="build-card" data-building="mine"><span class="building-icon mine-icon">◆</span><span><b>Gold Mine</b><small>Work · +$220/mo</small></span><em>$1,400</em></button>
+                    <button class="build-card" data-building="bank"><span class="building-icon bank-icon">$</span><span><b>Bank</b><small>Tax · +$90/mo</small></span><em>$2,500</em></button>
+                    <button class="build-card" data-building="sheriff"><span class="building-icon sheriff-icon">✦</span><span><b>Sheriff's Office</b><small>Safety · +8 spirits</small></span><em>$1,100</em></button>
+                    <button class="build-card" data-building="road"><span class="building-icon road-icon">═</span><span><b>Dust Road</b><small>Connect the town</small></span><em>$40</em></button>
+                </div>
+                <button class="bulldoze" id="bulldoze-btn">⌫ &nbsp; Bulldoze <span>$25</span></button>
+                <p class="tip">Select a building, then choose a plot.<br>Right-click clears a plot.</p>
+            </aside>
+
+            <section class="map-wrap">
+                <div class="sun"></div><div class="mesa mesa-one"></div><div class="mesa mesa-two"></div>
+                <div class="map-label">100 × 100 TOWN PLATS <span>— drag to pan · scroll to zoom · click to build —</span></div>
+                <canvas class="town-canvas" id="game-map" aria-label="100 by 100 isometric town building map"></canvas>
+                <div class="frontier-sign">SUNDOWN<br><span>COUNTY</span></div>
+            </section>
+        </section>
+
+        <footer class="ticker"><span class="sheriff">★</span><p id="ticker-text"><b>SHERIFF'S REPORT:</b> The trails are clear and Sundown is ready to grow.</p><button id="new-town">New town</button></footer>
+    </main>
+    <div class="modal hidden" id="modal"><div class="modal-card"><button id="close-modal">×</button><h2>How to run a town</h2><p>Place ranches to attract settlers. Mines create wealth, while saloons keep your hard-working townfolk cheerful. Banks make your treasury grow.</p><p>Each month, your buildings earn (or cost) money. Keep spirits high, build smart, and make Sundown the jewel of the frontier.</p><button id="got-it">Let's ride</button></div></div>
+    <script src="{% static 'frontier/frontier.js' %}"></script>
+</body>
+</html>
