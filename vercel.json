@@ -9,9 +9,17 @@
     {
       "src": "scenarios/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "^/$",
+      "dest": "/index.html"
+    },
     {
       "src": "/scenarios/?$",
       "dest": "/scenarios/index.html"
